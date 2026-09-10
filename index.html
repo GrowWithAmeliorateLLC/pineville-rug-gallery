@@ -145,6 +145,25 @@
   .visit-media .ph-placeholder span{font-size:.6rem;text-transform:uppercase;letter-spacing:.2em;color:rgba(245,239,228,.55)}
   .visit-media iframe{width:100%;height:260px;border:0;display:block;filter:grayscale(.12)}
 
+  /* book a design appointment */
+  .book{background:var(--cream)}
+  .book .wrap{max-width:760px}
+  .book .sec-head{margin-bottom:38px}
+  .book form{display:grid;grid-template-columns:1fr 1fr;gap:18px 20px}
+  .book .full{grid-column:1 / -1}
+  .book label.fld{display:block;font-size:.66rem;text-transform:uppercase;letter-spacing:.18em;color:var(--stone);margin-bottom:7px}
+  .book input,.book select,.book textarea{width:100%;font-family:'Jost';font-weight:300;font-size:.98rem;padding:13px 15px;border:1px solid var(--line);background:var(--paper);color:var(--ink);outline:none;transition:.25s}
+  .book input:focus,.book select:focus,.book textarea:focus{border-color:var(--clay)}
+  .book textarea{min-height:112px;resize:vertical}
+  .book .consent{grid-column:1 / -1;display:flex;gap:11px;align-items:flex-start;font-size:.84rem;color:var(--stone);line-height:1.5;cursor:pointer}
+  .book .consent input{width:auto;margin-top:3px;flex:none}
+  .book .fineprint{grid-column:1 / -1;font-size:.72rem;color:var(--stone);line-height:1.55}
+  .book .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+  .book .submit-row{grid-column:1 / -1;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+  .book .msg{font-size:.9rem;font-weight:400}
+  .book .msg.ok{color:var(--pine-soft)}
+  .book .msg.err{color:var(--clay)}
+
   /* newsletter band (ref A) */
   .news{position:relative;color:var(--paper);text-align:center;overflow:hidden}
   .news-img{position:absolute;inset:0;background:url('https://pinevilleruggallery.com/wp-content/uploads/2023/12/cover_11zon-2-700x854.webp') center/cover no-repeat}
@@ -216,6 +235,7 @@
     .visit .rows div{flex-direction:column;gap:3px}
     .visit .rows .k{width:auto}
     .visit-media iframe{height:200px}
+    .book form{grid-template-columns:1fr}
     .news form{flex-direction:column;border:none;gap:10px}
     .news input{border:1px solid rgba(253,250,244,.5)}
     .news button{padding:15px}
@@ -246,7 +266,7 @@
     </nav>
     <div class="nav-cta">
       <span class="nav-phone">(704) 889-2454</span>
-      <a href="#visit" class="btn solid">Book Appointment</a>
+      <a href="#book" class="btn solid">Book Appointment</a>
       <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
   </div>
@@ -260,7 +280,7 @@
     <h1>Handwoven treasures, made to last generations.</h1>
     <p>A family-owned gallery curating the Carolinas' finest hand-knotted rugs since 1986 — sourced, cleaned, and restored with the care of four decades.</p>
     <div class="hero-actions">
-      <a href="#visit" class="btn light">Book a Design Appointment</a>
+      <a href="#book" class="btn light">Book a Design Appointment</a>
       <a href="#collection" class="btn light">Explore the Collection</a>
     </div>
     <div class="hero-rev"><span class="stars">★★★★★</span> 4.9 · 56 Google reviews</div>
@@ -286,7 +306,7 @@
         <h2>Three generations of woven artistry, brought to Charlotte.</h2>
         <p>Pineville Rug Gallery was founded in 1986 on a simple belief: that a great rug is not décor, but an heirloom. Owner Reza Elyasi is a third-generation rug dealer — his sister once ran a rug factory in Tehran — and his family brings a century of knowledge, importing breathtaking hand-knotted pieces from Isfahan, Tabriz, Kashan, and Heriz.</p>
         <p>Every rug is chosen for quality, durability, and authenticity, then cared for by hand in our own gallery. It's craftsmanship you can feel underfoot — and hand down through generations, often lasting more than a hundred years.</p>
-        <a href="#story" class="btn">Meet the Gallery</a>
+        <a href="#book" class="btn">Meet the Gallery</a>
         <p style="margin-top:22px;font-size:.7rem;text-transform:uppercase;letter-spacing:.2em;color:var(--stone)">As featured on <a href="https://spectrumlocalnews.com/nc/charlotte/news/2024/06/18/small-business--mecklenburg-county--funding-options--loans--pineville-rug-gallery" target="_blank" rel="noopener" style="color:var(--clay);border-bottom:1px solid var(--clay);padding-bottom:2px">Spectrum News 1</a></p>
       </div>
       <div class="split-img">
@@ -319,7 +339,7 @@
         <figcaption>Oushak · 10 × 14 · soft antique palette</figcaption>
       </figure>
     </div>
-    <div class="center"><a href="#visit" class="btn solid">Book a Design Appointment</a></div>
+    <div class="center"><a href="#book" class="btn solid">Book a Design Appointment</a></div>
   </div>
 </section>
 
@@ -338,7 +358,7 @@
           <span class="num">01</span>
           <h3>Rug Cleaning</h3>
           <p>Hand-washed the way fine rugs demand — vacuumed, dust drawn from front and back, gently hand-washed, then dried in open air. Never harsh-machined, so delicate wool and silk keep their color and luster.</p>
-          <a href="#visit">Book Cleaning →</a>
+          <a href="#book">Book Cleaning →</a>
         </div>
       </div>
       <div class="svc">
@@ -347,7 +367,7 @@
           <span class="num">02</span>
           <h3>Repair &amp; Restoration</h3>
           <p>Fraying edges, moth damage, tears, worn areas — even fringe caught and shredded by a household vacuum, the most common mishap. Every repair is hand-sewn by our in-house expert and quoted in person.</p>
-          <a href="#visit">Book Repair →</a>
+          <a href="#book">Book Repair →</a>
         </div>
       </div>
       <div class="svc">
@@ -356,7 +376,7 @@
           <span class="num">03</span>
           <h3>Appraisal</h3>
           <p>Uncover the true value and origin of your rug with four decades of expertise. A verbal appraisal is complimentary; a printed certificate — mailed and emailed as a PDF — is $250, with a discount for multiple pieces.</p>
-          <a href="#visit">Book Appraisal →</a>
+          <a href="#book">Book Appraisal →</a>
         </div>
       </div>
     </div>
@@ -370,7 +390,7 @@
     <h2>A trusted partner for Charlotte's finest interiors.</h2>
     <p>We work hand-in-hand with over 100 interior designers — offering trade pricing, in-home previews, and access to rare pieces sourced directly from the weaving regions.</p>
     <p style="color:rgba(245,239,228,.82)">Design a room from the floor up — bring us the space, and we'll bring the rugs to life.</p>
-    <a href="#visit" class="btn light">Join Our Trade Program</a>
+    <a href="#book" class="btn light">Join Our Trade Program</a>
   </div>
   <div class="trade-img"></div>
 </section>
@@ -413,6 +433,42 @@
   </div>
 </section>
 
+<!-- BOOK A DESIGN APPOINTMENT -->
+<section id="book" class="book">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Book a Design Appointment</span>
+      <h2>Let's find the one.</h2>
+      <p>Tell us a little about your space and how to reach you. We'll follow up personally to set a time — in the gallery or at your home. No pressure, ever.</p>
+    </div>
+    <form id="book-form" novalidate>
+      <div><label class="fld" for="bf-name">Name</label><input id="bf-name" name="name" autocomplete="name" required></div>
+      <div><label class="fld" for="bf-phone">Phone</label><input id="bf-phone" name="phone" type="tel" autocomplete="tel" required></div>
+      <div><label class="fld" for="bf-email">Email</label><input id="bf-email" name="email" type="email" autocomplete="email" required></div>
+      <div><label class="fld" for="bf-ref">How did you hear about us?</label>
+        <select id="bf-ref" name="referral">
+          <option value="">Select…</option>
+          <option>Google</option>
+          <option>Referral</option>
+          <option>Social media</option>
+          <option>Walked by the gallery</option>
+          <option>Returning client</option>
+          <option>Other</option>
+        </select></div>
+      <div class="full"><label class="fld" for="bf-project">Tell us about your space or project</label><textarea id="bf-project" name="project" placeholder="Room, approximate size, colors, the feeling you're after — or the service you need (cleaning, repair, appraisal)."></textarea></div>
+      <div class="full"><label class="fld" for="bf-pref">Preferred day / time to connect (optional)</label><input id="bf-pref" name="preferred" placeholder="e.g. weekday mornings, or this Saturday"></div>
+      <label class="consent"><input type="checkbox" name="sms_transactional" value="1"><span>Text me about my appointment at the number above. Msg &amp; data rates may apply; message frequency varies. Reply STOP to opt out, HELP for help.</span></label>
+      <label class="consent"><input type="checkbox" name="sms_marketing" value="1"><span>I'd also like occasional texts about new arrivals and private sales. (Optional — opt out anytime.)</span></label>
+      <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="submit-row">
+        <button type="submit" class="btn solid">Request My Appointment</button>
+        <span class="msg" id="bf-msg" role="status" aria-live="polite"></span>
+      </div>
+      <p class="fineprint">By submitting, you agree to be contacted about your inquiry. Consent to texts is not a condition of purchase. We never sell or share your information.</p>
+    </form>
+  </div>
+</section>
+
 <!-- VISIT -->
 <section id="visit" class="visit">
   <div class="wrap">
@@ -427,7 +483,7 @@
         <div><span class="k">Email</span><span>showroom@pinevilleruggallery.com</span></div>
       </div>
       <div class="hero-actions">
-        <a href="#visit" class="btn light">Book a Design Appointment</a>
+        <a href="#book" class="btn light">Book a Design Appointment</a>
         <a href="tel:7048892454" class="btn light">Call the Gallery</a>
       </div>
     </div>
@@ -507,6 +563,35 @@
     n.style.top='70px'; n.style.right='20px'; n.style.padding='24px 30px'; n.style.gap='18px';
     n.style.border='1px solid var(--line)'; n.style.boxShadow='0 20px 40px rgba(12,34,29,.15)';
   });
+
+  // Design-appointment form -> /api/pineville-lead (server-side GHL upsert)
+  (function(){
+    var f = document.getElementById('book-form'); if(!f) return;
+    f.addEventListener('submit', async function(e){
+      e.preventDefault();
+      var msg = document.getElementById('bf-msg'); msg.className='msg'; msg.textContent='Sending…';
+      var btn = f.querySelector('button[type=submit]'); btn.disabled = true;
+      var data = Object.fromEntries(new FormData(f).entries());
+      data.sms_transactional = f.sms_transactional.checked;
+      data.sms_marketing = f.sms_marketing.checked;
+      data.page = location.href;
+      if(!data.name || !data.phone || !data.email){
+        msg.className='msg err'; msg.textContent='Please add your name, phone, and email.'; btn.disabled=false; return;
+      }
+      try{
+        var r = await fetch('/api/pineville-lead', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)});
+        var j = await r.json().catch(function(){return {};});
+        if(!r.ok || j.error) throw new Error();
+        f.reset();
+        msg.className='msg ok';
+        msg.textContent='Thank you — we’ll be in touch shortly to set your appointment.';
+      }catch(_){
+        msg.className='msg err';
+        msg.textContent='Something went wrong — please call us at (704) 889-2454.';
+      }
+      btn.disabled = false;
+    });
+  })();
 </script>
 </body>
 </html>

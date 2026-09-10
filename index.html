@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Pineville Rug Gallery — Charlotte's Home for Fine Oriental Rugs Since 1986</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#fdfaf4; --cream:#f5efe4; --sand:#ece3d3;
+    --pine:#12312b; --pine-deep:#0c221d; --pine-soft:#2c4a43;
+    --clay:#b0663f; --clay-soft:#c98b64; --brass:#a98c5f;
+    --ink:#221e18; --stone:#6d645a; --line:rgba(34,30,24,.14);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Jost',sans-serif;color:var(--ink);background:var(--paper);line-height:1.65;font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  h1,h2,h3,.serif{font-family:'Cormorant Garamond',serif;font-weight:500;line-height:1.08;letter-spacing:.005em}
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 40px}
+  .eyebrow{font-size:.72rem;text-transform:uppercase;letter-spacing:.32em;font-weight:500;color:var(--clay)}
+  .btn{display:inline-block;font-size:.74rem;text-transform:uppercase;letter-spacing:.22em;font-weight:500;padding:16px 30px;border:1px solid var(--pine);color:var(--pine);background:transparent;transition:.35s;cursor:pointer}
+  .btn:hover{background:var(--pine);color:var(--paper)}
+  .btn.solid{background:var(--pine);color:var(--paper)}
+  .btn.solid:hover{background:var(--pine-deep);border-color:var(--pine-deep)}
+  .btn.light{border-color:rgba(253,250,244,.6);color:var(--paper)}
+  .btn.light:hover{background:var(--paper);color:var(--pine);border-color:var(--paper)}
+
+  /* announcement */
+  .announce{background:var(--pine-deep);color:var(--cream);text-align:center;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;padding:9px 20px}
+  .announce b{color:#fff;font-weight:500}
+
+  /* header */
+  header{position:sticky;top:0;z-index:50;background:rgba(253,250,244,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;max-width:1400px;margin:0 auto}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand img{height:56px;width:auto;display:block}
+  nav ul{display:flex;gap:34px;list-style:none;align-items:center}
+  nav a{font-size:.76rem;text-transform:uppercase;letter-spacing:.16em;color:var(--ink);transition:.25s;position:relative;padding-bottom:3px}
+  nav a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--clay);transition:.3s}
+  nav a:hover::after{width:100%}
+  .nav-cta{display:flex;align-items:center;gap:20px}
+  .nav-phone{font-size:.78rem;letter-spacing:.08em;color:var(--pine)}
+  .burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer}
+  .burger span{width:24px;height:1.5px;background:var(--pine)}
+
+  /* hero */
+  .hero{position:relative;min-height:88vh;display:flex;align-items:flex-end;color:var(--paper);overflow:hidden}
+  .hero-img{position:absolute;inset:0;background:url('https://pinevilleruggallery.com/wp-content/uploads/2023/12/IMG_5390-copy_11zon.webp') center/cover no-repeat;transform:scale(1.03)}
+  .hero-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,34,29,.15) 0%,rgba(12,34,29,.05) 40%,rgba(12,34,29,.72) 100%)}
+  .hero-inner{position:relative;z-index:2;padding:0 40px 84px;max-width:1400px;margin:0 auto;width:100%}
+  .hero .eyebrow{color:var(--clay-soft)}
+  .hero h1{font-size:clamp(2.8rem,6vw,5.4rem);margin:20px 0 18px;max-width:16ch;font-weight:400}
+  .hero p{font-weight:300;font-size:1.12rem;max-width:44ch;color:rgba(253,250,244,.9)}
+  .hero-actions{display:flex;gap:16px;margin-top:34px;flex-wrap:wrap;align-items:center}
+  .hero-rev{display:flex;align-items:center;gap:10px;margin-top:30px;font-size:.82rem;letter-spacing:.06em;color:rgba(253,250,244,.85)}
+  .stars{color:#e8b45e;letter-spacing:2px}
+
+  /* marquee strip */
+  .heritage{background:var(--pine);color:var(--cream)}
+  .heritage .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-top:26px;padding-bottom:26px;text-align:center}
+  .heritage div{flex:1;min-width:150px}
+  .heritage b{font-family:'Cormorant Garamond',serif;font-size:1.5rem;display:block;color:#fff;font-weight:500}
+  .heritage span{font-size:.68rem;text-transform:uppercase;letter-spacing:.2em;color:rgba(245,239,228,.7)}
+
+  /* section basics */
+  section{padding:110px 0}
+  .sec-head{text-align:center;max-width:640px;margin:0 auto 60px}
+  .sec-head h2{font-size:clamp(2.2rem,4.2vw,3.4rem);margin:14px 0 16px;color:var(--pine)}
+  .sec-head p{color:var(--stone);font-size:1.05rem}
+
+  /* editorial split */
+  .split{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:70px}
+  .split.rev{direction:rtl}.split.rev>*{direction:ltr}
+  .split-img img{width:100%;height:560px;object-fit:cover}
+  .split-txt .eyebrow{margin-bottom:16px;display:block}
+  .split-txt h2{font-size:clamp(2rem,3.6vw,3rem);color:var(--pine);margin-bottom:22px}
+  .split-txt p{color:var(--stone);margin-bottom:18px}
+  .split-txt .btn{margin-top:12px}
+
+  /* collection — a glimpse */
+  .collection{background:var(--cream)}
+  .glimpse-head{max-width:640px;margin:0 auto 72px;text-align:center}
+  .glimpse-head h2{font-size:clamp(2.2rem,4.2vw,3.4rem);color:var(--pine);margin:14px 0 16px}
+  .glimpse-head p{color:var(--stone);font-size:1.06rem}
+  .glimpse{display:grid;grid-template-columns:repeat(3,1fr);gap:44px;align-items:start}
+  .glimpse figure{margin:0}
+  .glimpse figure .ph{overflow:hidden}
+  .glimpse figure img{width:100%;height:540px;object-fit:cover;transition:transform 1.2s ease}
+  .glimpse figure:hover img{transform:scale(1.045)}
+  .glimpse .g2{margin-top:76px}
+  .glimpse .g3{margin-top:28px}
+  .glimpse figcaption{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.08rem;color:var(--stone);margin-top:16px}
+  .collection .center{text-align:center;margin-top:70px}
+
+  /* services */
+  .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  .svc{background:var(--paper);border:1px solid var(--line)}
+  .svc-img{height:260px;overflow:hidden}
+  .svc-img img{width:100%;height:100%;object-fit:cover;transition:.7s}
+  .svc:hover .svc-img img{transform:scale(1.05)}
+  .svc-body{padding:30px 28px 34px}
+  .svc-body .num{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--clay);letter-spacing:.1em}
+  .svc-body h3{font-size:1.7rem;color:var(--pine);margin:6px 0 12px}
+  .svc-body p{color:var(--stone);font-size:.95rem;margin-bottom:20px}
+  .svc-body a{font-size:.72rem;text-transform:uppercase;letter-spacing:.2em;color:var(--pine);border-bottom:1px solid var(--clay);padding-bottom:3px}
+
+  /* trade color block (ref B) */
+  .trade{background:var(--pine);color:var(--cream);display:grid;grid-template-columns:1.05fr .95fr;align-items:stretch}
+  .trade-txt{padding:100px 70px}
+  .trade-txt .eyebrow{color:var(--clay-soft)}
+  .trade-txt h2{font-size:clamp(2rem,3.6vw,3rem);color:#fff;margin:16px 0 20px}
+  .trade-txt p{color:rgba(245,239,228,.82);margin-bottom:26px;max-width:46ch}
+  .trade-img{background:url('https://pinevilleruggallery.com/wp-content/uploads/2026/02/pinevilleuggallery-img.jpg') center/cover no-repeat;min-height:440px}
+
+  /* values */
+  .values .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:40px}
+  .val .mk{width:34px;height:34px;transform:rotate(45deg);border:1.5px solid var(--brass);margin-bottom:22px}
+  .val h3{font-size:1.4rem;color:var(--pine);margin-bottom:10px}
+  .val p{color:var(--stone);font-size:.92rem}
+
+  /* reviews */
+  .reviews{background:var(--sand)}
+  .rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:20px}
+  .rev-card{background:var(--paper);padding:38px 34px;border:1px solid var(--line)}
+  .rev-card .stars{font-size:1rem;margin-bottom:18px;display:block}
+  .rev-card p{font-family:'Cormorant Garamond',serif;font-size:1.35rem;line-height:1.4;color:var(--ink);margin-bottom:22px;font-style:italic}
+  .rev-card .who{font-size:.72rem;text-transform:uppercase;letter-spacing:.18em;color:var(--stone)}
+
+  /* visit */
+  .visit{background:var(--pine-deep);color:var(--cream)}
+  .visit .wrap{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+  .visit .eyebrow{color:var(--clay-soft)}
+  .visit h2{font-size:clamp(2rem,3.8vw,3.2rem);color:#fff;margin:14px 0 24px}
+  .visit .rows{margin:26px 0}
+  .visit .rows div{display:flex;gap:16px;padding:14px 0;border-top:1px solid rgba(245,239,228,.16);font-size:.95rem}
+  .visit .rows .k{width:120px;text-transform:uppercase;letter-spacing:.16em;font-size:.7rem;color:rgba(245,239,228,.6);padding-top:3px}
+  .visit-media{display:grid;gap:14px}
+  .visit-media .ph-placeholder{height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:rgba(245,239,228,.06);border:1px dashed rgba(245,239,228,.32);text-align:center}
+  .visit-media .ph-placeholder b{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:1.3rem;color:var(--cream)}
+  .visit-media .ph-placeholder span{font-size:.6rem;text-transform:uppercase;letter-spacing:.2em;color:rgba(245,239,228,.55)}
+  .visit-media iframe{width:100%;height:260px;border:0;display:block;filter:grayscale(.12)}
+
+  /* newsletter band (ref A) */
+  .news{position:relative;color:var(--paper);text-align:center;overflow:hidden}
+  .news-img{position:absolute;inset:0;background:url('https://pinevilleruggallery.com/wp-content/uploads/2023/12/cover_11zon-2-700x854.webp') center/cover no-repeat}
+  .news-img::after{content:"";position:absolute;inset:0;background:rgba(12,34,29,.74)}
+  .news-inner{position:relative;z-index:2;padding:96px 20px;max-width:600px;margin:0 auto}
+  .news h2{font-size:clamp(2rem,4vw,3rem);color:#fff;margin:14px 0 14px}
+  .news p{color:rgba(253,250,244,.85);margin-bottom:28px}
+  .news form{display:flex;gap:0;max-width:440px;margin:0 auto;border:1px solid rgba(253,250,244,.5)}
+  .news input{flex:1;background:transparent;border:none;padding:16px 20px;color:var(--paper);font-family:'Jost';font-size:.9rem;outline:none}
+  .news input::placeholder{color:rgba(253,250,244,.6)}
+  .news button{background:var(--clay);color:#fff;border:none;padding:0 26px;font-size:.72rem;text-transform:uppercase;letter-spacing:.2em;cursor:pointer;transition:.3s}
+  .news button:hover{background:var(--clay-soft)}
+
+  /* footer */
+  footer{background:var(--pine-deep);color:rgba(245,239,228,.8);padding:76px 0 34px}
+  .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;padding-bottom:50px;border-bottom:1px solid rgba(245,239,228,.14)}
+  .foot-brand .name{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:#fff;letter-spacing:.04em}
+  .foot-brand p{font-size:.9rem;margin-top:16px;max-width:34ch;color:rgba(245,239,228,.62)}
+  footer h4{font-size:.7rem;text-transform:uppercase;letter-spacing:.22em;color:var(--clay-soft);margin-bottom:20px;font-weight:500}
+  footer ul{list-style:none}
+  footer li{margin-bottom:11px;font-size:.9rem}
+  footer li a:hover{color:#fff}
+  .foot-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;padding-top:26px;font-size:.76rem;color:rgba(245,239,228,.5)}
+
+  /* chat bubble */
+  .chat{position:fixed;right:26px;bottom:26px;z-index:60;background:var(--clay);color:#fff;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(12,34,29,.35);cursor:pointer;transition:.3s}
+  .chat:hover{transform:translateY(-3px)}
+  .chat svg{width:26px;height:26px}
+
+  @media(max-width:980px){
+    .split,.trade,.visit .wrap,.values .wrap,.foot-grid{grid-template-columns:1fr}
+    .glimpse{grid-template-columns:1fr;gap:30px}
+    .glimpse .g2,.glimpse .g3{margin-top:0}
+    .glimpse figure img{height:440px}
+    .svc-grid,.rev-grid{grid-template-columns:1fr}
+    .values .wrap{grid-template-columns:1fr 1fr;gap:34px}
+    .trade-txt{padding:64px 40px}
+    nav ul,.nav-phone{display:none}
+    .burger{display:flex}
+    .split.rev{direction:ltr}
+    .split-img{order:-1}
+  }
+  @media(max-width:560px){
+    .wrap,.hero-inner{padding-left:22px;padding-right:22px}
+    .nav{padding:12px 22px}
+    .announce{font-size:.6rem;letter-spacing:.12em;padding:8px 14px;line-height:1.5}
+    .brand img{height:42px}
+    .nav-cta{gap:12px}
+    .nav-cta .btn.solid{padding:11px 14px;font-size:.58rem;letter-spacing:.1em}
+    .hero{min-height:80vh}
+    .hero h1{font-size:2.35rem;max-width:20ch;margin:16px 0 14px}
+    .hero p{font-size:1rem}
+    .hero-inner{padding-bottom:58px}
+    .hero-actions{gap:12px}
+    .hero-actions .btn{width:100%;text-align:center}
+    .heritage .wrap{gap:24px 12px}
+    .heritage div{flex:0 0 44%;min-width:0}
+    .heritage b{font-size:1.3rem}
+    section{padding:64px 0}
+    .sec-head{margin-bottom:44px}
+    .glimpse-head{margin-bottom:46px}
+    .split{gap:34px}
+    .split-img img{height:400px}
+    .values .wrap{grid-template-columns:1fr;gap:30px}
+    .svc-body{padding:26px 24px 30px}
+    .trade-txt{padding:48px 22px}
+    .trade-img{min-height:300px}
+    .rev-card{padding:32px 26px}
+    .visit .rows div{flex-direction:column;gap:3px}
+    .visit .rows .k{width:auto}
+    .visit-media iframe{height:200px}
+    .news form{flex-direction:column;border:none;gap:10px}
+    .news input{border:1px solid rgba(253,250,244,.5)}
+    .news button{padding:15px}
+    footer{padding:56px 0 30px}
+    .foot-grid{gap:32px}
+    .foot-bottom{flex-direction:column;gap:6px}
+    .chat{width:54px;height:54px;right:18px;bottom:18px}
+  }
+</style>
+</head>
+<body>
+
+<div class="announce">Complimentary local pickup &amp; delivery &nbsp;·&nbsp; <b>Book your design appointment today</b></div>
+
+<header>
+  <div class="nav">
+    <a class="brand" href="#" aria-label="Pineville Rug Gallery">
+      <img src="https://storage.googleapis.com/pineville-rug/Trans_PRG.png" alt="Pineville Rug Gallery — Est. 1986">
+    </a>
+    <nav>
+      <ul>
+        <li><a href="#collection">The Collection</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#trade">For Designers</a></li>
+        <li><a href="#story">Our Story</a></li>
+        <li><a href="#visit">Visit</a></li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <span class="nav-phone">(704) 889-2454</span>
+      <a href="#visit" class="btn solid">Book Appointment</a>
+      <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" style="padding:0">
+  <div class="hero-img"></div>
+  <div class="hero-inner">
+    <span class="eyebrow">Fine Oriental &amp; Persian Rugs · Charlotte, NC</span>
+    <h1>Handwoven treasures, made to last generations.</h1>
+    <p>A family-owned gallery curating the Carolinas' finest hand-knotted rugs since 1986 — sourced, cleaned, and restored with the care of four decades.</p>
+    <div class="hero-actions">
+      <a href="#visit" class="btn light">Book a Design Appointment</a>
+      <a href="#collection" class="btn light">Explore the Collection</a>
+    </div>
+    <div class="hero-rev"><span class="stars">★★★★★</span> 4.9 · 56 Google reviews</div>
+  </div>
+</section>
+
+<!-- HERITAGE STRIP -->
+<div class="heritage">
+  <div class="wrap">
+    <div><b>1986</b><span>Family-owned since</span></div>
+    <div><b>40+ Years</b><span>Of expertise</span></div>
+    <div><b>Hand-Knotted</b><span>Authentic &amp; rare</span></div>
+    <div><b>Free Pickup</b><span>&amp; delivery, local</span></div>
+  </div>
+</div>
+
+<!-- STORY / EDITORIAL SPLIT -->
+<section id="story">
+  <div class="wrap">
+    <div class="split">
+      <div class="split-txt">
+        <span class="eyebrow">Our Story</span>
+        <h2>Three generations of woven artistry, brought to Charlotte.</h2>
+        <p>Pineville Rug Gallery was founded in 1986 on a simple belief: that a great rug is not décor, but an heirloom. Owner Reza Elyasi is a third-generation rug dealer — his sister once ran a rug factory in Tehran — and his family brings a century of knowledge, importing breathtaking hand-knotted pieces from Isfahan, Tabriz, Kashan, and Heriz.</p>
+        <p>Every rug is chosen for quality, durability, and authenticity, then cared for by hand in our own gallery. It's craftsmanship you can feel underfoot — and hand down through generations, often lasting more than a hundred years.</p>
+        <a href="#story" class="btn">Meet the Gallery</a>
+        <p style="margin-top:22px;font-size:.7rem;text-transform:uppercase;letter-spacing:.2em;color:var(--stone)">As featured on <a href="https://spectrumlocalnews.com/nc/charlotte/news/2024/06/18/small-business--mecklenburg-county--funding-options--loans--pineville-rug-gallery" target="_blank" rel="noopener" style="color:var(--clay);border-bottom:1px solid var(--clay);padding-bottom:2px">Spectrum News 1</a></p>
+      </div>
+      <div class="split-img">
+        <img src="https://storage.googleapis.com/pineville-rug/DSC02577_1.jpg" alt="Reza Elyasi and his family at Pineville Rug Gallery" style="object-position:center top">
+        <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.02rem;color:var(--stone);margin-top:14px;text-align:center">Reza Elyasi &amp; family — celebrating 40 years in Charlotte.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COLLECTION — A GLIMPSE -->
+<section id="collection" class="collection">
+  <div class="wrap">
+    <div class="glimpse-head">
+      <span class="eyebrow">A Glimpse Inside</span>
+      <h2>A gallery meant to be walked, not scrolled.</h2>
+      <p>This is the smallest taste. Over 1,000 hand-knotted rugs — 500 on the gallery floor and 500 more in our warehouse — each with its own story, its own history, its own character. Come let one find you.</p>
+    </div>
+    <div class="glimpse">
+      <figure class="g1">
+        <div class="ph"><img src="https://pinevilleruggallery.com/wp-content/uploads/2023/08/10-x-13-Antique-Heriz-Wool-Area-Rug-1-700x854.jpg" alt="Antique Heriz rug"></div>
+        <figcaption>Antique Heriz · 10 × 13 · Northwest Persia</figcaption>
+      </figure>
+      <figure class="g2">
+        <div class="ph"><img src="https://pinevilleruggallery.com/wp-content/uploads/2023/08/10-x-13-New-Tabriz-Wool-Silk-Area-Rug-700x854.jpg" alt="Tabriz wool and silk rug"></div>
+        <figcaption>Tabriz · 10 × 13 · wool &amp; silk</figcaption>
+      </figure>
+      <figure class="g3">
+        <div class="ph"><img src="https://pinevilleruggallery.com/wp-content/uploads/2023/08/10-x-14-New-Oushak-Afghan-Wool-Area-Rug-2-700x854.jpg" alt="Oushak rug"></div>
+        <figcaption>Oushak · 10 × 14 · soft antique palette</figcaption>
+      </figure>
+    </div>
+    <div class="center"><a href="#visit" class="btn solid">Book a Design Appointment</a></div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Cleaning · Repair · Appraisal</span>
+      <h2>Care worthy of an heirloom.</h2>
+      <p>Whether you bought it from us or inherited it generations ago, our master craftsmen treat every rug as if it were their own — with complimentary local pickup &amp; delivery.</p>
+    </div>
+    <div class="svc-grid">
+      <div class="svc">
+        <div class="svc-img"><img src="https://pinevilleruggallery.com/wp-content/uploads/2023/08/10-x-12-Vintage-Heriz-Wool-Area-Rug-700x854.jpg" alt="Rug cleaning"></div>
+        <div class="svc-body">
+          <span class="num">01</span>
+          <h3>Rug Cleaning</h3>
+          <p>Hand-washed the way fine rugs demand — vacuumed, dust drawn from front and back, gently hand-washed, then dried in open air. Never harsh-machined, so delicate wool and silk keep their color and luster.</p>
+          <a href="#visit">Book Cleaning →</a>
+        </div>
+      </div>
+      <div class="svc">
+        <div class="svc-img"><img src="https://pinevilleruggallery.com/wp-content/uploads/2023/08/10-x-13-Antique-Heriz-Wool-Area-Rug-2-2-700x854.jpg" alt="Rug repair"></div>
+        <div class="svc-body">
+          <span class="num">02</span>
+          <h3>Repair &amp; Restoration</h3>
+          <p>Fraying edges, moth damage, tears, worn areas — even fringe caught and shredded by a household vacuum, the most common mishap. Every repair is hand-sewn by our in-house expert and quoted in person.</p>
+          <a href="#visit">Book Repair →</a>
+        </div>
+      </div>
+      <div class="svc">
+        <div class="svc-img"><img src="https://pinevilleruggallery.com/wp-content/uploads/2023/08/10-x-14-New-Oushak-Afghan-Wool-Area-Rug-2-700x854.jpg" alt="Rug appraisal"></div>
+        <div class="svc-body">
+          <span class="num">03</span>
+          <h3>Appraisal</h3>
+          <p>Uncover the true value and origin of your rug with four decades of expertise. A verbal appraisal is complimentary; a printed certificate — mailed and emailed as a PDF — is $250, with a discount for multiple pieces.</p>
+          <a href="#visit">Book Appraisal →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRADE COLOR BLOCK (ref B) -->
+<section id="trade" class="trade" style="padding:0">
+  <div class="trade-txt">
+    <span class="eyebrow">For Designers &amp; The Trade</span>
+    <h2>A trusted partner for Charlotte's finest interiors.</h2>
+    <p>We work hand-in-hand with over 100 interior designers — offering trade pricing, in-home previews, and access to rare pieces sourced directly from the weaving regions.</p>
+    <p style="color:rgba(245,239,228,.82)">Design a room from the floor up — bring us the space, and we'll bring the rugs to life.</p>
+    <a href="#visit" class="btn light">Join Our Trade Program</a>
+  </div>
+  <div class="trade-img"></div>
+</section>
+
+<!-- VALUES -->
+<section class="values">
+  <div class="wrap">
+    <div class="val"><span class="mk"></span><h3>Hand-Knotted</h3><p>Every rug is genuine, hand-woven with natural wool, silk, and vegetable dyes.</p></div>
+    <div class="val"><span class="mk"></span><h3>Generations of Knowledge</h3><p>Three generations and 40+ years sourcing the world's finest weaves.</p></div>
+    <div class="val"><span class="mk"></span><h3>White-Glove Service</h3><p>Complimentary pickup, delivery, and furniture relocation for local clients.</p></div>
+    <div class="val"><span class="mk"></span><h3>Buy With Confidence</h3><p>Authenticity and quality guaranteed — heirlooms made to last generations, often more than a hundred years.</p></div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">4.9 ★ · 56 Google Reviews</span>
+      <h2>Loved across the Carolinas.</h2>
+    </div>
+    <div class="rev-grid">
+      <div class="rev-card">
+        <span class="stars">★★★★★</span>
+        <p>"Great service provided by Anthony! The variety of runners I was looking for — and I got the rug of my dreams for my entryway. Wonderful small business!"</p>
+        <span class="who">— Erica Dabney</span>
+      </div>
+      <div class="rev-card">
+        <span class="stars">★★★★★</span>
+        <p>"I've been buying and trading rugs with Reza for 10 years. The service, quality and honesty are phenomenal. My rugs get so many compliments. I can't recommend enough!"</p>
+        <span class="who">— Dana Ditesheim</span>
+      </div>
+      <div class="rev-card">
+        <span class="stars">★★★★★</span>
+        <p>"Reza was very informative and really helped us in our decision on an Oriental carpet. Attentive, honest, and generous with his knowledge on care. A wonderful experience."</p>
+        <span class="who">— Joe Moody</span>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:48px"><a href="https://www.google.com/maps?cid=2070846809356890251" target="_blank" rel="noopener" class="btn">Read All 56 Reviews on Google</a></div>
+  </div>
+</section>
+
+<!-- VISIT -->
+<section id="visit" class="visit">
+  <div class="wrap">
+    <div class="visit-txt">
+      <span class="eyebrow">Plan Your Visit</span>
+      <h2>See it in your space — book a design appointment.</h2>
+      <p style="color:rgba(245,239,228,.82)">Tell us your room and your style. We'll have the right rugs waiting, or bring them to you. No pressure — just the pleasure of finding the one.</p>
+      <div class="rows">
+        <div><span class="k">Showroom</span><span>310 Main Street · Historic Downtown Pineville, NC 28134</span></div>
+        <div><span class="k">Hours</span><span>Mon – Sat · 10am – 5pm &nbsp;·&nbsp; Sun by appointment after 1:30pm</span></div>
+        <div><span class="k">Call</span><span>(704) 889-2454</span></div>
+        <div><span class="k">Email</span><span>showroom@pinevilleruggallery.com</span></div>
+      </div>
+      <div class="hero-actions">
+        <a href="#visit" class="btn light">Book a Design Appointment</a>
+        <a href="tel:7048892454" class="btn light">Call the Gallery</a>
+      </div>
+    </div>
+    <div class="visit-media">
+      <div class="ph-placeholder"><b>Storefront photo</b><span>Coming from the gallery</span></div>
+      <iframe title="Map to Pineville Rug Gallery" src="https://www.google.com/maps?q=310+Main+St+Pineville+NC+28134&z=15&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER (ref A band) -->
+<section class="news" style="padding:0">
+  <div class="news-img"></div>
+  <div class="news-inner">
+    <span class="eyebrow" style="color:var(--clay-soft)">Become a VIP</span>
+    <h2>First look at new arrivals &amp; private sales.</h2>
+    <p>Join our list for 10% off your first rug, early access to events, and stories from the world of fine weaving.</p>
+    <form onsubmit="return false">
+      <input type="email" placeholder="Your email address" aria-label="Email">
+      <button type="submit">Subscribe</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="name">Pineville Rug Gallery</div>
+        <p>Charlotte's family-owned home for fine hand-knotted Oriental &amp; Persian rugs since 1986. Sales · Cleaning · Repair · Appraisal</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#collection">The Collection</a></li>
+          <li><a href="#collection">Browse by Size</a></li>
+          <li><a href="#collection">Browse by Style</a></li>
+          <li><a href="#collection">New Arrivals</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services">Rug Cleaning</a></li>
+          <li><a href="#services">Repair &amp; Restoration</a></li>
+          <li><a href="#services">Appraisal</a></li>
+          <li><a href="#trade">For Designers</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Visit</h4>
+        <ul>
+          <li>310 Main Street</li>
+          <li>Pineville, NC 28134</li>
+          <li>(704) 889-2454</li>
+          <li>Mon–Sat 10–5 · Sun by appt</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Pineville Rug Gallery. All rights reserved.</span>
+      <span>Family-owned since 1986 · Serving the Charlotte area</span>
+    </div>
+  </div>
+</footer>
+
+<div class="chat" title="Chat with us">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+</div>
+
+<script>
+  document.querySelector('.burger').addEventListener('click',function(){
+    var n=document.querySelector('nav ul');
+    n.style.display = n.style.display==='flex' ? 'none' : 'flex';
+    n.style.position='absolute'; n.style.flexDirection='column'; n.style.background='var(--paper)';
+    n.style.top='70px'; n.style.right='20px'; n.style.padding='24px 30px'; n.style.gap='18px';
+    n.style.border='1px solid var(--line)'; n.style.boxShadow='0 20px 40px rgba(12,34,29,.15)';
+  });
+</script>
+</body>
+</html>

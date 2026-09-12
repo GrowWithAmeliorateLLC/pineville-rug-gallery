@@ -152,12 +152,20 @@
   .book form{display:grid;grid-template-columns:1fr 1fr;gap:18px 20px}
   .book .full{grid-column:1 / -1}
   .book label.fld{display:block;font-size:.66rem;text-transform:uppercase;letter-spacing:.18em;color:var(--stone);margin-bottom:7px}
+  .book .svc-select .fld{display:block;font-size:.66rem;text-transform:uppercase;letter-spacing:.18em;color:var(--stone);margin-bottom:10px}
+  .book .svc-select .fld em{font-style:normal;text-transform:none;letter-spacing:.02em;color:var(--stone);font-weight:300;font-size:.8rem;margin-left:6px}
+  .book .svc-opts{display:flex;flex-wrap:wrap;gap:10px}
+  .book .svc-opts label{display:flex;align-items:center;gap:9px;border:1px solid var(--line);background:var(--paper);padding:11px 16px;font-size:.92rem;color:var(--ink);cursor:pointer;transition:.2s;user-select:none}
+  .book .svc-opts label:hover{border-color:var(--clay)}
+  .book .svc-opts input{width:auto;margin:0;flex:none}
+  .book .svc-opts label:has(input:checked){border-color:var(--pine);background:var(--sand);color:var(--pine)}
   .book input,.book select,.book textarea{width:100%;font-family:'Jost';font-weight:300;font-size:.98rem;padding:13px 15px;border:1px solid var(--line);background:var(--paper);color:var(--ink);outline:none;transition:.25s}
   .book input:focus,.book select:focus,.book textarea:focus{border-color:var(--clay)}
   .book textarea{min-height:112px;resize:vertical}
   .book .consent{grid-column:1 / -1;display:flex;gap:11px;align-items:flex-start;font-size:.84rem;color:var(--stone);line-height:1.5;cursor:pointer}
   .book .consent input{width:auto;margin-top:3px;flex:none}
   .book .fineprint{grid-column:1 / -1;font-size:.72rem;color:var(--stone);line-height:1.55}
+  .book .fineprint a{color:var(--clay);text-decoration:underline}
   .book .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
   .book .submit-row{grid-column:1 / -1;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
   .book .msg{font-size:.9rem;font-weight:400}
@@ -187,6 +195,8 @@
   footer li{margin-bottom:11px;font-size:.9rem}
   footer li a:hover{color:#fff}
   .foot-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;padding-top:26px;font-size:.76rem;color:rgba(245,239,228,.5)}
+  .foot-bottom a{color:rgba(245,239,228,.7)}
+  .foot-bottom a:hover{color:#fff}
 
   /* chat bubble */
   .chat{position:fixed;right:26px;bottom:26px;z-index:60;background:var(--clay);color:#fff;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(12,34,29,.35);cursor:pointer;transition:.3s}
@@ -433,13 +443,13 @@
   </div>
 </section>
 
-<!-- BOOK A DESIGN APPOINTMENT -->
+<!-- BOOK AN APPOINTMENT -->
 <section id="book" class="book">
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">Book a Design Appointment</span>
+      <span class="eyebrow">Book an Appointment</span>
       <h2>Let's find the one.</h2>
-      <p>Tell us a little about your space and how to reach you. We'll follow up personally to set a time — in the gallery or at your home. No pressure, ever.</p>
+      <p>Whether you're after a design consultation, a cleaning, a repair, or an appraisal — tell us a little about what you need and how to reach you. We'll follow up personally to set a time, in the gallery or at your home. No pressure, ever.</p>
     </div>
     <form id="book-form" novalidate>
       <div><label class="fld" for="bf-name">Name</label><input id="bf-name" name="name" autocomplete="name" required></div>
@@ -455,7 +465,16 @@
           <option>Returning client</option>
           <option>Other</option>
         </select></div>
-      <div class="full"><label class="fld" for="bf-project">Tell us about your space or project</label><textarea id="bf-project" name="project" placeholder="Room, approximate size, colors, the feeling you're after — or the service you need (cleaning, repair, appraisal)."></textarea></div>
+      <div class="full svc-select">
+        <span class="fld">What can we help with? <em>Select all that apply</em></span>
+        <div class="svc-opts">
+          <label><input type="checkbox" name="services" value="Design Appointment"><span>Design appointment</span></label>
+          <label><input type="checkbox" name="services" value="Rug Cleaning"><span>Rug cleaning</span></label>
+          <label><input type="checkbox" name="services" value="Repair &amp; Restoration"><span>Repair &amp; restoration</span></label>
+          <label><input type="checkbox" name="services" value="Appraisal"><span>Appraisal</span></label>
+        </div>
+      </div>
+      <div class="full"><label class="fld" for="bf-project">Tell us about your space or project</label><textarea id="bf-project" name="project" placeholder="Room, approximate size, colors, the feeling you're after — or the details of the rug you'd like cleaned, repaired, or appraised."></textarea></div>
       <div class="full"><label class="fld" for="bf-pref">Preferred day / time to connect (optional)</label><input id="bf-pref" name="preferred" placeholder="e.g. weekday mornings, or this Saturday"></div>
       <label class="consent"><input type="checkbox" name="sms_transactional" value="1"><span>Text me about my appointment at the number above. Msg &amp; data rates may apply; message frequency varies. Reply STOP to opt out, HELP for help.</span></label>
       <label class="consent"><input type="checkbox" name="sms_marketing" value="1"><span>I'd also like occasional texts about new arrivals and private sales. (Optional — opt out anytime.)</span></label>
@@ -464,7 +483,7 @@
         <button type="submit" class="btn solid">Request My Appointment</button>
         <span class="msg" id="bf-msg" role="status" aria-live="polite"></span>
       </div>
-      <p class="fineprint">By submitting, you agree to be contacted about your inquiry. Consent to texts is not a condition of purchase. We never sell or share your information.</p>
+      <p class="fineprint">By submitting, you agree to be contacted about your inquiry and to our <a href="/privacy.html">Privacy Policy</a> and <a href="/terms.html">Terms</a>. Consent to texts is not a condition of purchase. We never sell or share your information.</p>
     </form>
   </div>
 </section>
@@ -546,6 +565,7 @@
     </div>
     <div class="foot-bottom">
       <span>© 2026 Pineville Rug Gallery. All rights reserved.</span>
+      <span><a href="/privacy.html">Privacy Policy</a> &nbsp;·&nbsp; <a href="/terms.html">Terms of Service</a></span>
       <span>Family-owned since 1986 · Serving the Charlotte area</span>
     </div>
   </div>
@@ -564,7 +584,7 @@
     n.style.border='1px solid var(--line)'; n.style.boxShadow='0 20px 40px rgba(12,34,29,.15)';
   });
 
-  // Design-appointment form -> /api/pineville-lead (server-side GHL upsert)
+  // Appointment form -> /api/pineville-lead (server-side GHL upsert)
   (function(){
     var f = document.getElementById('book-form'); if(!f) return;
     f.addEventListener('submit', async function(e){
@@ -574,6 +594,7 @@
       var data = Object.fromEntries(new FormData(f).entries());
       data.sms_transactional = f.sms_transactional.checked;
       data.sms_marketing = f.sms_marketing.checked;
+      data.services = Array.prototype.map.call(f.querySelectorAll('input[name="services"]:checked'), function(c){ return c.value; });
       data.page = location.href;
       if(!data.name || !data.phone || !data.email){
         msg.className='msg err'; msg.textContent='Please add your name, phone, and email.'; btn.disabled=false; return;

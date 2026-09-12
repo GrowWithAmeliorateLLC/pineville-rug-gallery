@@ -1,4 +1,4 @@
-// Design-appointment lead handler.
+// Appointment lead handler.
 // Receives the site's custom form (no native GHL form) and upserts the contact
 // into GoHighLevel via the LeadConnector v2 API, records A2P SMS consent as tags
 // + a timestamped note, then GHL workflows fire on "contact created / tag added".
@@ -38,7 +38,14 @@ export default async (req) => {
   const smsT = body.sms_transactional === true || body.sms_transactional === "1" || body.sms_transactional === "on";
   const smsM = body.sms_marketing === true || body.sms_marketing === "1" || body.sms_marketing === "on";
 
-  const tags = ["Website Lead", "Design Appointment Request"];
+  // Services the visitor selected (multi-select checkboxes).
+  const services = Array.isArray(body.services)
+    ? body.services.filter(Boolean)
+    : (body.services ? [body.services] : []);
+
+  const tags = ["Website Lead"];
+  services.forEach((s) => tags.push(`Interest: ${s}`));
+  if (!services.length) tags.push("Interest: General Inquiry");
   if (smsT) tags.push("SMS Consent - Transactional");
   if (smsM) tags.push("SMS Consent - Marketing");
 
@@ -47,7 +54,7 @@ export default async (req) => {
     firstName,
     lastName,
     name,
-    source: "Website - Design Appointment",
+    source: "Website - Appointment Request",
     tags,
   };
   if (email) contact.email = email;
@@ -69,8 +76,9 @@ export default async (req) => {
 
   const contactId = upData?.contact?.id || upData?.id;
 
-  // 2) Attach a note: the free-text detail + an A2P consent record (evidence for 10DLC).
+  // 2) Attach a note: what they want + the free-text detail + an A2P consent record.
   const detail = [
+    services.length ? `Interested in: ${services.join(", ")}` : "",
     body.project ? `Space / project: ${body.project}` : "",
     body.preferred ? `Preferred time: ${body.preferred}` : "",
     body.referral ? `Heard about us: ${body.referral}` : "",
@@ -87,7 +95,7 @@ export default async (req) => {
       await fetch(`${GHL_BASE}/contacts/${contactId}/notes`, {
         method: "POST",
         headers: headers(),
-        body: JSON.stringify({ body: `DESIGN APPOINTMENT REQUEST\n${detail || "(no extra detail)"}\n\n${consent}` }),
+        body: JSON.stringify({ body: `APPOINTMENT REQUEST\n${detail || "(no extra detail)"}\n\n${consent}` }),
       });
     } catch (_) { /* note is best-effort */ }
   }

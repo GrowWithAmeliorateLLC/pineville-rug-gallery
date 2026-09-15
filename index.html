@@ -140,10 +140,8 @@
   .visit .rows div{display:flex;gap:16px;padding:14px 0;border-top:1px solid rgba(245,239,228,.16);font-size:.95rem}
   .visit .rows .k{width:120px;text-transform:uppercase;letter-spacing:.16em;font-size:.7rem;color:rgba(245,239,228,.6);padding-top:3px}
   .visit-media{display:grid;gap:14px}
-  .visit-media .ph-placeholder{height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:rgba(245,239,228,.06);border:1px dashed rgba(245,239,228,.32);text-align:center}
-  .visit-media .ph-placeholder b{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:1.3rem;color:var(--cream)}
-  .visit-media .ph-placeholder span{font-size:.6rem;text-transform:uppercase;letter-spacing:.2em;color:rgba(245,239,228,.55)}
-  .visit-media iframe{width:100%;height:260px;border:0;display:block;filter:grayscale(.12)}
+  .visit-media .storefront{width:100%;height:400px;object-fit:cover;object-position:50% 40%;display:block}
+  .visit-media iframe{width:100%;height:220px;border:0;display:block;filter:grayscale(.12)}
 
   /* book a design appointment */
   .book{background:var(--cream)}
@@ -245,6 +243,7 @@
     .rev-card{padding:32px 26px}
     .visit .rows div{flex-direction:column;gap:3px}
     .visit .rows .k{width:auto}
+    .visit-media .storefront{height:300px}
     .visit-media iframe{height:200px}
     .book form{grid-template-columns:1fr}
     .news form{flex-direction:column;border:none;gap:10px}
@@ -508,7 +507,7 @@
       </div>
     </div>
     <div class="visit-media">
-      <div class="ph-placeholder"><b>Storefront photo</b><span>Coming from the gallery</span></div>
+      <img class="storefront" src="https://storage.googleapis.com/pineville-rug/Pineville%20Rug%20Storefront.jpeg" alt="Pineville Rug Gallery storefront at 310 Main Street, Pineville">
       <iframe title="Map to Pineville Rug Gallery" src="https://www.google.com/maps?q=310+Main+St+Pineville+NC+28134&z=15&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
   </div>

@@ -51,13 +51,13 @@
   /* hero */
   .hero{position:relative;min-height:88vh;display:flex;align-items:flex-end;color:var(--paper);overflow:hidden}
   .hero-img{position:absolute;inset:0;background:url('https://pinevilleruggallery.com/wp-content/uploads/2023/12/IMG_5390-copy_11zon.webp') center/cover no-repeat;transform:scale(1.03)}
-  .hero-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,34,29,.15) 0%,rgba(12,34,29,.05) 40%,rgba(12,34,29,.72) 100%)}
+  .hero-img::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(12,34,29,.62) 0%,rgba(12,34,29,.30) 45%,rgba(12,34,29,0) 82%),linear-gradient(180deg,rgba(12,34,29,.22) 0%,rgba(12,34,29,.10) 38%,rgba(12,34,29,.88) 100%)}
   .hero-inner{position:relative;z-index:2;padding:0 40px 84px;max-width:1400px;margin:0 auto;width:100%}
-  .hero .eyebrow{color:var(--clay-soft)}
-  .hero h1{font-size:clamp(2.8rem,6vw,5.4rem);margin:20px 0 18px;max-width:16ch;font-weight:400}
-  .hero p{font-weight:300;font-size:1.12rem;max-width:44ch;color:rgba(253,250,244,.9)}
+  .hero .eyebrow{color:var(--clay-soft);text-shadow:0 1px 10px rgba(12,34,29,.7)}
+  .hero h1{font-size:clamp(2.8rem,6vw,5.4rem);margin:20px 0 18px;max-width:16ch;font-weight:400;text-shadow:0 2px 22px rgba(12,34,29,.6),0 1px 3px rgba(12,34,29,.5)}
+  .hero p{font-weight:300;font-size:1.12rem;max-width:44ch;color:#fdfaf4;text-shadow:0 1px 14px rgba(12,34,29,.8),0 1px 2px rgba(12,34,29,.6)}
   .hero-actions{display:flex;gap:16px;margin-top:34px;flex-wrap:wrap;align-items:center}
-  .hero-rev{display:flex;align-items:center;gap:10px;margin-top:30px;font-size:.82rem;letter-spacing:.06em;color:rgba(253,250,244,.85)}
+  .hero-rev{display:flex;align-items:center;gap:10px;margin-top:30px;font-size:.82rem;letter-spacing:.06em;color:#fdfaf4;text-shadow:0 1px 10px rgba(12,34,29,.75)}
   .stars{color:#e8b45e;letter-spacing:2px}
 
   /* marquee strip */
@@ -224,6 +224,7 @@
     .nav-cta{gap:12px}
     .nav-cta .btn.solid{padding:11px 14px;font-size:.58rem;letter-spacing:.1em}
     .hero{min-height:80vh}
+    .hero-img::after{background:linear-gradient(180deg,rgba(12,34,29,.34) 0%,rgba(12,34,29,.20) 34%,rgba(12,34,29,.90) 100%)}
     .hero h1{font-size:2.35rem;max-width:20ch;margin:16px 0 14px}
     .hero p{font-size:1rem}
     .hero-inner{padding-bottom:58px}

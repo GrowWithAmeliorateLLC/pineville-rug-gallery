@@ -43,9 +43,23 @@ export default async (req) => {
     ? body.services.filter(Boolean)
     : (body.services ? [body.services] : []);
 
+  // Pickup vs. drop-off (for cleaning / repair). Does not change the workflow,
+  // but the contact is tagged so the team can sort at a glance.
+  const fulfillment = (body.fulfillment || "").trim();
+  const isPickup = /pick/i.test(fulfillment);
+  const isDropoff = /drop/i.test(fulfillment);
+
+  // Address (needed for pickup / delivery).
+  const address1 = (body.address || "").trim();
+  const city = (body.city || "").trim();
+  const state = (body.state || "").trim();
+  const postalCode = (body.zip || body.postalCode || "").trim();
+
   const tags = ["Website Lead"];
   services.forEach((s) => tags.push(`Interest: ${s}`));
   if (!services.length) tags.push("Interest: General Inquiry");
+  if (isPickup) tags.push("Fulfillment: Pickup");
+  else if (isDropoff) tags.push("Fulfillment: Drop-off");
   if (smsT) tags.push("SMS Consent - Transactional");
   if (smsM) tags.push("SMS Consent - Marketing");
 
@@ -59,6 +73,10 @@ export default async (req) => {
   };
   if (email) contact.email = email;
   if (phone) contact.phone = phone;
+  if (address1) contact.address1 = address1;
+  if (city) contact.city = city;
+  if (state) contact.state = state;
+  if (postalCode) contact.postalCode = postalCode;
 
   // 1) Upsert the contact.
   let upData = {};
@@ -77,8 +95,12 @@ export default async (req) => {
   const contactId = upData?.contact?.id || upData?.id;
 
   // 2) Attach a note: what they want + the free-text detail + an A2P consent record.
+  const addressLine = [address1, [city, state].filter(Boolean).join(", "), postalCode]
+    .filter(Boolean).join(" · ");
   const detail = [
     services.length ? `Interested in: ${services.join(", ")}` : "",
+    fulfillment ? `Pickup or drop-off: ${isPickup ? "Pickup & delivery" : isDropoff ? "Drop-off at gallery" : fulfillment}` : "",
+    addressLine ? `Address: ${addressLine}` : "",
     body.project ? `Space / project: ${body.project}` : "",
     body.preferred ? `Preferred time: ${body.preferred}` : "",
     body.referral ? `Heard about us: ${body.referral}` : "",

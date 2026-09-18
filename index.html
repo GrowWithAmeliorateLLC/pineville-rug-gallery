@@ -157,6 +157,7 @@
   .book .svc-opts label:hover{border-color:var(--clay)}
   .book .svc-opts input{width:auto;margin:0;flex:none}
   .book .svc-opts label:has(input:checked){border-color:var(--pine);background:var(--sand);color:var(--pine)}
+  .book .addr-row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px 14px}
   .book input,.book select,.book textarea{width:100%;font-family:'Jost';font-weight:300;font-size:.98rem;padding:13px 15px;border:1px solid var(--line);background:var(--paper);color:var(--ink);outline:none;transition:.25s}
   .book input:focus,.book select:focus,.book textarea:focus{border-color:var(--clay)}
   .book textarea{min-height:112px;resize:vertical}
@@ -246,6 +247,7 @@
     .visit-media .storefront{height:300px}
     .visit-media iframe{height:200px}
     .book form{grid-template-columns:1fr}
+    .book .addr-row{grid-template-columns:1fr}
     .news form{flex-direction:column;border:none;gap:10px}
     .news input{border:1px solid rgba(253,250,244,.5)}
     .news button{padding:15px}
@@ -474,6 +476,21 @@
           <label><input type="checkbox" name="services" value="Appraisal"><span>Appraisal</span></label>
         </div>
       </div>
+      <div class="full svc-select">
+        <span class="fld">Pickup or drop-off? <em>For cleaning &amp; repair</em></span>
+        <div class="svc-opts">
+          <label><input type="radio" name="fulfillment" value="Pickup"><span>Complimentary pickup &amp; delivery</span></label>
+          <label><input type="radio" name="fulfillment" value="Drop-off"><span>I'll drop it off at the gallery</span></label>
+        </div>
+      </div>
+      <div class="full addr-block" id="addr-block" hidden>
+        <div style="margin-bottom:14px"><label class="fld" for="bf-addr">Pickup address</label><input id="bf-addr" name="address" autocomplete="address-line1" placeholder="Street address"></div>
+        <div class="addr-row">
+          <div><label class="fld" for="bf-city">City</label><input id="bf-city" name="city" autocomplete="address-level2"></div>
+          <div><label class="fld" for="bf-state">State</label><input id="bf-state" name="state" autocomplete="address-level1"></div>
+          <div><label class="fld" for="bf-zip">ZIP</label><input id="bf-zip" name="zip" autocomplete="postal-code" inputmode="numeric"></div>
+        </div>
+      </div>
       <div class="full"><label class="fld" for="bf-project">Tell us about your space or project</label><textarea id="bf-project" name="project" placeholder="Room, approximate size, colors, the feeling you're after — or the details of the rug you'd like cleaned, repaired, or appraised."></textarea></div>
       <div class="full"><label class="fld" for="bf-pref">Preferred day / time to connect (optional)</label><input id="bf-pref" name="preferred" placeholder="e.g. weekday mornings, or this Saturday"></div>
       <label class="consent"><input type="checkbox" name="sms_transactional" value="1"><span>Text me about my appointment at the number above. Msg &amp; data rates may apply; message frequency varies. Reply STOP to opt out, HELP for help.</span></label>
@@ -587,6 +604,16 @@
   // Appointment form -> /api/pineville-lead (server-side GHL upsert)
   (function(){
     var f = document.getElementById('book-form'); if(!f) return;
+
+    // Reveal the pickup address only when "Pickup" is chosen.
+    var addr = document.getElementById('addr-block');
+    Array.prototype.forEach.call(f.querySelectorAll('input[name="fulfillment"]'), function(r){
+      r.addEventListener('change', function(){
+        var pick = f.querySelector('input[name="fulfillment"]:checked');
+        if(addr) addr.hidden = !(pick && pick.value === 'Pickup');
+      });
+    });
+
     f.addEventListener('submit', async function(e){
       e.preventDefault();
       var msg = document.getElementById('bf-msg'); msg.className='msg'; msg.textContent='Sending…';
@@ -604,6 +631,7 @@
         var j = await r.json().catch(function(){return {};});
         if(!r.ok || j.error) throw new Error();
         f.reset();
+        if(addr) addr.hidden = true;
         msg.className='msg ok';
         msg.textContent='Thank you — we’ll be in touch shortly to set your appointment.';
       }catch(_){

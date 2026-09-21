@@ -53,7 +53,7 @@
   .hero-img{position:absolute;inset:0;background:url('https://pinevilleruggallery.com/wp-content/uploads/2023/12/IMG_5390-copy_11zon.webp') center/cover no-repeat;transform:scale(1.03)}
   .hero-img::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(12,34,29,.74) 0%,rgba(12,34,29,.46) 44%,rgba(12,34,29,.08) 82%),linear-gradient(180deg,rgba(12,34,29,.30) 0%,rgba(12,34,29,.12) 38%,rgba(12,34,29,.90) 100%)}
   .hero-inner{position:relative;z-index:2;padding:0 40px 84px;max-width:1400px;margin:0 auto;width:100%}
-  .hero .eyebrow{color:#f1d9b6;font-size:.82rem;letter-spacing:.3em;text-shadow:0 2px 16px rgba(12,34,29,.95),0 1px 3px rgba(12,34,29,.9)}
+  .hero .eyebrow{display:inline-block;color:#f7e7cb;background:rgba(12,34,29,.55);padding:8px 15px;border-radius:2px;font-size:.76rem;letter-spacing:.24em;text-shadow:0 1px 3px rgba(12,34,29,.9)}
   .hero h1{font-size:clamp(2.8rem,6vw,5.4rem);margin:20px 0 18px;max-width:16ch;font-weight:400;text-shadow:0 2px 24px rgba(12,34,29,.7),0 1px 3px rgba(12,34,29,.6)}
   .hero p{font-weight:300;font-size:1.12rem;max-width:44ch;color:#fdfaf4;text-shadow:0 1px 14px rgba(12,34,29,.85),0 1px 2px rgba(12,34,29,.7)}
   .hero-actions{display:flex;gap:16px;margin-top:34px;flex-wrap:wrap;align-items:center}
@@ -141,9 +141,12 @@
   .visit .rows .k{width:120px;text-transform:uppercase;letter-spacing:.16em;font-size:.7rem;color:rgba(245,239,228,.6);padding-top:3px}
   .visit-media{display:grid;gap:14px}
   .visit-media .storefront{width:100%;height:400px;object-fit:cover;object-position:50% 66%;display:block}
+  .visit-media .storefront-ph{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:400px;background:var(--pine-soft);color:rgba(245,239,228,.9);padding:26px;gap:8px}
+  .visit-media .storefront-ph b{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:1.3rem;color:#fff}
+  .visit-media .storefront-ph em{font-style:italic;color:var(--clay-soft);font-size:.9rem}
   .visit-media iframe{width:100%;height:220px;border:0;display:block;filter:grayscale(.12)}
 
-  /* book a design appointment */
+  /* book a design appointment / trade application */
   .book{background:var(--cream)}
   .book .wrap{max-width:760px}
   .book .sec-head{margin-bottom:38px}
@@ -197,11 +200,6 @@
   .foot-bottom a{color:rgba(245,239,228,.7)}
   .foot-bottom a:hover{color:#fff}
 
-  /* chat bubble */
-  .chat{position:fixed;right:26px;bottom:26px;z-index:60;background:var(--clay);color:#fff;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(12,34,29,.35);cursor:pointer;transition:.3s}
-  .chat:hover{transform:translateY(-3px)}
-  .chat svg{width:26px;height:26px}
-
   @media(max-width:980px){
     .split,.trade,.visit .wrap,.values .wrap,.foot-grid{grid-template-columns:1fr}
     .glimpse{grid-template-columns:1fr;gap:30px}
@@ -244,7 +242,7 @@
     .rev-card{padding:32px 26px}
     .visit .rows div{flex-direction:column;gap:3px}
     .visit .rows .k{width:auto}
-    .visit-media .storefront{height:300px}
+    .visit-media .storefront,.visit-media .storefront-ph{height:300px}
     .visit-media iframe{height:200px}
     .book form{grid-template-columns:1fr}
     .book .addr-row{grid-template-columns:1fr}
@@ -254,7 +252,6 @@
     footer{padding:56px 0 30px}
     .foot-grid{gap:32px}
     .foot-bottom{flex-direction:column;gap:6px}
-    .chat{width:54px;height:54px;right:18px;bottom:18px}
   }
 </style>
 </head>
@@ -322,7 +319,7 @@
         <p style="margin-top:22px;font-size:.7rem;text-transform:uppercase;letter-spacing:.2em;color:var(--stone)">As featured on <a href="https://spectrumlocalnews.com/nc/charlotte/news/2024/06/18/small-business--mecklenburg-county--funding-options--loans--pineville-rug-gallery" target="_blank" rel="noopener" style="color:var(--clay);border-bottom:1px solid var(--clay);padding-bottom:2px">Spectrum News 1</a></p>
       </div>
       <div class="split-img">
-        <img src="https://storage.googleapis.com/pineville-rug/DSC02577_1.jpg" alt="Reza Elyasi and his family at Pineville Rug Gallery" style="object-position:center top">
+        <img src="/.netlify/images?url=https%3A%2F%2Fstorage.googleapis.com%2Fpineville-rug%2FDSC02577_1.jpg&w=1400&q=76" alt="Reza Elyasi and his family at Pineville Rug Gallery" style="object-position:center top">
         <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.02rem;color:var(--stone);margin-top:14px;text-align:center">Reza Elyasi &amp; family — celebrating 40 years in Charlotte.</p>
       </div>
     </div>
@@ -402,9 +399,33 @@
     <h2>A trusted partner for Charlotte's finest interiors.</h2>
     <p>We work hand-in-hand with over 100 interior designers — offering trade pricing, in-home previews, and access to rare pieces sourced directly from the weaving regions.</p>
     <p style="color:rgba(245,239,228,.82)">Design a room from the floor up — bring us the space, and we'll bring the rugs to life.</p>
-    <a href="#book" class="btn light">Join Our Trade Program</a>
+    <a href="#trade-apply" class="btn light">Join Our Trade Program</a>
   </div>
   <div class="trade-img"></div>
+</section>
+
+<!-- TRADE PROGRAM APPLICATION -->
+<section id="trade-apply" class="book" style="background:var(--paper)">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Trade Program Application</span>
+      <h2>Join our Trade Program.</h2>
+      <p>Complete the form below and we'll contact you for your approval. Members enjoy trade pricing, in-home previews, and first access to rare pieces sourced directly from the weaving regions.</p>
+    </div>
+    <form id="trade-form" novalidate>
+      <div><label class="fld" for="tf-name">Name</label><input id="tf-name" name="name" autocomplete="name" required></div>
+      <div><label class="fld" for="tf-company">Company</label><input id="tf-company" name="company_name" autocomplete="organization"></div>
+      <div><label class="fld" for="tf-tel">Tel No</label><input id="tf-tel" name="phone" type="tel" autocomplete="tel" required></div>
+      <div><label class="fld" for="tf-email">Email</label><input id="tf-email" name="email" type="email" autocomplete="email" required></div>
+      <div class="full"><label class="fld" for="tf-address">Address</label><input id="tf-address" name="address" autocomplete="street-address" placeholder="Street, city, state, ZIP"></div>
+      <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="submit-row">
+        <button type="submit" class="btn solid">Submit Application</button>
+        <span class="msg" id="tf-msg" role="status" aria-live="polite"></span>
+      </div>
+      <p class="fineprint">We'll review your application and reach out to confirm your trade account. By submitting, you agree to our <a href="/privacy.html">Privacy Policy</a> and <a href="/terms.html">Terms</a>.</p>
+    </form>
+  </div>
 </section>
 
 <!-- VALUES -->
@@ -525,7 +546,10 @@
       </div>
     </div>
     <div class="visit-media">
-      <img class="storefront" src="https://storage.googleapis.com/pineville-rug/Pineville%20Rug%20Storefront.jpeg" alt="Pineville Rug Gallery storefront at 310 Main Street, Pineville">
+      <div class="storefront-ph">
+        <b>Storefront photo coming soon</b>
+        <em>New exterior shot pending from Liane (LR Morgan Photography)</em>
+      </div>
       <iframe title="Map to Pineville Rug Gallery" src="https://www.google.com/maps?q=310+Main+St+Pineville+NC+28134&z=15&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
   </div>
@@ -589,10 +613,6 @@
   </div>
 </footer>
 
-<div class="chat" title="Chat with us">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-</div>
-
 <script>
   document.querySelector('.burger').addEventListener('click',function(){
     var n=document.querySelector('nav ul');
@@ -602,27 +622,18 @@
     n.style.border='1px solid var(--line)'; n.style.boxShadow='0 20px 40px rgba(12,34,29,.15)';
   });
 
-  // Appointment form -> /api/pineville-lead (server-side GHL upsert)
-  (function(){
-    var f = document.getElementById('book-form'); if(!f) return;
-
-    // Reveal the pickup address only when "Pickup" is chosen.
-    var addr = document.getElementById('addr-block');
-    Array.prototype.forEach.call(f.querySelectorAll('input[name="fulfillment"]'), function(r){
-      r.addEventListener('change', function(){
-        var pick = f.querySelector('input[name="fulfillment"]:checked');
-        if(addr) addr.hidden = !(pick && pick.value === 'Pickup');
-      });
-    });
-
+  // Shared submit helper for the site's custom forms -> /api/pineville-lead
+  function prgSubmit(formId, msgId, okText){
+    var f = document.getElementById(formId); if(!f) return;
     f.addEventListener('submit', async function(e){
       e.preventDefault();
-      var msg = document.getElementById('bf-msg'); msg.className='msg'; msg.textContent='Sending…';
+      var msg = document.getElementById(msgId); msg.className='msg'; msg.textContent='Sending…';
       var btn = f.querySelector('button[type=submit]'); btn.disabled = true;
       var data = Object.fromEntries(new FormData(f).entries());
-      data.sms_transactional = f.sms_transactional.checked;
-      data.sms_marketing = f.sms_marketing.checked;
-      data.services = Array.prototype.map.call(f.querySelectorAll('input[name="services"]:checked'), function(c){ return c.value; });
+      if(f.sms_transactional) data.sms_transactional = f.sms_transactional.checked;
+      if(f.sms_marketing) data.sms_marketing = f.sms_marketing.checked;
+      var svc = f.querySelectorAll('input[name="services"]:checked');
+      if(svc.length) data.services = Array.prototype.map.call(svc, function(c){ return c.value; });
       data.page = location.href;
       if(!data.name || !data.phone || !data.email){
         msg.className='msg err'; msg.textContent='Please add your name, phone, and email.'; btn.disabled=false; return;
@@ -632,12 +643,65 @@
         var j = await r.json().catch(function(){return {};});
         if(!r.ok || j.error) throw new Error();
         f.reset();
-        if(addr) addr.hidden = true;
-        msg.className='msg ok';
-        msg.textContent='Thank you — we’ll be in touch shortly to set your appointment.';
+        var addr = document.getElementById('addr-block'); if(addr) addr.hidden = true;
+        msg.className='msg ok'; msg.textContent = okText;
       }catch(_){
-        msg.className='msg err';
-        msg.textContent='Something went wrong — please call us at (704) 889-2454.';
+        msg.className='msg err'; msg.textContent='Something went wrong — please call us at (704) 889-2454.';
+      }
+      btn.disabled = false;
+    });
+  }
+
+  // Appointment form: reveal pickup address only when "Pickup" is chosen.
+  (function(){
+    var f = document.getElementById('book-form'); if(!f) return;
+    var addr = document.getElementById('addr-block');
+    Array.prototype.forEach.call(f.querySelectorAll('input[name="fulfillment"]'), function(r){
+      r.addEventListener('change', function(){
+        var pick = f.querySelector('input[name="fulfillment"]:checked');
+        if(addr) addr.hidden = !(pick && pick.value === 'Pickup');
+      });
+    });
+  })();
+
+  prgSubmit('book-form','bf-msg','Thank you — we’ll be in touch shortly to set your appointment.');
+
+  // Trade Program application: flag as trade so it tags + routes correctly.
+  (function(){
+    var f = document.getElementById('trade-form'); if(!f) return;
+    f.addEventListener('submit', function(){ /* form flag set below via hidden marker */ }, {once:true});
+  })();
+  (function(){
+    var f = document.getElementById('trade-form'); if(!f) return;
+    // Wrap FormData to include the trade marker.
+    var orig = document.getElementById('trade-form');
+    orig.addEventListener('submit', function(e){
+      // handled by prgSubmitTrade
+    });
+  })();
+
+  // Dedicated trade submit (adds form:'trade' + services).
+  (function(){
+    var f = document.getElementById('trade-form'); if(!f) return;
+    f.addEventListener('submit', async function(e){
+      e.preventDefault();
+      var msg = document.getElementById('tf-msg'); msg.className='msg'; msg.textContent='Sending…';
+      var btn = f.querySelector('button[type=submit]'); btn.disabled = true;
+      var data = Object.fromEntries(new FormData(f).entries());
+      data.form = 'trade';
+      data.services = ['Trade Program Application'];
+      data.page = location.href;
+      if(!data.name || !data.phone || !data.email){
+        msg.className='msg err'; msg.textContent='Please add your name, phone, and email.'; btn.disabled=false; return;
+      }
+      try{
+        var r = await fetch('/api/pineville-lead', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)});
+        var j = await r.json().catch(function(){return {};});
+        if(!r.ok || j.error) throw new Error();
+        f.reset();
+        msg.className='msg ok'; msg.textContent='Thank you — we’ll review and reach out to confirm your trade account.';
+      }catch(_){
+        msg.className='msg err'; msg.textContent='Something went wrong — please call us at (704) 889-2454.';
       }
       btn.disabled = false;
     });

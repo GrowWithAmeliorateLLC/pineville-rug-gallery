@@ -144,13 +144,18 @@
   .visit-media .storefront-ph em{font-style:italic;color:var(--clay-soft);font-size:.9rem}
   .visit-media iframe{width:100%;height:220px;border:0;display:block;filter:grayscale(.12)}
 
-  /* book a design appointment / trade application */
+  /* book an appointment / trade application */
   .book{background:var(--cream)}
   .book .wrap{max-width:760px}
-  .book .sec-head{margin-bottom:38px}
+  .book .sec-head{margin-bottom:32px}
+  .book .toggle{display:flex;gap:8px;max-width:520px;margin:0 auto 34px;border:1px solid var(--line);padding:5px;background:var(--paper)}
+  .book .toggle button{flex:1;background:transparent;border:none;font-family:'Jost';font-weight:400;font-size:.74rem;text-transform:uppercase;letter-spacing:.13em;padding:14px 10px;cursor:pointer;color:var(--stone);transition:.25s}
+  .book .toggle button.active{background:var(--pine);color:var(--paper)}
   .book form{display:grid;grid-template-columns:1fr 1fr;gap:18px 20px}
+  .book form.hidden{display:none}
   .book .full{grid-column:1 / -1}
   .book label.fld{display:block;font-size:.66rem;text-transform:uppercase;letter-spacing:.18em;color:var(--stone);margin-bottom:7px}
+  .book label.fld em{font-style:normal;text-transform:none;letter-spacing:.02em;color:var(--stone);font-weight:300;font-size:.78rem;margin-left:6px}
   .book .svc-select .fld{display:block;font-size:.66rem;text-transform:uppercase;letter-spacing:.18em;color:var(--stone);margin-bottom:10px}
   .book .svc-select .fld em{font-style:normal;text-transform:none;letter-spacing:.02em;color:var(--stone);font-weight:300;font-size:.8rem;margin-left:6px}
   .book .svc-opts{display:flex;flex-wrap:wrap;gap:10px}
@@ -160,8 +165,9 @@
   .book .svc-opts label:has(input:checked){border-color:var(--pine);background:var(--sand);color:var(--pine)}
   .book .addr-row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px 14px}
   .book input,.book select,.book textarea{width:100%;font-family:'Jost';font-weight:300;font-size:.98rem;padding:13px 15px;border:1px solid var(--line);background:var(--paper);color:var(--ink);outline:none;transition:.25s}
+  .book input[type=date]{max-width:320px}
   .book input:focus,.book select:focus,.book textarea:focus{border-color:var(--clay)}
-  .book textarea{min-height:112px;resize:vertical}
+  .book textarea{min-height:100px;resize:vertical}
   .book .consent{grid-column:1 / -1;display:flex;gap:11px;align-items:flex-start;font-size:.84rem;color:var(--stone);line-height:1.5;cursor:pointer}
   .book .consent input{width:auto;margin-top:3px;flex:none}
   .book .fineprint{grid-column:1 / -1;font-size:.72rem;color:var(--stone);line-height:1.55}
@@ -198,7 +204,6 @@
   .foot-bottom a{color:rgba(245,239,228,.7)}
   .foot-bottom a:hover{color:#fff}
 
-  /* chat bubble */
   @media(max-width:980px){
     .split,.trade,.visit .wrap,.values .wrap,.foot-grid{grid-template-columns:1fr}
     .cgrid{grid-template-columns:1fr 1fr;gap:24px}
@@ -470,15 +475,22 @@
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow">Book an Appointment</span>
-      <h2>Let's find the one.</h2>
-      <p>Whether you're after a design consultation, a cleaning, a repair, or an appraisal — tell us a little about what you need and how to reach you. We'll follow up personally to set a time, in the gallery or at your home. Prefer to talk it through? Call us anytime at <a href="tel:7048892454" style="color:var(--clay);border-bottom:1px solid var(--clay)">(704) 889-2454</a> — we're always happy to set your appointment by phone.</p>
+      <h2>Pick a time that works.</h2>
+      <p>Choose the kind of visit and a time — we'll confirm by text or call. Prefer to talk it through? Call us anytime at <a href="tel:7048892454" style="color:var(--clay);border-bottom:1px solid var(--clay)">(704) 889-2454</a>.</p>
     </div>
+
+    <div class="toggle">
+      <button type="button" id="tab-sales" class="active">Sales &amp; Design</button>
+      <button type="button" id="tab-clean">Cleaning &amp; Repair</button>
+    </div>
+
+    <!-- SALES / DESIGN APPOINTMENT -->
     <form id="book-form" novalidate>
-      <div><label class="fld" for="bf-name">Name</label><input id="bf-name" name="name" autocomplete="name" required></div>
-      <div><label class="fld" for="bf-phone">Phone</label><input id="bf-phone" name="phone" type="tel" autocomplete="tel" required></div>
-      <div><label class="fld" for="bf-email">Email</label><input id="bf-email" name="email" type="email" autocomplete="email" required></div>
-      <div><label class="fld" for="bf-ref">How did you hear about us?</label>
-        <select id="bf-ref" name="referral">
+      <div><label class="fld" for="s-name">Name</label><input id="s-name" name="name" autocomplete="name" required></div>
+      <div><label class="fld" for="s-phone">Phone</label><input id="s-phone" name="phone" type="tel" autocomplete="tel" required></div>
+      <div><label class="fld" for="s-email">Email</label><input id="s-email" name="email" type="email" autocomplete="email" required></div>
+      <div><label class="fld" for="s-ref">How did you hear about us?</label>
+        <select id="s-ref" name="referral">
           <option value="">Select…</option>
           <option>Google</option>
           <option>Referral</option>
@@ -491,34 +503,92 @@
         <span class="fld">What can we help with? <em>Select all that apply</em></span>
         <div class="svc-opts">
           <label><input type="checkbox" name="services" value="Design Appointment"><span>Design appointment</span></label>
-          <label><input type="checkbox" name="services" value="Rug Cleaning"><span>Rug cleaning</span></label>
-          <label><input type="checkbox" name="services" value="Repair &amp; Restoration"><span>Repair &amp; restoration</span></label>
+          <label><input type="checkbox" name="services" value="Browsing the Collection"><span>Browse the collection</span></label>
           <label><input type="checkbox" name="services" value="Appraisal"><span>Appraisal</span></label>
         </div>
       </div>
+      <div><label class="fld" for="s-date">Preferred date</label><input id="s-date" name="appt_date" type="date" required></div>
       <div class="full svc-select">
-        <span class="fld">Pickup or drop-off? <em>For cleaning &amp; repair</em></span>
+        <span class="fld">Preferred time <em>Mon–Sat showroom hours</em></span>
+        <div class="svc-opts">
+          <label><input type="radio" name="appt_slot" value="11:00 AM"><span>11:00 AM</span></label>
+          <label><input type="radio" name="appt_slot" value="1:00 PM"><span>1:00 PM</span></label>
+          <label><input type="radio" name="appt_slot" value="3:00 PM"><span>3:00 PM</span></label>
+          <label><input type="radio" name="appt_slot" value="5:00 PM"><span>5:00 PM</span></label>
+          <label><input type="radio" name="appt_slot" value="After 5:00 PM"><span>After 5:00 PM</span></label>
+          <label><input type="radio" name="appt_slot" value="Sunday after 1:00 PM"><span>Sunday after 1:00 PM</span></label>
+        </div>
+      </div>
+      <div class="full" id="s-custom-wrap" hidden><label class="fld" for="s-custom">What time works best? <em>Evenings &amp; Sundays are by request — we'll confirm</em></label><input id="s-custom" name="appt_custom_time" placeholder="e.g. 6:30 PM, or Sunday around 2:00"></div>
+      <div class="full"><label class="fld" for="s-project">Anything you'd like us to know? <em>(optional)</em></label><textarea id="s-project" name="project" placeholder="Room, approximate size, colors, the feeling you're after…"></textarea></div>
+      <label class="consent"><input type="checkbox" name="sms_transactional" value="1"><span>Text me about my appointment at the number above. Msg &amp; data rates may apply; message frequency varies. Reply STOP to opt out, HELP for help.</span></label>
+      <label class="consent"><input type="checkbox" name="sms_marketing" value="1"><span>I'd also like occasional texts about new arrivals and private sales. (Optional — opt out anytime.)</span></label>
+      <input type="hidden" name="appt_type" value="Sales">
+      <input type="hidden" name="form" value="sales">
+      <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="submit-row">
+        <button type="submit" class="btn solid">Request This Appointment</button>
+        <span class="msg" id="s-msg" role="status" aria-live="polite"></span>
+      </div>
+      <p class="fineprint">By submitting, you agree to be contacted about your inquiry and to our <a href="/privacy.html">Privacy Policy</a> and <a href="/terms.html">Terms</a>. Consent to texts is not a condition of purchase. We never sell or share your information.</p>
+    </form>
+
+    <!-- CLEANING / REPAIR -->
+    <form id="clean-form" class="hidden" novalidate>
+      <div><label class="fld" for="c-name">Name</label><input id="c-name" name="name" autocomplete="name" required></div>
+      <div><label class="fld" for="c-phone">Phone</label><input id="c-phone" name="phone" type="tel" autocomplete="tel" required></div>
+      <div><label class="fld" for="c-email">Email</label><input id="c-email" name="email" type="email" autocomplete="email" required></div>
+      <div><label class="fld" for="c-ref">How did you hear about us?</label>
+        <select id="c-ref" name="referral">
+          <option value="">Select…</option>
+          <option>Google</option>
+          <option>Referral</option>
+          <option>Social media</option>
+          <option>Walked by the gallery</option>
+          <option>Returning client</option>
+          <option>Other</option>
+        </select></div>
+      <div class="full svc-select">
+        <span class="fld">What do you need? <em>Select all that apply</em></span>
+        <div class="svc-opts">
+          <label><input type="checkbox" name="services" value="Rug Cleaning"><span>Rug cleaning</span></label>
+          <label><input type="checkbox" name="services" value="Repair &amp; Restoration"><span>Repair &amp; restoration</span></label>
+        </div>
+      </div>
+      <div class="full svc-select">
+        <span class="fld">Pickup or drop-off?</span>
         <div class="svc-opts">
           <label><input type="radio" name="fulfillment" value="Pickup"><span>Complimentary pickup &amp; delivery</span></label>
           <label><input type="radio" name="fulfillment" value="Drop-off"><span>I'll drop it off at the gallery</span></label>
         </div>
       </div>
-      <div class="full addr-block" id="addr-block" hidden>
-        <div style="margin-bottom:14px"><label class="fld" for="bf-addr">Pickup address</label><input id="bf-addr" name="address" autocomplete="address-line1" placeholder="Street address"></div>
+      <div class="full addr-block" id="c-addr" hidden>
+        <div style="margin-bottom:14px"><label class="fld" for="c-address">Pickup address</label><input id="c-address" name="address" autocomplete="address-line1" placeholder="Street address"></div>
         <div class="addr-row">
-          <div><label class="fld" for="bf-city">City</label><input id="bf-city" name="city" autocomplete="address-level2"></div>
-          <div><label class="fld" for="bf-state">State</label><input id="bf-state" name="state" autocomplete="address-level1"></div>
-          <div><label class="fld" for="bf-zip">ZIP</label><input id="bf-zip" name="zip" autocomplete="postal-code" inputmode="numeric"></div>
+          <div><label class="fld" for="c-city">City</label><input id="c-city" name="city" autocomplete="address-level2"></div>
+          <div><label class="fld" for="c-state">State</label><input id="c-state" name="state" autocomplete="address-level1"></div>
+          <div><label class="fld" for="c-zip">ZIP</label><input id="c-zip" name="zip" autocomplete="postal-code" inputmode="numeric"></div>
         </div>
       </div>
-      <div class="full"><label class="fld" for="bf-project">Tell us about your space or project</label><textarea id="bf-project" name="project" placeholder="Room, approximate size, colors, the feeling you're after — or the details of the rug you'd like cleaned, repaired, or appraised."></textarea></div>
-      <div class="full"><label class="fld" for="bf-pref">Preferred day / time to connect (optional)</label><input id="bf-pref" name="preferred" placeholder="e.g. weekday mornings, or this Saturday"></div>
-      <label class="consent"><input type="checkbox" name="sms_transactional" value="1"><span>Text me about my appointment at the number above. Msg &amp; data rates may apply; message frequency varies. Reply STOP to opt out, HELP for help.</span></label>
+      <div><label class="fld" for="c-date">Preferred date</label><input id="c-date" name="appt_date" type="date" required></div>
+      <div class="full svc-select">
+        <span class="fld">Preferred window <em>Pickup / drop-off</em></span>
+        <div class="svc-opts">
+          <label><input type="radio" name="appt_slot" value="9:00–11:00 AM"><span>9:00–11:00 AM</span></label>
+          <label><input type="radio" name="appt_slot" value="11:00 AM–1:00 PM"><span>11:00 AM–1:00 PM</span></label>
+          <label><input type="radio" name="appt_slot" value="1:00–3:00 PM"><span>1:00–3:00 PM</span></label>
+          <label><input type="radio" name="appt_slot" value="3:00–5:00 PM"><span>3:00–5:00 PM</span></label>
+        </div>
+      </div>
+      <div class="full"><label class="fld" for="c-project">Tell us about the rug(s) <em>(size, material, the issue)</em></label><textarea id="c-project" name="project" placeholder="e.g. 8x10 wool Heriz, fringe damage on one end; and a 5x7 silk that needs cleaning."></textarea></div>
+      <label class="consent"><input type="checkbox" name="sms_transactional" value="1"><span>Text me about my pickup / appointment at the number above. Msg &amp; data rates may apply; message frequency varies. Reply STOP to opt out, HELP for help.</span></label>
       <label class="consent"><input type="checkbox" name="sms_marketing" value="1"><span>I'd also like occasional texts about new arrivals and private sales. (Optional — opt out anytime.)</span></label>
+      <input type="hidden" name="appt_type" value="Cleaning">
+      <input type="hidden" name="form" value="cleaning">
       <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
       <div class="submit-row">
-        <button type="submit" class="btn solid">Request My Appointment</button>
-        <span class="msg" id="bf-msg" role="status" aria-live="polite"></span>
+        <button type="submit" class="btn solid">Request This Service</button>
+        <span class="msg" id="c-msg" role="status" aria-live="polite"></span>
       </div>
       <p class="fineprint">By submitting, you agree to be contacted about your inquiry and to our <a href="/privacy.html">Privacy Policy</a> and <a href="/terms.html">Terms</a>. Consent to texts is not a condition of purchase. We never sell or share your information.</p>
     </form>
@@ -621,40 +691,71 @@
     n.style.border='1px solid var(--line)'; n.style.boxShadow='0 20px 40px rgba(12,34,29,.15)';
   });
 
-  // Appointment form: reveal pickup address only when "Pickup" is chosen.
+  // Booking: tab toggle between Sales and Cleaning forms + date minimums.
   (function(){
-    var f = document.getElementById('book-form'); if(!f) return;
-    var addr = document.getElementById('addr-block');
-    Array.prototype.forEach.call(f.querySelectorAll('input[name="fulfillment"]'), function(r){
-      r.addEventListener('change', function(){
-        var pick = f.querySelector('input[name="fulfillment"]:checked');
-        if(addr) addr.hidden = !(pick && pick.value === 'Pickup');
+    var ts=document.getElementById('tab-sales'), tc=document.getElementById('tab-clean');
+    var fs=document.getElementById('book-form'), fc=document.getElementById('clean-form');
+    function show(sales){
+      ts.classList.toggle('active',sales); tc.classList.toggle('active',!sales);
+      fs.classList.toggle('hidden',!sales); fc.classList.toggle('hidden',sales);
+    }
+    if(ts&&tc){ ts.addEventListener('click',function(){show(true);}); tc.addEventListener('click',function(){show(false);}); }
+    var today=new Date().toISOString().slice(0,10);
+    document.querySelectorAll('#book input[type=date]').forEach(function(d){ d.min=today; });
+  })();
+
+  // Sales: reveal custom-time field for "After 5:00 PM" / "Sunday after 1:00 PM".
+  (function(){
+    var f=document.getElementById('book-form'); if(!f) return;
+    var wrap=document.getElementById('s-custom-wrap');
+    f.querySelectorAll('input[name="appt_slot"]').forEach(function(r){
+      r.addEventListener('change',function(){
+        var v=(f.querySelector('input[name="appt_slot"]:checked')||{}).value||'';
+        wrap.hidden=!/after 5|sunday/i.test(v);
       });
     });
-    f.addEventListener('submit', async function(e){
-      e.preventDefault();
-      var msg = document.getElementById('bf-msg'); msg.className='msg'; msg.textContent='Sending…';
-      var btn = f.querySelector('button[type=submit]'); btn.disabled = true;
-      var data = Object.fromEntries(new FormData(f).entries());
-      data.sms_transactional = f.sms_transactional.checked;
-      data.sms_marketing = f.sms_marketing.checked;
-      data.services = Array.prototype.map.call(f.querySelectorAll('input[name="services"]:checked'), function(c){ return c.value; });
-      data.page = location.href;
-      if(!data.name || !data.phone || !data.email){
-        msg.className='msg err'; msg.textContent='Please add your name, phone, and email.'; btn.disabled=false; return;
-      }
-      try{
-        var r = await fetch('/api/pineville-lead', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)});
-        var j = await r.json().catch(function(){return {};});
-        if(!r.ok || j.error) throw new Error();
-        f.reset(); if(addr) addr.hidden = true;
-        msg.className='msg ok'; msg.textContent='Thank you — we’ll be in touch shortly to set your appointment.';
-      }catch(_){
-        msg.className='msg err'; msg.textContent='Something went wrong — please call us at (704) 889-2454.';
-      }
-      btn.disabled = false;
+  })();
+
+  // Cleaning: reveal pickup address only when "Pickup" is chosen.
+  (function(){
+    var f=document.getElementById('clean-form'); if(!f) return;
+    var addr=document.getElementById('c-addr');
+    f.querySelectorAll('input[name="fulfillment"]').forEach(function(r){
+      r.addEventListener('change',function(){
+        var pick=f.querySelector('input[name="fulfillment"]:checked');
+        if(addr) addr.hidden=!(pick&&pick.value==='Pickup');
+      });
     });
   })();
+
+  // Shared submit for the two booking forms -> /api/pineville-lead
+  function prgBook(formId,msgId){
+    var f=document.getElementById(formId); if(!f) return;
+    f.addEventListener('submit',async function(e){
+      e.preventDefault();
+      var msg=document.getElementById(msgId); msg.className='msg'; msg.textContent='Sending…';
+      var btn=f.querySelector('button[type=submit]'); btn.disabled=true;
+      var data=Object.fromEntries(new FormData(f).entries());
+      var st=f.querySelector('input[name="sms_transactional"]'); if(st) data.sms_transactional=st.checked;
+      var sm=f.querySelector('input[name="sms_marketing"]'); if(sm) data.sms_marketing=sm.checked;
+      var svc=f.querySelectorAll('input[name="services"]:checked'); data.services=Array.prototype.map.call(svc,function(c){return c.value;});
+      data.page=location.href;
+      if(!data.name||!data.phone||!data.email){ msg.className='msg err'; msg.textContent='Please add your name, phone, and email.'; btn.disabled=false; return; }
+      if(!data.appt_date||!data.appt_slot){ msg.className='msg err'; msg.textContent='Please choose a date and a time.'; btn.disabled=false; return; }
+      try{
+        var r=await fetch('/api/pineville-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+        var j=await r.json().catch(function(){return {};});
+        if(!r.ok||j.error) throw new Error();
+        f.reset();
+        var ab=f.querySelector('.addr-block'); if(ab) ab.hidden=true;
+        var cw=document.getElementById('s-custom-wrap'); if(cw&&formId==='book-form') cw.hidden=true;
+        msg.className='msg ok'; msg.textContent='Thank you — we’ll confirm your appointment by text or call shortly.';
+      }catch(_){ msg.className='msg err'; msg.textContent='Something went wrong — please call us at (704) 889-2454.'; }
+      btn.disabled=false;
+    });
+  }
+  prgBook('book-form','s-msg');
+  prgBook('clean-form','c-msg');
 
   // Trade Program application.
   (function(){

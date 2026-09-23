@@ -6,4 +6,7 @@
   node_bundler = "esbuild"
 
 [images]
-  remote_images = ["https://storage.googleapis.com/pineville-rug/.*"]
+  remote_images = [
+    "https://storage.googleapis.com/pineville-rug/.*",
+    "https://cdn.photoproofpro.com/.*"
+  ]

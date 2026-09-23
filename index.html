@@ -82,20 +82,18 @@
   .split-txt p{color:var(--stone);margin-bottom:18px}
   .split-txt .btn{margin-top:12px}
 
-  /* collection — a glimpse */
+  /* collection — browsable grid */
   .collection{background:var(--cream)}
-  .glimpse-head{max-width:640px;margin:0 auto 72px;text-align:center}
+  .glimpse-head{max-width:660px;margin:0 auto 60px;text-align:center}
   .glimpse-head h2{font-size:clamp(2.2rem,4.2vw,3.4rem);color:var(--pine);margin:14px 0 16px}
   .glimpse-head p{color:var(--stone);font-size:1.06rem}
-  .glimpse{display:grid;grid-template-columns:repeat(3,1fr);gap:44px;align-items:start}
-  .glimpse figure{margin:0}
-  .glimpse figure .ph{overflow:hidden;background:var(--paper);padding:20px;border:1px solid rgba(34,30,24,.12);box-shadow:0 16px 38px rgba(12,34,29,.10)}
-  .glimpse figure img{width:100%;height:500px;object-fit:contain;transition:transform 1.2s ease}
-  .glimpse figure:hover img{transform:scale(1.045)}
-  .glimpse .g2{margin-top:76px}
-  .glimpse .g3{margin-top:28px}
-  .glimpse figcaption{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.08rem;color:var(--stone);margin-top:16px}
-  .collection .center{text-align:center;margin-top:70px}
+  .cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:8px}
+  .cgrid figure{margin:0}
+  .cgrid .ph{overflow:hidden;background:var(--paper);padding:16px;border:1px solid rgba(34,30,24,.12);box-shadow:0 12px 30px rgba(12,34,29,.10)}
+  .cgrid .ph img{width:100%;height:300px;object-fit:contain;transition:transform 1s ease}
+  .cgrid figure:hover img{transform:scale(1.04)}
+  .collection .center{text-align:center;margin-top:60px}
+  .collection .center p{color:var(--stone);font-size:.92rem;margin-bottom:22px}
 
   /* services */
   .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
@@ -200,11 +198,10 @@
   .foot-bottom a{color:rgba(245,239,228,.7)}
   .foot-bottom a:hover{color:#fff}
 
+  /* chat bubble */
   @media(max-width:980px){
     .split,.trade,.visit .wrap,.values .wrap,.foot-grid{grid-template-columns:1fr}
-    .glimpse{grid-template-columns:1fr;gap:30px}
-    .glimpse .g2,.glimpse .g3{margin-top:0}
-    .glimpse figure img{height:440px}
+    .cgrid{grid-template-columns:1fr 1fr;gap:24px}
     .svc-grid,.rev-grid{grid-template-columns:1fr}
     .values .wrap{grid-template-columns:1fr 1fr;gap:34px}
     .trade-txt{padding:64px 40px}
@@ -233,6 +230,8 @@
     section{padding:64px 0}
     .sec-head{margin-bottom:44px}
     .glimpse-head{margin-bottom:46px}
+    .cgrid{grid-template-columns:1fr;gap:20px}
+    .cgrid .ph img{height:340px}
     .split{gap:34px}
     .split-img img{height:400px}
     .values .wrap{grid-template-columns:1fr;gap:30px}
@@ -326,29 +325,29 @@
   </div>
 </section>
 
-<!-- COLLECTION — A GLIMPSE -->
+<!-- COLLECTION — BROWSABLE GRID -->
 <section id="collection" class="collection">
   <div class="wrap">
     <div class="glimpse-head">
-      <span class="eyebrow">A Glimpse Inside</span>
-      <h2>A gallery meant to be walked, not scrolled.</h2>
-      <p>This is the smallest taste. Over 1,000 hand-knotted rugs — 500 on the gallery floor and 500 more in our warehouse — each with its own story, its own history, its own character. Come let one find you.</p>
+      <span class="eyebrow">Browse the Collection</span>
+      <h2>A look at the gallery floor.</h2>
+      <p>A selection from our collection of over 1,000 hand-knotted rugs — antique Heriz, Tabriz, Oushak and more, each one-of-a-kind. See something you love? Come visit, or tell us what you're after and we'll have the right pieces waiting.</p>
     </div>
-    <div class="glimpse">
-      <figure class="g1">
-        <div class="ph"><img src="https://pinevilleruggallery.com/wp-content/uploads/2023/08/10-x-13-Antique-Heriz-Wool-Area-Rug-1-700x854.jpg" alt="Antique Heriz rug"></div>
-        <figcaption>Antique Heriz · 10 × 13 · Northwest Persia</figcaption>
-      </figure>
-      <figure class="g2">
-        <div class="ph"><img src="https://pinevilleruggallery.com/wp-content/uploads/2023/08/10-x-13-New-Tabriz-Wool-Silk-Area-Rug-700x854.jpg" alt="Tabriz wool and silk rug"></div>
-        <figcaption>Tabriz · 10 × 13 · wool &amp; silk</figcaption>
-      </figure>
-      <figure class="g3">
-        <div class="ph"><img src="https://pinevilleruggallery.com/wp-content/uploads/2023/08/10-x-14-New-Oushak-Afghan-Wool-Area-Rug-2-700x854.jpg" alt="Oushak rug"></div>
-        <figcaption>Oushak · 10 × 14 · soft antique palette</figcaption>
-      </figure>
+    <div class="cgrid">
+      <figure><div class="ph"><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fresized%2F6950%2F202149%2F203753%2F15a661c7353250e366c3c3b141720438.jpg&w=520&q=72" alt="Hand-knotted Oriental rug"></div></figure>
+      <figure><div class="ph"><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fresized%2F6950%2F202149%2F203753%2F14fd4f59ce35250135d457c7ee148980.jpg&w=520&q=72" alt="Hand-knotted Oriental rug"></div></figure>
+      <figure><div class="ph"><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fresized%2F6950%2F202149%2F203753%2Ff0187d26321d18466f2a696c78129000.jpg&w=520&q=72" alt="Hand-knotted Heriz rug"></div></figure>
+      <figure><div class="ph"><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fresized%2F6950%2F202149%2F203753%2F683f63d0b4a2d011d03fec8230881a54.jpg&w=520&q=72" alt="Hand-knotted Heriz rug"></div></figure>
+      <figure><div class="ph"><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fresized%2F6950%2F202149%2F203753%2Fbe79132117ccfee1efc6fa5e28ed19ab.jpg&w=520&q=72" alt="Hand-knotted Heriz rug"></div></figure>
+      <figure><div class="ph"><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fresized%2F6950%2F202149%2F203753%2F727fb09869aeeecb1afc1c0089d1fdfc.jpg&w=520&q=72" alt="Hand-knotted Heriz rug"></div></figure>
+      <figure><div class="ph"><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fresized%2F6950%2F202149%2F203753%2F4e0dee9442f0e58283a6e07d44de87b6.jpg&w=520&q=72" alt="Hand-knotted Heriz rug"></div></figure>
+      <figure><div class="ph"><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fresized%2F6950%2F202149%2F203753%2Fe34a82d740d8a1807b278cb899eef3e6.jpg&w=520&q=72" alt="Hand-knotted Heriz rug"></div></figure>
+      <figure><div class="ph"><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fresized%2F6950%2F202149%2F203753%2F2f24786921c7c418b309e657d716293b.jpg&w=520&q=72" alt="Hand-knotted Heriz rug"></div></figure>
     </div>
-    <div class="center"><a href="#book" class="btn solid">Book a Design Appointment</a></div>
+    <div class="center">
+      <p>A small sample of the gallery — over 1,000 rugs in person, on the floor and in our warehouse.</p>
+      <a href="#book" class="btn solid">Book a Viewing</a>
+    </div>
   </div>
 </section>
 
@@ -622,36 +621,6 @@
     n.style.border='1px solid var(--line)'; n.style.boxShadow='0 20px 40px rgba(12,34,29,.15)';
   });
 
-  // Shared submit helper for the site's custom forms -> /api/pineville-lead
-  function prgSubmit(formId, msgId, okText){
-    var f = document.getElementById(formId); if(!f) return;
-    f.addEventListener('submit', async function(e){
-      e.preventDefault();
-      var msg = document.getElementById(msgId); msg.className='msg'; msg.textContent='Sending…';
-      var btn = f.querySelector('button[type=submit]'); btn.disabled = true;
-      var data = Object.fromEntries(new FormData(f).entries());
-      if(f.sms_transactional) data.sms_transactional = f.sms_transactional.checked;
-      if(f.sms_marketing) data.sms_marketing = f.sms_marketing.checked;
-      var svc = f.querySelectorAll('input[name="services"]:checked');
-      if(svc.length) data.services = Array.prototype.map.call(svc, function(c){ return c.value; });
-      data.page = location.href;
-      if(!data.name || !data.phone || !data.email){
-        msg.className='msg err'; msg.textContent='Please add your name, phone, and email.'; btn.disabled=false; return;
-      }
-      try{
-        var r = await fetch('/api/pineville-lead', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)});
-        var j = await r.json().catch(function(){return {};});
-        if(!r.ok || j.error) throw new Error();
-        f.reset();
-        var addr = document.getElementById('addr-block'); if(addr) addr.hidden = true;
-        msg.className='msg ok'; msg.textContent = okText;
-      }catch(_){
-        msg.className='msg err'; msg.textContent='Something went wrong — please call us at (704) 889-2454.';
-      }
-      btn.disabled = false;
-    });
-  }
-
   // Appointment form: reveal pickup address only when "Pickup" is chosen.
   (function(){
     var f = document.getElementById('book-form'); if(!f) return;
@@ -662,25 +631,32 @@
         if(addr) addr.hidden = !(pick && pick.value === 'Pickup');
       });
     });
-  })();
-
-  prgSubmit('book-form','bf-msg','Thank you — we’ll be in touch shortly to set your appointment.');
-
-  // Trade Program application: flag as trade so it tags + routes correctly.
-  (function(){
-    var f = document.getElementById('trade-form'); if(!f) return;
-    f.addEventListener('submit', function(){ /* form flag set below via hidden marker */ }, {once:true});
-  })();
-  (function(){
-    var f = document.getElementById('trade-form'); if(!f) return;
-    // Wrap FormData to include the trade marker.
-    var orig = document.getElementById('trade-form');
-    orig.addEventListener('submit', function(e){
-      // handled by prgSubmitTrade
+    f.addEventListener('submit', async function(e){
+      e.preventDefault();
+      var msg = document.getElementById('bf-msg'); msg.className='msg'; msg.textContent='Sending…';
+      var btn = f.querySelector('button[type=submit]'); btn.disabled = true;
+      var data = Object.fromEntries(new FormData(f).entries());
+      data.sms_transactional = f.sms_transactional.checked;
+      data.sms_marketing = f.sms_marketing.checked;
+      data.services = Array.prototype.map.call(f.querySelectorAll('input[name="services"]:checked'), function(c){ return c.value; });
+      data.page = location.href;
+      if(!data.name || !data.phone || !data.email){
+        msg.className='msg err'; msg.textContent='Please add your name, phone, and email.'; btn.disabled=false; return;
+      }
+      try{
+        var r = await fetch('/api/pineville-lead', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)});
+        var j = await r.json().catch(function(){return {};});
+        if(!r.ok || j.error) throw new Error();
+        f.reset(); if(addr) addr.hidden = true;
+        msg.className='msg ok'; msg.textContent='Thank you — we’ll be in touch shortly to set your appointment.';
+      }catch(_){
+        msg.className='msg err'; msg.textContent='Something went wrong — please call us at (704) 889-2454.';
+      }
+      btn.disabled = false;
     });
   })();
 
-  // Dedicated trade submit (adds form:'trade' + services).
+  // Trade Program application.
   (function(){
     var f = document.getElementById('trade-form'); if(!f) return;
     f.addEventListener('submit', async function(e){

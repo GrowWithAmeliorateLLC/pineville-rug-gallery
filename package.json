@@ -1,0 +1,9 @@
+{
+  "name": "pineville-rug-gallery",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pineville Rug Gallery website + booking function",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}

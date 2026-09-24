@@ -732,6 +732,34 @@
     });
   })();
 
+  // Live availability: grey out fully-booked slots when a date is chosen.
+  function prgWireAvailability(formId, formKey){
+    var f=document.getElementById(formId); if(!f) return;
+    var dateEl=f.querySelector('input[name="appt_date"]');
+    var slots=f.querySelectorAll('input[name="appt_slot"]');
+    async function refresh(){
+      var d=dateEl.value; if(!d) return;
+      try{
+        var r=await fetch('/api/pineville-lead?form='+formKey+'&date='+encodeURIComponent(d));
+        var j=await r.json();
+        var cap=j.cap||3, counts=j.counts||{};
+        Array.prototype.forEach.call(slots,function(s){
+          var lab=s.closest('label'); var sp=lab.querySelector('span');
+          if(!sp.getAttribute('data-base')) sp.setAttribute('data-base',sp.textContent);
+          var base=sp.getAttribute('data-base');
+          var c=counts[s.value];
+          var full=(typeof c==='number' && c>=cap);
+          s.disabled=full;
+          lab.style.opacity=full?'.45':'';
+          sp.textContent= full ? base+' — fully booked' : base;
+          if(full && s.checked) s.checked=false;
+        });
+      }catch(_){}
+    }
+    dateEl.addEventListener('change',refresh);
+    f._prgRefreshAvail=refresh;
+  }
+
   // Shared submit for the two booking forms -> /api/pineville-lead
   function prgBook(formId,msgId){
     var f=document.getElementById(formId); if(!f) return;
@@ -749,6 +777,7 @@
       try{
         var r=await fetch('/api/pineville-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
         var j=await r.json().catch(function(){return {};});
+        if(r.status===409 || j.error==='slot_full'){ msg.className='msg err'; msg.textContent=(j.message||'That time just filled — please pick another.'); if(f._prgRefreshAvail) f._prgRefreshAvail(); btn.disabled=false; return; }
         if(!r.ok||j.error) throw new Error();
         f.reset();
         var ab=f.querySelector('.addr-block'); if(ab) ab.hidden=true;
@@ -758,6 +787,8 @@
       btn.disabled=false;
     });
   }
+  prgWireAvailability('book-form','sales');
+  prgWireAvailability('clean-form','cleaning');
   prgBook('book-form','s-msg');
   prgBook('clean-form','c-msg');
 

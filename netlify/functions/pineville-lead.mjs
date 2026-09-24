@@ -30,11 +30,13 @@ const SLOTS = {
 const typeFromForm = (f) => (String(f).toLowerCase() === "cleaning" ? "Cleaning" : "Sales");
 const bkey = (t, d, s) => `${t}|${d}|${s}`;
 
+let BLOB_ERR = "";
 async function getBlobStore() {
   try {
     const mod = await import("@netlify/blobs");
     return mod.getStore("prg-bookings");
-  } catch (_) {
+  } catch (e) {
+    BLOB_ERR = String(e && e.message || e);
     return null;
   }
 }
@@ -43,7 +45,8 @@ async function readCount(store, t, d, s) {
   try {
     const v = await store.get(bkey(t, d, s));
     return v ? parseInt(v, 10) || 0 : 0;
-  } catch (_) {
+  } catch (e) {
+    BLOB_ERR = "read:" + String(e && e.message || e);
     return 0;
   }
 }
@@ -59,11 +62,9 @@ export default async (req) => {
     const slots = SLOTS[type] || [];
     const cap = CAPS[type] || 99;
     const counts = {};
-    if (date) {
-      const store = await getBlobStore();
-      for (const s of slots) counts[s] = await readCount(store, type, date, s);
-    }
-    return json({ cap, counts });
+    const store = date ? await getBlobStore() : null;
+    if (date) for (const s of slots) counts[s] = await readCount(store, type, date, s);
+    return json({ cap, counts, blobs: !!store, err: BLOB_ERR || undefined });
   }
 
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);

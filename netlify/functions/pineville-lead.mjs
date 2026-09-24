@@ -1,23 +1,72 @@
-// Appointment lead handler.
-// Receives the site's custom forms (sales appointment, cleaning/repair, trade
-// program) and upserts the contact into GoHighLevel via the LeadConnector v2
-// API, records the requested appointment slot + A2P SMS consent as tags + a
-// timestamped note. GHL workflows fire on "contact created / tag added".
+// Appointment lead + booking handler.
 //
-// Token is kept SERVER-SIDE in a Netlify env var (not exposed in page source).
+// POST: the site's forms (Sales appointment, Cleaning/Repair, Trade). Enforces a
+//   per-slot booking cap (default 3), upserts the contact into GoHighLevel, and
+//   records the requested slot + A2P SMS consent as tags + a note.
+// GET:  ?form=sales|cleaning&date=YYYY-MM-DD -> returns how many bookings each
+//   fixed slot already has, so the form can grey out full slots in real time.
 //
-// Required Netlify environment variables:
-//   PRG_GHL_TOKEN        - GHL Private Integration token for the Pineville sub-account
-//   PRG_GHL_LOCATION_ID  - optional; defaults to the Pineville location id below.
+// Token kept SERVER-SIDE in a Netlify env var. Capacity uses Netlify Blobs
+// (guarded dynamic import — if unavailable, booking still works, just uncapped).
+//
+// Env vars:
+//   PRG_GHL_TOKEN        - GHL Private Integration token
+//   PRG_GHL_LOCATION_ID  - optional; defaults below
+//   PRG_NOTIFY_NUMBERS   - optional; cell(s) to text on a new booking (placeholder below)
 
 const GHL_BASE = "https://services.leadconnectorhq.com";
 const GHL_VERSION = "2021-07-28";
 const LOCATION_ID = process.env.PRG_GHL_LOCATION_ID || "SEUOenwNjKokn5Nnb0cU";
 const TOKEN = process.env.PRG_GHL_TOKEN;
+// Placeholder until Reza's & Sardar's numbers are provided (Amy's cell for testing).
+const NOTIFY_NUMBERS = process.env.PRG_NOTIFY_NUMBERS || "3154800680";
+
+// Per-appointment-type slot capacity. Renée: cleaning = 3 bookings per window.
+const CAPS = { Sales: 3, Cleaning: 3 };
+const SLOTS = {
+  Sales: ["11:00 AM", "1:00 PM", "3:00 PM", "5:00 PM"],
+  Cleaning: ["9:00–11:00 AM", "11:00 AM–1:00 PM", "1:00–3:00 PM", "3:00–5:00 PM"],
+};
+const typeFromForm = (f) => (String(f).toLowerCase() === "cleaning" ? "Cleaning" : "Sales");
+const bkey = (t, d, s) => `${t}|${d}|${s}`;
+
+async function getBlobStore() {
+  try {
+    const mod = await import("@netlify/blobs");
+    return mod.getStore("prg-bookings");
+  } catch (_) {
+    return null;
+  }
+}
+async function readCount(store, t, d, s) {
+  if (!store) return 0;
+  try {
+    const v = await store.get(bkey(t, d, s));
+    return v ? parseInt(v, 10) || 0 : 0;
+  } catch (_) {
+    return 0;
+  }
+}
 
 export default async (req) => {
-  if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
   if (!TOKEN) return json({ error: "CRM not configured (missing PRG_GHL_TOKEN)" }, 500);
+
+  // --- GET: live availability for a date ---
+  if (req.method === "GET") {
+    const u = new URL(req.url);
+    const type = typeFromForm(u.searchParams.get("form"));
+    const date = u.searchParams.get("date") || "";
+    const slots = SLOTS[type] || [];
+    const cap = CAPS[type] || 99;
+    const counts = {};
+    if (date) {
+      const store = await getBlobStore();
+      for (const s of slots) counts[s] = await readCount(store, type, date, s);
+    }
+    return json({ cap, counts });
+  }
+
+  if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
 
   let body;
   try { body = await req.json(); } catch { return json({ error: "Invalid request" }, 400); }
@@ -41,14 +90,23 @@ export default async (req) => {
     ? body.services.filter(Boolean)
     : (body.services ? [body.services] : []);
 
-  // Appointment: Sales | Cleaning (self-booked slot). Trade applications have no slot.
   const apptType = (body.appt_type || "").trim();       // "Sales" or "Cleaning"
   const apptDate = (body.appt_date || "").trim();
   let apptSlot = (body.appt_slot || "").trim();
   const apptCustom = (body.appt_custom_time || "").trim();
   if (apptCustom && /after 5|sunday|other/i.test(apptSlot)) apptSlot = `${apptSlot} — ${apptCustom}`;
 
-  // Pickup vs. drop-off (cleaning/repair).
+  // --- Capacity check (fixed slots only; by-request slots are uncapped) ---
+  const isFixedSlot = !!(SLOTS[apptType] && SLOTS[apptType].includes(apptSlot));
+  const store = (apptType && apptDate && isFixedSlot) ? await getBlobStore() : null;
+  if (store) {
+    const cap = CAPS[apptType] || 99;
+    const cur = await readCount(store, apptType, apptDate, apptSlot);
+    if (cur >= cap) {
+      return json({ error: "slot_full", message: "That time just filled — please choose another." }, 409);
+    }
+  }
+
   const fulfillment = (body.fulfillment || "").trim();
   const isPickup = /pick/i.test(fulfillment);
   const isDropoff = /drop/i.test(fulfillment);
@@ -73,18 +131,9 @@ export default async (req) => {
 
   const source = isTrade
     ? "Website - Trade Program"
-    : apptType
-      ? `Website - ${apptType} Appointment`
-      : "Website - Inquiry";
+    : apptType ? `Website - ${apptType} Appointment` : "Website - Inquiry";
 
-  const contact = {
-    locationId: LOCATION_ID,
-    firstName,
-    lastName,
-    name,
-    source,
-    tags,
-  };
+  const contact = { locationId: LOCATION_ID, firstName, lastName, name, source, tags };
   if (email) contact.email = email;
   if (phone) contact.phone = phone;
   if (address1) contact.address1 = address1;
@@ -109,9 +158,16 @@ export default async (req) => {
 
   const contactId = upData?.contact?.id || upData?.id;
 
-  // 2) Attach a note: requested appointment + detail + A2P consent record.
-  const addressLine = [address1, [city, state].filter(Boolean).join(", "), postalCode]
-    .filter(Boolean).join(" · ");
+  // 2) Reserve the slot (increment count) now the booking is captured.
+  if (store) {
+    try {
+      const cur = await readCount(store, apptType, apptDate, apptSlot);
+      await store.set(bkey(apptType, apptDate, apptSlot), String(cur + 1));
+    } catch (_) { /* best-effort */ }
+  }
+
+  // 3) Attach a note.
+  const addressLine = [address1, [city, state].filter(Boolean).join(", "), postalCode].filter(Boolean).join(" · ");
   const detail = [
     isTrade ? "TRADE PROGRAM APPLICATION" : "",
     apptType ? `Appointment type: ${apptType}` : "",
@@ -124,6 +180,7 @@ export default async (req) => {
     body.project ? `Details: ${body.project}` : "",
     body.referral ? `Heard about us: ${body.referral}` : "",
     body.message ? `Message: ${body.message}` : "",
+    (apptType && !isTrade) ? `Team notify (SMS pending A2P): ${NOTIFY_NUMBERS}` : "",
   ].filter(Boolean).join("\n");
 
   const consent =

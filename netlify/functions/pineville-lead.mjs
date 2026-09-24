@@ -6,8 +6,9 @@
 // GET:  ?form=sales|cleaning&date=YYYY-MM-DD -> returns how many bookings each
 //   fixed slot already has, so the form can grey out full slots in real time.
 //
-// Token kept SERVER-SIDE in a Netlify env var. Capacity uses Netlify Blobs
-// (guarded dynamic import — if unavailable, booking still works, just uncapped).
+// Token kept SERVER-SIDE in a Netlify env var. Capacity uses Netlify Blobs with
+// strong-consistency reads (guarded dynamic import — if unavailable, booking
+// still works, just uncapped).
 //
 // Env vars:
 //   PRG_GHL_TOKEN        - GHL Private Integration token
@@ -30,23 +31,20 @@ const SLOTS = {
 const typeFromForm = (f) => (String(f).toLowerCase() === "cleaning" ? "Cleaning" : "Sales");
 const bkey = (t, d, s) => `${t}|${d}|${s}`;
 
-let BLOB_ERR = "";
 async function getBlobStore() {
   try {
     const mod = await import("@netlify/blobs");
     return mod.getStore("prg-bookings");
-  } catch (e) {
-    BLOB_ERR = String(e && e.message || e);
+  } catch (_) {
     return null;
   }
 }
 async function readCount(store, t, d, s) {
   if (!store) return 0;
   try {
-    const v = await store.get(bkey(t, d, s));
+    const v = await store.get(bkey(t, d, s), { consistency: "strong" });
     return v ? parseInt(v, 10) || 0 : 0;
-  } catch (e) {
-    BLOB_ERR = "read:" + String(e && e.message || e);
+  } catch (_) {
     return 0;
   }
 }
@@ -64,7 +62,7 @@ export default async (req) => {
     const counts = {};
     const store = date ? await getBlobStore() : null;
     if (date) for (const s of slots) counts[s] = await readCount(store, type, date, s);
-    return json({ cap, counts, blobs: !!store, err: BLOB_ERR || undefined });
+    return json({ cap, counts });
   }
 
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);

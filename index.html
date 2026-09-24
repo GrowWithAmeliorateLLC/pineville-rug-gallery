@@ -94,6 +94,7 @@
   .cgrid figure:hover img{transform:scale(1.04)}
   .collection .center{text-align:center;margin-top:60px}
   .collection .center p{color:var(--stone);font-size:.92rem;margin-bottom:22px}
+  .collection .center .btn{margin:6px}
 
   /* services */
   .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
@@ -163,6 +164,9 @@
   .book .svc-opts label:hover{border-color:var(--clay)}
   .book .svc-opts input{width:auto;margin:0;flex:none}
   .book .svc-opts label:has(input:checked){border-color:var(--pine);background:var(--sand);color:var(--pine)}
+  .book .perk{grid-column:1 / -1;display:flex;gap:11px;align-items:flex-start;font-size:.9rem;color:var(--pine);line-height:1.5;cursor:pointer;background:var(--sand);border:1px solid var(--clay-soft);padding:14px 16px}
+  .book .perk input{width:auto;margin-top:3px;flex:none}
+  .book .perk b{font-weight:500}
   .book .addr-row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px 14px}
   .book input,.book select,.book textarea{width:100%;font-family:'Jost';font-weight:300;font-size:.98rem;padding:13px 15px;border:1px solid var(--line);background:var(--paper);color:var(--ink);outline:none;transition:.25s}
   .book input[type=date]{max-width:320px}
@@ -317,7 +321,7 @@
       <div class="split-txt">
         <span class="eyebrow">Our Story</span>
         <h2>Three generations of woven artistry, brought to Charlotte.</h2>
-        <p>Pineville Rug Gallery was founded in 1986 on a simple belief: that a great rug is not only décor, but also an heirloom. Owner Reza Elyasi is a third-generation rug dealer whose sister owned a rug factory in Tehran, and his family brings a century of knowledge, importing breathtaking hand-knotted pieces from Isfahan, Tabriz, Kashan, and Heriz.</p>
+        <p>Pineville Rug Gallery was founded in 1986 on a simple belief: that a great rug is not only décor, but also an heirloom. Owner Reza Elyasi is a third-generation rug dealer whose sister owned a rug factory in Tehran, and his family brings a century of knowledge, importing breathtaking hand-knotted pieces from around the world, including Isfahan, Tabriz, Kashan, and Heriz.</p>
         <p>Every rug is chosen for quality, durability, and authenticity, then cared for by hand in our own gallery. It's craftsmanship you can feel underfoot — and hand down through generations, often lasting more than a hundred years.</p>
         <a href="#collection" class="btn">Experience the Gallery</a>
         <p style="margin-top:22px;font-size:.7rem;text-transform:uppercase;letter-spacing:.2em;color:var(--stone)">As featured on <a href="https://spectrumlocalnews.com/nc/charlotte/news/2024/06/18/small-business--mecklenburg-county--funding-options--loans--pineville-rug-gallery" target="_blank" rel="noopener" style="color:var(--clay);border-bottom:1px solid var(--clay);padding-bottom:2px">Spectrum News 1</a></p>
@@ -330,13 +334,13 @@
   </div>
 </section>
 
-<!-- COLLECTION — BROWSABLE GRID -->
+<!-- COLLECTION — PREVIEW -> FULL GALLERY PAGE -->
 <section id="collection" class="collection">
   <div class="wrap">
     <div class="glimpse-head">
       <span class="eyebrow">Browse the Collection</span>
       <h2>A look at the gallery floor.</h2>
-      <p>A selection from our collection of over 1,000 hand-knotted rugs — antique Heriz, Tabriz, Oushak and more, each one-of-a-kind. See something you love? Come visit, or tell us what you're after and we'll have the right pieces waiting.</p>
+      <p>A selection from our collection of over 1,000 hand-knotted rugs from around the world, including Heriz, Oushak and Tabriz — each one-of-a-kind. See something you love? Book a viewing or give us a call and we'll have it waiting.</p>
     </div>
     <div class="cgrid">
       <figure><div class="ph"><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fresized%2F6950%2F202149%2F203753%2F15a661c7353250e366c3c3b141720438.jpg&w=520&q=72" alt="Hand-knotted Oriental rug"></div></figure>
@@ -345,13 +349,11 @@
       <figure><div class="ph"><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fresized%2F6950%2F202149%2F203753%2F683f63d0b4a2d011d03fec8230881a54.jpg&w=520&q=72" alt="Hand-knotted Heriz rug"></div></figure>
       <figure><div class="ph"><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fresized%2F6950%2F202149%2F203753%2Fbe79132117ccfee1efc6fa5e28ed19ab.jpg&w=520&q=72" alt="Hand-knotted Heriz rug"></div></figure>
       <figure><div class="ph"><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fresized%2F6950%2F202149%2F203753%2F727fb09869aeeecb1afc1c0089d1fdfc.jpg&w=520&q=72" alt="Hand-knotted Heriz rug"></div></figure>
-      <figure><div class="ph"><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fresized%2F6950%2F202149%2F203753%2F4e0dee9442f0e58283a6e07d44de87b6.jpg&w=520&q=72" alt="Hand-knotted Heriz rug"></div></figure>
-      <figure><div class="ph"><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fresized%2F6950%2F202149%2F203753%2Fe34a82d740d8a1807b278cb899eef3e6.jpg&w=520&q=72" alt="Hand-knotted Heriz rug"></div></figure>
-      <figure><div class="ph"><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fresized%2F6950%2F202149%2F203753%2F2f24786921c7c418b309e657d716293b.jpg&w=520&q=72" alt="Hand-knotted Heriz rug"></div></figure>
     </div>
     <div class="center">
-      <p>A small sample of the gallery — over 1,000 rugs in person, on the floor and in our warehouse.</p>
-      <a href="#book" class="btn solid">Book a Viewing</a>
+      <p>A glimpse of the gallery — see the full collection online, then book a viewing or give us a call. Over 1,000 rugs in person.</p>
+      <a href="/gallery.html" class="btn solid">View the Full Collection</a>
+      <a href="#book" class="btn">Book a Viewing</a>
     </div>
   </div>
 </section>
@@ -475,7 +477,7 @@
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow">Book an Appointment</span>
-      <h2>Pick a time that works.</h2>
+      <h2>Book a Design Appointment.</h2>
       <p>Choose the kind of visit and a time — we'll confirm by text or call. Prefer to talk it through? Call us anytime at <a href="tel:7048892454" style="color:var(--clay);border-bottom:1px solid var(--clay)">(704) 889-2454</a>.</p>
     </div>
 
@@ -507,6 +509,7 @@
           <label><input type="checkbox" name="services" value="Appraisal"><span>Appraisal</span></label>
         </div>
       </div>
+      <label class="perk"><input type="checkbox" name="services" value="FREE Interior Designer at Appointment"><span><b>Yes — I'd love a FREE interior designer at my appointment</b>, compliments of Pineville Rug Gallery.</span></label>
       <div><label class="fld" for="s-date">Preferred date</label><input id="s-date" name="appt_date" type="date" required></div>
       <div class="full svc-select">
         <span class="fld">Preferred time <em>Mon–Sat showroom hours</em></span>
@@ -555,6 +558,7 @@
           <label><input type="checkbox" name="services" value="Repair &amp; Restoration"><span>Repair &amp; restoration</span></label>
         </div>
       </div>
+      <label class="perk"><input type="checkbox" name="services" value="FREE Cleaning &amp; Repair Consultation"><span><b>Yes — I'd like a FREE cleaning &amp; repair consultation</b>, at my home or at the gallery.</span></label>
       <div class="full svc-select">
         <span class="fld">Pickup or drop-off?</span>
         <div class="svc-opts">
@@ -649,10 +653,10 @@
       <div>
         <h4>Explore</h4>
         <ul>
-          <li><a href="#collection">The Collection</a></li>
-          <li><a href="#collection">Browse by Size</a></li>
-          <li><a href="#collection">Browse by Style</a></li>
-          <li><a href="#collection">New Arrivals</a></li>
+          <li><a href="/gallery.html">The Collection</a></li>
+          <li><a href="/gallery.html">Browse Rugs</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#book">Book an Appointment</a></li>
         </ul>
       </div>
       <div>

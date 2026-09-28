@@ -1,3 +1,5 @@
+# Env vars (set in Netlify UI): PRG_GHL_TOKEN, PRG_ADMIN_PASSWORD (Rug Manager at /admin).
+# Env var changes only reach functions after a redeploy.
 [build]
   publish = "."
   functions = "netlify/functions"

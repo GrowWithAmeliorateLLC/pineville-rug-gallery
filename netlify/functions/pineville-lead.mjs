@@ -19,7 +19,7 @@ const GHL_BASE = "https://services.leadconnectorhq.com";
 const GHL_VERSION = "2021-07-28";
 const LOCATION_ID = process.env.PRG_GHL_LOCATION_ID || "SEUOenwNjKokn5Nnb0cU";
 const TOKEN = process.env.PRG_GHL_TOKEN;
-const NOTIFY_NUMBERS = process.env.PRG_NOTIFY_NUMBERS || "3154800680";           // SMS (once A2P live)
+const NOTIFY_NUMBERS = process.env.PRG_NOTIFY_NUMBERS || "9802882538,9803783162"; // Reza, Sardar — SMS (once A2P live)
 const NOTIFY_EMAIL = process.env.PRG_NOTIFY_EMAIL || "hi@growwithameliorate.com"; // internal email (placeholder)
 const EMAIL_FROM = process.env.PRG_EMAIL_FROM || "showroom@pinevilleruggallery.com";
 

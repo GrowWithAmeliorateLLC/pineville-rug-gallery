@@ -1,4 +1,5 @@
-# Env vars (set in Netlify UI): PRG_GHL_TOKEN, PRG_ADMIN_PASSWORD (Rug Manager at /admin).
+# Env vars (set in Netlify UI): PRG_GHL_TOKEN, PRG_ADMIN_PASSWORD (Rug Manager at /admin),
+# PRG_NOTIFY_EMAIL (team booking alerts), PRG_NOTIFY_NUMBERS (team SMS once A2P is live).
 # Env var changes only reach functions after a redeploy.
 [build]
   publish = "."

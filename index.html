@@ -100,6 +100,7 @@
   .cgrid .ph{overflow:hidden;background:var(--paper);padding:16px;border:1px solid rgba(34,30,24,.12);box-shadow:0 12px 30px rgba(12,34,29,.10)}
   .cgrid .ph img{width:100%;height:300px;object-fit:contain;transition:transform 1s ease}
   .cgrid figure:hover img{transform:scale(1.04)}
+  .cgrid a{display:block}
   .collection .center{text-align:center;margin-top:60px}
   .collection .center p{color:var(--stone);font-size:.92rem;margin-bottom:22px}
   .collection .center .btn{margin:6px}
@@ -355,7 +356,7 @@
       <h2>A look at the gallery floor.</h2>
       <p>A selection from our collection of over 1,000 hand-knotted rugs from around the world, including Heriz, Oushak and Tabriz — each one-of-a-kind. See something you love? Book a viewing or give us a call and we'll have it waiting.</p>
     </div>
-    <div class="cgrid">
+    <div class="cgrid" id="home-grid">
       <figure><div class="ph"><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fresized%2F6950%2F202149%2F203753%2F15a661c7353250e366c3c3b141720438.jpg&w=520&q=72" alt="Hand-knotted Oriental rug"></div></figure>
       <figure><div class="ph"><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fresized%2F6950%2F202149%2F203753%2F14fd4f59ce35250135d457c7ee148980.jpg&w=520&q=72" alt="Hand-knotted Oriental rug"></div></figure>
       <figure><div class="ph"><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fresized%2F6950%2F202149%2F203753%2Ff0187d26321d18466f2a696c78129000.jpg&w=520&q=72" alt="Hand-knotted Heriz rug"></div></figure>
@@ -825,6 +826,23 @@
   prgWireAvailability('clean-form','cleaning');
   prgBook('book-form','s-msg');
   prgBook('clean-form','c-msg');
+
+  // Collection preview: first 6 live rugs from the rug manager (static photos stay if this fails).
+  (function(){
+    var g=document.getElementById('home-grid'); if(!g) return;
+    function esc(t){return String(t||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+    fetch('/api/rugs').then(function(r){return r.json();}).then(function(j){
+      var rugs=((j&&j.rugs)||[]).slice(0,6); if(!rugs.length) return;
+      g.innerHTML=rugs.map(function(r){ return '<figure><a href="'+esc(r.url)+'"><div class="ph"><img loading="lazy" src="'+esc(r.thumb)+'" alt="'+esc(r.label)+'"></div></a></figure>'; }).join('');
+    }).catch(function(){});
+  })();
+
+  // Coming from a rug page: note which rug they want to see.
+  (function(){
+    var rug=new URLSearchParams(location.search).get('rug'); if(!rug) return;
+    var t=document.getElementById('s-project'); if(t && !t.value) t.value='I\'d like to see: '+rug.slice(0,120);
+    var b=document.querySelector('#book-form input[value="Browsing the Collection"]'); if(b) b.checked=true;
+  })();
 
   // Trade Program application.
   (function(){

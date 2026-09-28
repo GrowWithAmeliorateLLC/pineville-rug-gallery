@@ -288,7 +288,7 @@
       <ul>
         <li><a href="#collection">The Collection</a></li>
         <li><a href="#services">Services</a></li>
-        <li><a href="#trade">For Designers</a></li>
+        <li><a href="/trade.html">Trade Program</a></li>
         <li><a href="#story">Our Story</a></li>
         <li><a href="#visit">Visit</a></li>
       </ul>
@@ -409,49 +409,6 @@
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- TRADE COLOR BLOCK (ref B) -->
-<section id="trade" class="trade" style="padding:0">
-  <div class="trade-txt">
-    <span class="eyebrow">For Designers &amp; The Trade</span>
-    <h2>A trusted partner for Charlotte's finest interiors.</h2>
-    <p>We work hand-in-hand with over 100 interior designers — offering trade pricing, in-home previews, and access to rare pieces sourced directly from the weaving regions.</p>
-    <p style="color:rgba(245,239,228,.82)">Design a room from the floor up — bring us the space, and we'll bring the rugs to life.</p>
-    <a href="#trade-apply" class="btn light">Join Our Trade Program</a>
-  </div>
-  <div class="trade-img"></div>
-</section>
-
-<!-- TRADE PROGRAM APPLICATION -->
-<section id="trade-apply" class="book" style="background:var(--paper)">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">Trade Program Application</span>
-      <h2>Join our Trade Program.</h2>
-      <p>Complete the form below and we'll contact you for your approval. Members enjoy trade pricing, in-home previews, and first access to rare pieces sourced directly from the weaving regions.</p>
-    </div>
-    <form id="trade-form" novalidate>
-      <div><label class="fld" for="tf-name">Name</label><input id="tf-name" name="name" autocomplete="name" required></div>
-      <div><label class="fld" for="tf-company">Company</label><input id="tf-company" name="company_name" autocomplete="organization"></div>
-      <div><label class="fld" for="tf-tel">Tel No</label><input id="tf-tel" name="phone" type="tel" autocomplete="tel" required></div>
-      <div><label class="fld" for="tf-email">Email</label><input id="tf-email" name="email" type="email" autocomplete="email" required></div>
-      <div class="full"><label class="fld" for="tf-address">Address</label><input id="tf-address" name="address" autocomplete="street-address" placeholder="Street, city, state, ZIP"></div>
-      <div class="full svc-select">
-        <span class="fld">I am interested in being a: <em>Select all that apply</em></span>
-        <div class="trade-opts">
-          <label class="perk"><input type="checkbox" name="trade_interest" value="Trade Program Member"><span><b>Trade Program Member</b></span></label>
-          <label class="perk"><input type="checkbox" name="trade_interest" value="Pineville Rug Gallery Designer"><span><b>Pineville Rug Gallery Designer</b> — on call for complimentary design appointments requested by our clients, compensated by us.</span></label>
-        </div>
-      </div>
-      <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <div class="submit-row">
-        <button type="submit" class="btn solid">Submit Application</button>
-        <span class="msg" id="tf-msg" role="status" aria-live="polite"></span>
-      </div>
-      <p class="fineprint">We'll review your application and reach out to confirm your trade account. By submitting, you agree to our <a href="/privacy.html">Privacy Policy</a> and <a href="/terms.html">Terms</a>.</p>
-    </form>
   </div>
 </section>
 
@@ -688,7 +645,7 @@
           <li><a href="#services">Rug Cleaning</a></li>
           <li><a href="#services">Repair &amp; Restoration</a></li>
           <li><a href="#services">Appraisal</a></li>
-          <li><a href="#trade">For Designers</a></li>
+          <li><a href="/trade.html">Trade Program</a></li>
         </ul>
       </div>
       <div>
@@ -844,38 +801,6 @@
     var b=document.querySelector('#book-form input[value="Browsing the Collection"]'); if(b) b.checked=true;
   })();
 
-  // Trade Program application.
-  (function(){
-    var f = document.getElementById('trade-form'); if(!f) return;
-    f.addEventListener('submit', async function(e){
-      e.preventDefault();
-      var msg = document.getElementById('tf-msg'); msg.className='msg'; msg.textContent='Sending…';
-      var btn = f.querySelector('button[type=submit]'); btn.disabled = true;
-      var data = Object.fromEntries(new FormData(f).entries());
-      data.form = 'trade';
-      var ti = f.querySelectorAll('input[name="trade_interest"]:checked');
-      var interests = Array.prototype.map.call(ti,function(c){return c.value;});
-      delete data.trade_interest;
-      data.services = ['Trade Program Application'].concat(interests);
-      data.page = location.href;
-      if(!data.name || !data.phone || !data.email){
-        msg.className='msg err'; msg.textContent='Please add your name, phone, and email.'; btn.disabled=false; return;
-      }
-      if(!interests.length){
-        msg.className='msg err'; msg.textContent='Please choose Trade Program Member, Designer, or both.'; btn.disabled=false; return;
-      }
-      try{
-        var r = await fetch('/api/pineville-lead', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)});
-        var j = await r.json().catch(function(){return {};});
-        if(!r.ok || j.error) throw new Error();
-        f.reset();
-        msg.className='msg ok'; msg.textContent='Thank you — we’ll review and reach out to confirm your trade account.';
-      }catch(_){
-        msg.className='msg err'; msg.textContent='Something went wrong — please call us at (704) 889-2454.';
-      }
-      btn.disabled = false;
-    });
-  })();
 </script>
 
 </body>

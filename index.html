@@ -38,13 +38,20 @@
   header{position:sticky;top:0;z-index:50;background:rgba(253,250,244,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
   .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 40px;max-width:1400px;margin:0 auto}
   .brand{display:flex;align-items:center;gap:12px}
-  .brand img{height:74px;width:auto;display:block}
+  .brand img{height:132px;width:auto;display:block;margin:-28px 0 -29px -8px}
   nav ul{display:flex;gap:34px;list-style:none;align-items:center}
   nav a{font-size:.76rem;text-transform:uppercase;letter-spacing:.16em;color:var(--ink);transition:.25s;position:relative;padding-bottom:3px}
   nav a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--clay);transition:.3s}
   nav a:hover::after{width:100%}
   .nav-cta{display:flex;align-items:center;gap:20px}
   .nav-phone{font-size:.78rem;letter-spacing:.08em;color:var(--pine)}
+  .nav-cta{gap:12px}
+  .nav-cta .hdr-btn{padding:13px 18px;font-size:.66rem;letter-spacing:.16em;white-space:nowrap}
+  .nav-cta .hdr-mobile{display:none}
+  .brand{flex:none}
+  nav a{white-space:nowrap}
+  @media(max-width:1440px){.nav-phone{display:none} nav ul{gap:24px}}
+  @media(max-width:1280px){nav ul{display:none} .nav-cta .burger{display:flex}}
   .burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer}
   .burger span{width:24px;height:1.5px;background:var(--pine)}
 
@@ -167,6 +174,7 @@
   .book .perk{grid-column:1 / -1;display:flex;gap:11px;align-items:flex-start;font-size:.9rem;color:var(--pine);line-height:1.5;cursor:pointer;background:var(--sand);border:1px solid var(--clay-soft);padding:14px 16px}
   .book .perk input{width:auto;margin-top:3px;flex:none}
   .book .perk b{font-weight:500}
+  .book .trade-opts{display:grid;gap:10px}
   .book .addr-row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px 14px}
   .book input,.book select,.book textarea{width:100%;font-family:'Jost';font-weight:300;font-size:.98rem;padding:13px 15px;border:1px solid var(--line);background:var(--paper);color:var(--ink);outline:none;transition:.25s}
   .book input[type=date]{max-width:320px}
@@ -215,6 +223,8 @@
     .values .wrap{grid-template-columns:1fr 1fr;gap:34px}
     .trade-txt{padding:64px 40px}
     nav ul,.nav-phone{display:none}
+    .nav-cta .hdr-btn{display:none}
+    .nav-cta .hdr-mobile{display:inline-block}
     .burger{display:flex}
     .split.rev{direction:ltr}
     .split-img{order:-1}
@@ -223,7 +233,7 @@
     .wrap,.hero-inner{padding-left:22px;padding-right:22px}
     .nav{padding:12px 22px}
     .announce{font-size:.6rem;letter-spacing:.12em;padding:8px 14px;line-height:1.5}
-    .brand img{height:54px}
+    .brand img{height:92px;margin:-19px 0 -20px -6px}
     .nav-cta{gap:12px}
     .nav-cta .btn.solid{padding:11px 14px;font-size:.58rem;letter-spacing:.1em}
     .hero{min-height:80vh}
@@ -283,7 +293,9 @@
     </nav>
     <div class="nav-cta">
       <span class="nav-phone">(704) 889-2454</span>
-      <a href="#book" class="btn solid">Book Appointment</a>
+      <a href="#book-design" class="btn solid hdr-btn">Book a Design Appointment</a>
+      <a href="#book-cleaning" class="btn hdr-btn">Book a Cleaning</a>
+      <a href="#book" class="btn solid hdr-mobile">Book</a>
       <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
   </div>
@@ -297,8 +309,8 @@
     <h1>Handwoven treasures, made to last generations.</h1>
     <p>A family-owned gallery curating the Carolinas' finest hand-knotted rugs since 1986 — sourced, cleaned, and restored with the care of four decades.</p>
     <div class="hero-actions">
-      <a href="#book" class="btn light">Book a Design Appointment</a>
-      <a href="#collection" class="btn light">Explore the Collection</a>
+      <a href="#book-design" class="btn light">Book a Design Appointment</a>
+      <a href="#book-cleaning" class="btn light">Book a Cleaning</a>
     </div>
     <div class="hero-rev"><span class="stars">★★★★★</span> 4.9 · 56 Google reviews</div>
   </div>
@@ -321,14 +333,14 @@
       <div class="split-txt">
         <span class="eyebrow">Our Story</span>
         <h2>Three generations of woven artistry, brought to Charlotte.</h2>
-        <p>Pineville Rug Gallery was founded in 1986 on a simple belief: that a great rug is not only décor, but also an heirloom. Owner Reza Elyasi is a third-generation rug dealer whose sister owned a rug factory in Tehran, and his family brings a century of knowledge, importing breathtaking hand-knotted pieces from around the world, including Isfahan, Tabriz, Kashan, and Heriz.</p>
+        <p>Pineville Rug Gallery was founded in 1986 on a simple belief: that a great rug is not only décor, but also an heirloom. Owner Reza Elyasi is a third-generation rug dealer, and his family brings a century of knowledge, importing breathtaking hand-knotted pieces from around the world, including Isfahan, Tabriz, Kashan, and Heriz.</p>
         <p>Every rug is chosen for quality, durability, and authenticity, then cared for by hand in our own gallery. It's craftsmanship you can feel underfoot — and hand down through generations, often lasting more than a hundred years.</p>
         <a href="#collection" class="btn">Experience the Gallery</a>
         <p style="margin-top:22px;font-size:.7rem;text-transform:uppercase;letter-spacing:.2em;color:var(--stone)">As featured on <a href="https://spectrumlocalnews.com/nc/charlotte/news/2024/06/18/small-business--mecklenburg-county--funding-options--loans--pineville-rug-gallery" target="_blank" rel="noopener" style="color:var(--clay);border-bottom:1px solid var(--clay);padding-bottom:2px">Spectrum News 1</a></p>
       </div>
       <div class="split-img">
-        <img src="/.netlify/images?url=https%3A%2F%2Fstorage.googleapis.com%2Fpineville-rug%2FDSC02577_1.jpg&w=1400&q=76" alt="Reza Elyasi and his family at Pineville Rug Gallery" style="object-position:center top">
-        <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.02rem;color:var(--stone);margin-top:14px;text-align:center">Reza Elyasi &amp; family — celebrating 40 years in Charlotte.</p>
+        <img src="/.netlify/images?url=https%3A%2F%2Fstorage.googleapis.com%2Fpineville-rug%2FDSC02577_1.jpg&w=1400&q=76" alt="Reza Elyasi, his wife Reyhaneh, and family at Pineville Rug Gallery" style="object-position:center top">
+        <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.02rem;color:var(--stone);margin-top:14px;text-align:center">Reza Elyasi, his wife Reyhaneh &amp; family — celebrating 40 years in Charlotte.</p>
       </div>
     </div>
   </div>
@@ -373,7 +385,7 @@
           <span class="num">01</span>
           <h3>Rug Cleaning</h3>
           <p>Hand-washed the way fine rugs demand — vacuumed, dust drawn from front and back, gently hand-washed, then dried in open air. Never harsh-machined, so delicate wool and silk keep their color and luster.</p>
-          <a href="#book">Book Cleaning →</a>
+          <a href="#book-cleaning">Book a Cleaning →</a>
         </div>
       </div>
       <div class="svc">
@@ -382,7 +394,7 @@
           <span class="num">02</span>
           <h3>Repair &amp; Restoration</h3>
           <p>Fraying edges, moth damage, tears, worn areas — even fringe caught and shredded by a household vacuum, the most common mishap. Every repair is hand-sewn by our in-house expert and quoted in person.</p>
-          <a href="#book">Book Repair →</a>
+          <a href="#book-cleaning">Book Repair →</a>
         </div>
       </div>
       <div class="svc">
@@ -424,6 +436,13 @@
       <div><label class="fld" for="tf-tel">Tel No</label><input id="tf-tel" name="phone" type="tel" autocomplete="tel" required></div>
       <div><label class="fld" for="tf-email">Email</label><input id="tf-email" name="email" type="email" autocomplete="email" required></div>
       <div class="full"><label class="fld" for="tf-address">Address</label><input id="tf-address" name="address" autocomplete="street-address" placeholder="Street, city, state, ZIP"></div>
+      <div class="full svc-select">
+        <span class="fld">I am interested in being a: <em>Select all that apply</em></span>
+        <div class="trade-opts">
+          <label class="perk"><input type="checkbox" name="trade_interest" value="Trade Program Member"><span><b>Trade Program Member</b></span></label>
+          <label class="perk"><input type="checkbox" name="trade_interest" value="Pineville Rug Gallery Designer"><span><b>Pineville Rug Gallery Designer</b> — on call for complimentary design appointments requested by our clients, compensated by us.</span></label>
+        </div>
+      </div>
       <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
       <div class="submit-row">
         <button type="submit" class="btn solid">Submit Application</button>
@@ -477,12 +496,12 @@
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow">Book an Appointment</span>
-      <h2>Book a Design Appointment.</h2>
+      <h2>Book an Appointment.</h2>
       <p>Choose the kind of visit and a time — we'll confirm by text or call. Prefer to talk it through? Call us anytime at <a href="tel:7048892454" style="color:var(--clay);border-bottom:1px solid var(--clay)">(704) 889-2454</a>.</p>
     </div>
 
     <div class="toggle">
-      <button type="button" id="tab-sales" class="active">Sales &amp; Design</button>
+      <button type="button" id="tab-sales" class="active">Design Appointment</button>
       <button type="button" id="tab-clean">Cleaning &amp; Repair</button>
     </div>
 
@@ -497,6 +516,7 @@
           <option>Google</option>
           <option>Referral</option>
           <option>Social media</option>
+          <option>Magazine ad</option>
           <option>Walked by the gallery</option>
           <option>Returning client</option>
           <option>Other</option>
@@ -547,6 +567,7 @@
           <option>Google</option>
           <option>Referral</option>
           <option>Social media</option>
+          <option>Magazine ad</option>
           <option>Walked by the gallery</option>
           <option>Returning client</option>
           <option>Other</option>
@@ -614,8 +635,8 @@
         <div><span class="k">Shipping</span><span>Serving the Charlotte area and beyond · Free shipping to the contiguous U.S. · Worldwide shipping available</span></div>
       </div>
       <div class="hero-actions">
-        <a href="#book" class="btn light">Book a Design Appointment</a>
-        <a href="tel:7048892454" class="btn light">Call the Gallery</a>
+        <a href="#book-design" class="btn light">Book a Design Appointment</a>
+        <a href="#book-cleaning" class="btn light">Book a Cleaning</a>
       </div>
     </div>
     <div class="visit-media">
@@ -691,7 +712,7 @@
     var n=document.querySelector('nav ul');
     n.style.display = n.style.display==='flex' ? 'none' : 'flex';
     n.style.position='absolute'; n.style.flexDirection='column'; n.style.background='var(--paper)';
-    n.style.top='70px'; n.style.right='20px'; n.style.padding='24px 30px'; n.style.gap='18px';
+    n.style.top='100%'; n.style.right='20px'; n.style.padding='24px 30px'; n.style.gap='18px';
     n.style.border='1px solid var(--line)'; n.style.boxShadow='0 20px 40px rgba(12,34,29,.15)';
   });
 
@@ -704,6 +725,18 @@
       fs.classList.toggle('hidden',!sales); fc.classList.toggle('hidden',sales);
     }
     if(ts&&tc){ ts.addEventListener('click',function(){show(true);}); tc.addEventListener('click',function(){show(false);}); }
+    function fromHash(e){
+      var h=location.hash;
+      if(h!=='#book-design'&&h!=='#book-cleaning') return;
+      if(e) e.preventDefault&&e.preventDefault();
+      show(h==='#book-design');
+      document.getElementById('book').scrollIntoView({behavior:'smooth'});
+    }
+    document.querySelectorAll('a[href="#book-design"],a[href="#book-cleaning"]').forEach(function(a){
+      a.addEventListener('click',function(e){ e.preventDefault(); var h=a.getAttribute('href'); history.replaceState(null,'',h); fromHash(); });
+    });
+    window.addEventListener('hashchange',function(){fromHash();});
+    fromHash();
     var today=new Date().toISOString().slice(0,10);
     document.querySelectorAll('#book input[type=date]').forEach(function(d){ d.min=today; });
   })();
@@ -801,10 +834,16 @@
       var btn = f.querySelector('button[type=submit]'); btn.disabled = true;
       var data = Object.fromEntries(new FormData(f).entries());
       data.form = 'trade';
-      data.services = ['Trade Program Application'];
+      var ti = f.querySelectorAll('input[name="trade_interest"]:checked');
+      var interests = Array.prototype.map.call(ti,function(c){return c.value;});
+      delete data.trade_interest;
+      data.services = ['Trade Program Application'].concat(interests);
       data.page = location.href;
       if(!data.name || !data.phone || !data.email){
         msg.className='msg err'; msg.textContent='Please add your name, phone, and email.'; btn.disabled=false; return;
+      }
+      if(!interests.length){
+        msg.className='msg err'; msg.textContent='Please choose Trade Program Member, Designer, or both.'; btn.disabled=false; return;
       }
       try{
         var r = await fetch('/api/pineville-lead', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)});

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Trade Program — Pineville Rug Gallery</title>
+<meta name="description" content="Trade pricing, in-home previews, and paid design appointments for interior designers working with Pineville Rug Gallery in Charlotte.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#fdfaf4; --cream:#f5efe4; --sand:#ece3d3;
+    --pine:#12312b; --pine-deep:#0c221d; --pine-soft:#2c4a43;
+    --clay:#b0663f; --clay-soft:#c98b64; --brass:#a98c5f;
+    --ink:#221e18; --stone:#6d645a; --line:rgba(34,30,24,.14);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Jost',sans-serif;color:var(--ink);background:var(--paper);line-height:1.65;font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  h1,h2,h3,.serif{font-family:'Cormorant Garamond',serif;font-weight:500;line-height:1.08;letter-spacing:.005em}
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 40px}
+  .eyebrow{font-size:.72rem;text-transform:uppercase;letter-spacing:.32em;font-weight:500;color:var(--clay)}
+  .btn{display:inline-block;font-size:.74rem;text-transform:uppercase;letter-spacing:.22em;font-weight:500;padding:16px 30px;border:1px solid var(--pine);color:var(--pine);background:transparent;transition:.35s;cursor:pointer}
+  .btn:hover{background:var(--pine);color:var(--paper)}
+  .btn.solid{background:var(--pine);color:var(--paper)}
+  .btn.solid:hover{background:var(--pine-deep);border-color:var(--pine-deep)}
+  .btn.light{border-color:rgba(253,250,244,.6);color:var(--paper)}
+  .btn.light:hover{background:var(--paper);color:var(--pine);border-color:var(--paper)}
+
+  /* announcement */
+  .announce{background:var(--pine-deep);color:var(--cream);text-align:center;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;padding:9px 20px}
+  .announce b{color:#fff;font-weight:500}
+
+  /* header */
+  header{position:sticky;top:0;z-index:50;background:rgba(253,250,244,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 40px;max-width:1400px;margin:0 auto}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand img{height:132px;width:auto;display:block;margin:-28px 0 -29px -8px}
+  nav ul{display:flex;gap:34px;list-style:none;align-items:center}
+  nav a{font-size:.76rem;text-transform:uppercase;letter-spacing:.16em;color:var(--ink);transition:.25s;position:relative;padding-bottom:3px}
+  nav a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--clay);transition:.3s}
+  nav a:hover::after{width:100%}
+  .nav-cta{display:flex;align-items:center;gap:20px}
+  .nav-phone{font-size:.78rem;letter-spacing:.08em;color:var(--pine)}
+  .nav-cta{gap:12px}
+  .nav-cta .hdr-btn{padding:13px 18px;font-size:.66rem;letter-spacing:.16em;white-space:nowrap}
+  .nav-cta .hdr-mobile{display:none}
+  .brand{flex:none}
+  nav a{white-space:nowrap}
+  .nav-cta .nav-phone{display:none}
+  @media(max-width:1440px){nav ul{gap:24px}}
+  @media(max-width:1280px){nav ul{display:none} .nav-cta .burger{display:flex}}
+  .burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer}
+  .burger span{width:24px;height:1.5px;background:var(--pine)}
+
+  /* hero */
+  .hero{position:relative;min-height:88vh;display:flex;align-items:flex-end;color:var(--paper);overflow:hidden}
+  .hero-img{position:absolute;inset:0;background:url('https://pinevilleruggallery.com/wp-content/uploads/2023/12/IMG_5390-copy_11zon.webp') center/cover no-repeat;transform:scale(1.03)}
+  .hero-img::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(12,34,29,.74) 0%,rgba(12,34,29,.46) 44%,rgba(12,34,29,.08) 82%),linear-gradient(180deg,rgba(12,34,29,.30) 0%,rgba(12,34,29,.12) 38%,rgba(12,34,29,.90) 100%)}
+  .hero-inner{position:relative;z-index:2;padding:0 40px 84px;max-width:1400px;margin:0 auto;width:100%}
+  .hero .eyebrow{display:inline-block;color:#f7e7cb;background:rgba(12,34,29,.55);padding:8px 15px;border-radius:2px;font-size:.76rem;letter-spacing:.24em;text-shadow:0 1px 3px rgba(12,34,29,.9)}
+  .hero h1{font-size:clamp(2.8rem,6vw,5.4rem);margin:20px 0 18px;max-width:16ch;font-weight:400;text-shadow:0 2px 24px rgba(12,34,29,.7),0 1px 3px rgba(12,34,29,.6)}
+  .hero p{font-weight:300;font-size:1.12rem;max-width:44ch;color:#fdfaf4;text-shadow:0 1px 14px rgba(12,34,29,.85),0 1px 2px rgba(12,34,29,.7)}
+  .hero-actions{display:flex;gap:16px;margin-top:34px;flex-wrap:wrap;align-items:center}
+  .hero-rev{display:flex;align-items:center;gap:10px;margin-top:30px;font-size:.82rem;letter-spacing:.06em;color:#fdfaf4;text-shadow:0 1px 10px rgba(12,34,29,.75)}
+  .stars{color:#e8b45e;letter-spacing:2px}
+
+  /* marquee strip */
+  .heritage{background:var(--pine);color:var(--cream)}
+  .heritage .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-top:26px;padding-bottom:26px;text-align:center}
+  .heritage div{flex:1;min-width:150px}
+  .heritage b{font-family:'Cormorant Garamond',serif;font-size:1.5rem;display:block;color:#fff;font-weight:500}
+  .heritage span{font-size:.68rem;text-transform:uppercase;letter-spacing:.2em;color:rgba(245,239,228,.7)}
+
+  /* section basics */
+  section{padding:110px 0}
+  .sec-head{text-align:center;max-width:640px;margin:0 auto 60px}
+  .sec-head h2{font-size:clamp(2.2rem,4.2vw,3.4rem);margin:14px 0 16px;color:var(--pine)}
+  .sec-head p{color:var(--stone);font-size:1.05rem}
+
+  /* editorial split */
+  .split{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:70px}
+  .split.rev{direction:rtl}.split.rev>*{direction:ltr}
+  .split-img img{width:100%;height:560px;object-fit:cover}
+  .split-txt .eyebrow{margin-bottom:16px;display:block}
+  .split-txt h2{font-size:clamp(2rem,3.6vw,3rem);color:var(--pine);margin-bottom:22px}
+  .split-txt p{color:var(--stone);margin-bottom:18px}
+  .split-txt .btn{margin-top:12px}
+
+  /* collection — browsable grid */
+  .collection{background:var(--cream)}
+  .glimpse-head{max-width:660px;margin:0 auto 60px;text-align:center}
+  .glimpse-head h2{font-size:clamp(2.2rem,4.2vw,3.4rem);color:var(--pine);margin:14px 0 16px}
+  .glimpse-head p{color:var(--stone);font-size:1.06rem}
+  .cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:8px}
+  .cgrid figure{margin:0}
+  .cgrid .ph{overflow:hidden;background:var(--paper);padding:16px;border:1px solid rgba(34,30,24,.12);box-shadow:0 12px 30px rgba(12,34,29,.10)}
+  .cgrid .ph img{width:100%;height:300px;object-fit:contain;transition:transform 1s ease}
+  .cgrid figure:hover img{transform:scale(1.04)}
+  .cgrid a{display:block}
+  .collection .center{text-align:center;margin-top:60px}
+  .collection .center p{color:var(--stone);font-size:.92rem;margin-bottom:22px}
+  .collection .center .btn{margin:6px}
+
+  /* services */
+  .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  .svc{background:var(--paper);border:1px solid var(--line)}
+  .svc-img{height:280px;overflow:hidden;background:var(--paper);border-bottom:1px solid var(--line);padding:18px;display:flex;align-items:center;justify-content:center}
+  .svc-img img{width:100%;height:100%;object-fit:contain;transition:.7s}
+  .svc:hover .svc-img img{transform:scale(1.05)}
+  .svc-body{padding:30px 28px 34px}
+  .svc-body .num{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--clay);letter-spacing:.1em}
+  .svc-body h3{font-size:1.7rem;color:var(--pine);margin:6px 0 12px}
+  .svc-body p{color:var(--stone);font-size:.95rem;margin-bottom:20px}
+  .svc-body a{font-size:.72rem;text-transform:uppercase;letter-spacing:.2em;color:var(--pine);border-bottom:1px solid var(--clay);padding-bottom:3px}
+
+  /* trade color block (ref B) */
+  .trade{background:var(--pine);color:var(--cream);display:grid;grid-template-columns:1.05fr .95fr;align-items:stretch}
+  .trade-txt{padding:100px 70px}
+  .trade-txt .eyebrow{color:var(--clay-soft)}
+  .trade-txt h2{font-size:clamp(2rem,3.6vw,3rem);color:#fff;margin:16px 0 20px}
+  .trade-txt p{color:rgba(245,239,228,.82);margin-bottom:26px;max-width:46ch}
+  .trade-img{background:url('https://pinevilleruggallery.com/wp-content/uploads/2026/02/pinevilleuggallery-img.jpg') center/cover no-repeat;min-height:440px}
+
+  /* values */
+  .values .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:40px}
+  .val .mk{width:34px;height:34px;transform:rotate(45deg);border:1.5px solid var(--brass);margin-bottom:22px}
+  .val h3{font-size:1.4rem;color:var(--pine);margin-bottom:10px}
+  .val p{color:var(--stone);font-size:.92rem}
+
+  /* reviews */
+  .reviews{background:var(--sand)}
+  .rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:20px}
+  .rev-card{background:var(--paper);padding:38px 34px;border:1px solid var(--line)}
+  .rev-card .stars{font-size:1rem;margin-bottom:18px;display:block}
+  .rev-card p{font-family:'Cormorant Garamond',serif;font-size:1.35rem;line-height:1.4;color:var(--ink);margin-bottom:22px;font-style:italic}
+  .rev-card .who{font-size:.72rem;text-transform:uppercase;letter-spacing:.18em;color:var(--stone)}
+
+  /* visit */
+  .visit{background:var(--pine-deep);color:var(--cream)}
+  .visit .wrap{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+  .visit .eyebrow{color:var(--clay-soft)}
+  .visit h2{font-size:clamp(2rem,3.8vw,3.2rem);color:#fff;margin:14px 0 24px}
+  .visit .rows{margin:26px 0}
+  .visit .rows div{display:flex;gap:16px;padding:14px 0;border-top:1px solid rgba(245,239,228,.16);font-size:.95rem}
+  .visit .rows .k{width:120px;text-transform:uppercase;letter-spacing:.16em;font-size:.7rem;color:rgba(245,239,228,.6);padding-top:3px}
+  .visit-media{display:grid;gap:14px}
+  .visit-media .storefront{width:100%;height:400px;object-fit:cover;object-position:50% 66%;display:block}
+  .visit-media .storefront-ph{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:400px;background:var(--pine-soft);color:rgba(245,239,228,.9);padding:26px;gap:8px}
+  .visit-media .storefront-ph b{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:1.3rem;color:#fff}
+  .visit-media .storefront-ph em{font-style:italic;color:var(--clay-soft);font-size:.9rem}
+  .visit-media iframe{width:100%;height:220px;border:0;display:block;filter:grayscale(.12)}
+
+  /* book an appointment / trade application */
+  .book{background:var(--cream)}
+  .book .wrap{max-width:760px}
+  .book .sec-head{margin-bottom:32px}
+  .book .toggle{display:flex;gap:8px;max-width:520px;margin:0 auto 34px;border:1px solid var(--line);padding:5px;background:var(--paper)}
+  .book .toggle button{flex:1;background:transparent;border:none;font-family:'Jost';font-weight:400;font-size:.74rem;text-transform:uppercase;letter-spacing:.13em;padding:14px 10px;cursor:pointer;color:var(--stone);transition:.25s}
+  .book .toggle button.active{background:var(--pine);color:var(--paper)}
+  .book form{display:grid;grid-template-columns:1fr 1fr;gap:18px 20px}
+  .book form.hidden{display:none}
+  .book .full{grid-column:1 / -1}
+  .book label.fld{display:block;font-size:.66rem;text-transform:uppercase;letter-spacing:.18em;color:var(--stone);margin-bottom:7px}
+  .book label.fld em{font-style:normal;text-transform:none;letter-spacing:.02em;color:var(--stone);font-weight:300;font-size:.78rem;margin-left:6px}
+  .book .svc-select .fld{display:block;font-size:.66rem;text-transform:uppercase;letter-spacing:.18em;color:var(--stone);margin-bottom:10px}
+  .book .svc-select .fld em{font-style:normal;text-transform:none;letter-spacing:.02em;color:var(--stone);font-weight:300;font-size:.8rem;margin-left:6px}
+  .book .svc-opts{display:flex;flex-wrap:wrap;gap:10px}
+  .book .svc-opts label{display:flex;align-items:center;gap:9px;border:1px solid var(--line);background:var(--paper);padding:11px 16px;font-size:.92rem;color:var(--ink);cursor:pointer;transition:.2s;user-select:none}
+  .book .svc-opts label:hover{border-color:var(--clay)}
+  .book .svc-opts input{width:auto;margin:0;flex:none}
+  .book .svc-opts label:has(input:checked){border-color:var(--pine);background:var(--sand);color:var(--pine)}
+  .book .perk{grid-column:1 / -1;display:flex;gap:11px;align-items:flex-start;font-size:.9rem;color:var(--pine);line-height:1.5;cursor:pointer;background:var(--sand);border:1px solid var(--clay-soft);padding:14px 16px}
+  .book .perk input{width:auto;margin-top:3px;flex:none}
+  .book .perk b{font-weight:500}
+  .book .trade-opts{display:grid;gap:10px}
+  .book .addr-row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px 14px}
+  .book input,.book select,.book textarea{width:100%;font-family:'Jost';font-weight:300;font-size:.98rem;padding:13px 15px;border:1px solid var(--line);background:var(--paper);color:var(--ink);outline:none;transition:.25s}
+  .book input[type=date]{max-width:320px}
+  .book input:focus,.book select:focus,.book textarea:focus{border-color:var(--clay)}
+  .book textarea{min-height:100px;resize:vertical}
+  .book .consent{grid-column:1 / -1;display:flex;gap:11px;align-items:flex-start;font-size:.84rem;color:var(--stone);line-height:1.5;cursor:pointer}
+  .book .consent input{width:auto;margin-top:3px;flex:none}
+  .book .fineprint{grid-column:1 / -1;font-size:.72rem;color:var(--stone);line-height:1.55}
+  .book .fineprint a{color:var(--clay);text-decoration:underline}
+  .book .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+  .book .submit-row{grid-column:1 / -1;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+  .book .msg{font-size:.9rem;font-weight:400}
+  .book .msg.ok{color:var(--pine-soft)}
+  .book .msg.err{color:var(--clay)}
+
+  /* newsletter band (ref A) */
+  .news{position:relative;color:var(--paper);text-align:center;overflow:hidden}
+  .news-img{position:absolute;inset:0;background:url('https://pinevilleruggallery.com/wp-content/uploads/2023/12/cover_11zon-2-700x854.webp') center/cover no-repeat}
+  .news-img::after{content:"";position:absolute;inset:0;background:rgba(12,34,29,.74)}
+  .news-inner{position:relative;z-index:2;padding:96px 20px;max-width:600px;margin:0 auto}
+  .news h2{font-size:clamp(2rem,4vw,3rem);color:#fff;margin:14px 0 14px}
+  .news p{color:rgba(253,250,244,.85);margin-bottom:28px}
+  .news form{display:flex;gap:0;max-width:440px;margin:0 auto;border:1px solid rgba(253,250,244,.5)}
+  .news input{flex:1;background:transparent;border:none;padding:16px 20px;color:var(--paper);font-family:'Jost';font-size:.9rem;outline:none}
+  .news input::placeholder{color:rgba(253,250,244,.6)}
+  .news button{background:var(--clay);color:#fff;border:none;padding:0 26px;font-size:.72rem;text-transform:uppercase;letter-spacing:.2em;cursor:pointer;transition:.3s}
+  .news button:hover{background:var(--clay-soft)}
+
+  /* footer */
+  footer{background:var(--pine-deep);color:rgba(245,239,228,.8);padding:76px 0 34px}
+  .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;padding-bottom:50px;border-bottom:1px solid rgba(245,239,228,.14)}
+  .foot-brand .name{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:#fff;letter-spacing:.04em}
+  .foot-brand p{font-size:.9rem;margin-top:16px;max-width:34ch;color:rgba(245,239,228,.62)}
+  footer h4{font-size:.7rem;text-transform:uppercase;letter-spacing:.22em;color:var(--clay-soft);margin-bottom:20px;font-weight:500}
+  footer ul{list-style:none}
+  footer li{margin-bottom:11px;font-size:.9rem}
+  footer li a:hover{color:#fff}
+  .foot-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;padding-top:26px;font-size:.76rem;color:rgba(245,239,228,.5)}
+  .foot-bottom a{color:rgba(245,239,228,.7)}
+  .foot-bottom a:hover{color:#fff}
+
+  @media(max-width:980px){
+    .split,.trade,.visit .wrap,.values .wrap,.foot-grid{grid-template-columns:1fr}
+    .cgrid{grid-template-columns:1fr 1fr;gap:24px}
+    .svc-grid,.rev-grid{grid-template-columns:1fr}
+    .values .wrap{grid-template-columns:1fr 1fr;gap:34px}
+    .trade-txt{padding:64px 40px}
+    nav ul,.nav-phone{display:none}
+    .nav-cta .hdr-btn{display:none}
+    .nav-cta .hdr-mobile{display:inline-block}
+    .burger{display:flex}
+    .split.rev{direction:ltr}
+    .split-img{order:-1}
+  }
+  @media(max-width:560px){
+    .wrap,.hero-inner{padding-left:22px;padding-right:22px}
+    .nav{padding:12px 22px}
+    .announce{font-size:.6rem;letter-spacing:.12em;padding:8px 14px;line-height:1.5}
+    .brand img{height:92px;margin:-19px 0 -20px -6px}
+    .nav-cta{gap:12px}
+    .nav-cta .btn.solid{padding:11px 14px;font-size:.58rem;letter-spacing:.1em}
+    .hero{min-height:80vh}
+    .hero-img::after{background:linear-gradient(180deg,rgba(12,34,29,.46) 0%,rgba(12,34,29,.26) 34%,rgba(12,34,29,.92) 100%)}
+    .hero h1{font-size:2.35rem;max-width:20ch;margin:16px 0 14px}
+    .hero p{font-size:1rem}
+    .hero-inner{padding-bottom:58px}
+    .hero-actions{gap:12px}
+    .hero-actions .btn{width:100%;text-align:center}
+    .heritage .wrap{gap:24px 12px}
+    .heritage div{flex:0 0 44%;min-width:0}
+    .heritage b{font-size:1.3rem}
+    section{padding:64px 0}
+    .sec-head{margin-bottom:44px}
+    .glimpse-head{margin-bottom:46px}
+    .cgrid{grid-template-columns:1fr;gap:20px}
+    .cgrid .ph img{height:340px}
+    .split{gap:34px}
+    .split-img img{height:400px}
+    .values .wrap{grid-template-columns:1fr;gap:30px}
+    .svc-body{padding:26px 24px 30px}
+    .trade-txt{padding:48px 22px}
+    .trade-img{min-height:300px}
+    .rev-card{padding:32px 26px}
+    .visit .rows div{flex-direction:column;gap:3px}
+    .visit .rows .k{width:auto}
+    .visit-media .storefront,.visit-media .storefront-ph{height:300px}
+    .visit-media iframe{height:200px}
+    .book form{grid-template-columns:1fr}
+    .book .addr-row{grid-template-columns:1fr}
+    .news form{flex-direction:column;border:none;gap:10px}
+    .news input{border:1px solid rgba(253,250,244,.5)}
+    .news button{padding:15px}
+    footer{padding:56px 0 30px}
+    .foot-grid{gap:32px}
+    .foot-bottom{flex-direction:column;gap:6px}
+  }
+</style>
+</head>
+<body>
+
+<div class="announce">Complimentary local pickup &amp; delivery &nbsp;·&nbsp; <b>Book your design appointment today</b></div>
+
+<header>
+  <div class="nav">
+    <a class="brand" href="/index.html" aria-label="Pineville Rug Gallery">
+      <img src="https://storage.googleapis.com/pineville-rug/Trans_PRG.png" alt="Pineville Rug Gallery — Est. 1986">
+    </a>
+    <nav>
+      <ul>
+        <li><a href="/index.html#collection">The Collection</a></li>
+        <li><a href="/index.html#services">Services</a></li>
+        <li><a href="/trade.html" aria-current="page">Trade Program</a></li>
+        <li><a href="/index.html#story">Our Story</a></li>
+        <li><a href="/index.html#visit">Visit</a></li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <span class="nav-phone">(704) 889-2454</span>
+      <a href="/index.html#book-design" class="btn solid hdr-btn">Book a Design Appointment</a>
+      <a href="/index.html#book-cleaning" class="btn hdr-btn">Book a Cleaning</a>
+      <a href="/index.html#book" class="btn solid hdr-mobile">Book</a>
+      <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- TRADE COLOR BLOCK (ref B) -->
+<section id="trade" class="trade" style="padding:0">
+  <div class="trade-txt">
+    <span class="eyebrow">For Designers &amp; The Trade</span>
+    <h1 style="font-family:'Cormorant Garamond',serif;font-weight:500;line-height:1.08;font-size:clamp(2.2rem,4vw,3.4rem);color:#fff;margin:16px 0 20px">A trusted partner for Charlotte's finest interiors.</h1>
+    <p>We work hand-in-hand with over 100 interior designers — offering trade pricing, in-home previews, and access to rare pieces sourced directly from the weaving regions.</p>
+    <p style="color:rgba(245,239,228,.82)">Design a room from the floor up — bring us the space, and we'll bring the rugs to life.</p>
+    <a href="#trade-apply" class="btn light">Apply Now</a>
+  </div>
+  <div class="trade-img"></div>
+</section>
+
+<!-- TRADE BENEFITS -->
+<section class="values" style="padding-bottom:30px">
+  <div class="wrap">
+    <div class="val"><span class="mk"></span><h3>Trade Pricing</h3><p>Preferred pricing on our collection of over 1,000 hand-knotted rugs for approved members.</p></div>
+    <div class="val"><span class="mk"></span><h3>In-Home Previews</h3><p>We bring the rugs to your client's space so they can see size, color, and scale before deciding.</p></div>
+    <div class="val"><span class="mk"></span><h3>Rare Pieces First</h3><p>First access to rare pieces sourced directly from the weaving regions.</p></div>
+    <div class="val"><span class="mk"></span><h3>Paid Design Appointments</h3><p>Join our on-call designer roster for complimentary design appointments our clients request, compensated by us.</p></div>
+  </div>
+</section>
+
+<!-- TRADE PROGRAM APPLICATION -->
+<section id="trade-apply" class="book" style="background:var(--paper);padding-top:50px">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Trade Program Application</span>
+      <h2>Join our Trade Program.</h2>
+      <p>Complete the form below and we'll contact you for your approval. Members enjoy trade pricing, in-home previews, and first access to rare pieces sourced directly from the weaving regions.</p>
+    </div>
+    <form id="trade-form" novalidate>
+      <div><label class="fld" for="tf-name">Name</label><input id="tf-name" name="name" autocomplete="name" required></div>
+      <div><label class="fld" for="tf-company">Company</label><input id="tf-company" name="company_name" autocomplete="organization"></div>
+      <div><label class="fld" for="tf-tel">Tel No</label><input id="tf-tel" name="phone" type="tel" autocomplete="tel" required></div>
+      <div><label class="fld" for="tf-email">Email</label><input id="tf-email" name="email" type="email" autocomplete="email" required></div>
+      <div class="full"><label class="fld" for="tf-address">Address</label><input id="tf-address" name="address" autocomplete="street-address" placeholder="Street, city, state, ZIP"></div>
+      <div class="full svc-select">
+        <span class="fld">I am interested in being a: <em>Select all that apply</em></span>
+        <div class="trade-opts">
+          <label class="perk"><input type="checkbox" name="trade_interest" value="Trade Program Member"><span><b>Trade Program Member</b></span></label>
+          <label class="perk"><input type="checkbox" name="trade_interest" value="Pineville Rug Gallery Designer"><span><b>Pineville Rug Gallery Designer</b> — on call for complimentary design appointments requested by our clients, compensated by us.</span></label>
+        </div>
+      </div>
+      <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="submit-row">
+        <button type="submit" class="btn solid">Submit Application</button>
+        <span class="msg" id="tf-msg" role="status" aria-live="polite"></span>
+      </div>
+      <p class="fineprint">We'll review your application and reach out to confirm your trade account. By submitting, you agree to our <a href="/privacy.html">Privacy Policy</a> and <a href="/terms.html">Terms</a>.</p>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="name">Pineville Rug Gallery</div>
+        <p>Charlotte's family-owned home for fine hand-knotted Oriental &amp; Persian rugs since 1986. Sales · Cleaning · Repair · Appraisal. Serving the Charlotte area and beyond — free shipping to the contiguous U.S., worldwide shipping available.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="/gallery.html">The Collection</a></li>
+          <li><a href="/gallery.html">Browse Rugs</a></li>
+          <li><a href="/index.html#services">Services</a></li>
+          <li><a href="/index.html#book">Book an Appointment</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/index.html#services">Rug Cleaning</a></li>
+          <li><a href="/index.html#services">Repair &amp; Restoration</a></li>
+          <li><a href="/index.html#services">Appraisal</a></li>
+          <li><a href="/trade.html">Trade Program</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Visit</h4>
+        <ul>
+          <li>310 Main Street</li>
+          <li>Pineville, NC 28134</li>
+          <li>(704) 889-2454</li>
+          <li>Mon–Sat 10–5 · After 5 &amp; Sun after 1 by appt</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Pineville Rug Gallery. All rights reserved.</span>
+      <span><a href="/privacy.html">Privacy Policy</a> &nbsp;·&nbsp; <a href="/terms.html">Terms of Service</a></span>
+      <span>Family-owned since 1986 · Free U.S. shipping · Worldwide available</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelector('.burger').addEventListener('click',function(){
+    var n=document.querySelector('nav ul');
+    n.style.display = n.style.display==='flex' ? 'none' : 'flex';
+    n.style.position='absolute'; n.style.flexDirection='column'; n.style.background='var(--paper)';
+    n.style.top='100%'; n.style.right='20px'; n.style.padding='24px 30px'; n.style.gap='18px';
+    n.style.border='1px solid var(--line)'; n.style.boxShadow='0 20px 40px rgba(12,34,29,.15)';
+  });
+
+  // Trade Program application.
+  (function(){
+    var f = document.getElementById('trade-form'); if(!f) return;
+    f.addEventListener('submit', async function(e){
+      e.preventDefault();
+      var msg = document.getElementById('tf-msg'); msg.className='msg'; msg.textContent='Sending…';
+      var btn = f.querySelector('button[type=submit]'); btn.disabled = true;
+      var data = Object.fromEntries(new FormData(f).entries());
+      data.form = 'trade';
+      var ti = f.querySelectorAll('input[name="trade_interest"]:checked');
+      var interests = Array.prototype.map.call(ti,function(c){return c.value;});
+      delete data.trade_interest;
+      data.services = ['Trade Program Application'].concat(interests);
+      data.page = location.href;
+      if(!data.name || !data.phone || !data.email){
+        msg.className='msg err'; msg.textContent='Please add your name, phone, and email.'; btn.disabled=false; return;
+      }
+      if(!interests.length){
+        msg.className='msg err'; msg.textContent='Please choose Trade Program Member, Designer, or both.'; btn.disabled=false; return;
+      }
+      try{
+        var r = await fetch('/api/pineville-lead', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)});
+        var j = await r.json().catch(function(){return {};});
+        if(!r.ok || j.error) throw new Error();
+        f.reset();
+        msg.className='msg ok'; msg.textContent='Thank you — we’ll review and reach out to confirm your trade account.';
+      }catch(_){
+        msg.className='msg err'; msg.textContent='Something went wrong — please call us at (704) 889-2454.';
+      }
+      btn.disabled = false;
+    });
+  })();
+</script>
+
+</body>
+</html>

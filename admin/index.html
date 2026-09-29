@@ -144,7 +144,7 @@
         <button class="btn primary" id="add">+ Add a rug</button>
       </div>
     </div>
-    <input type="text" class="search" id="q" placeholder="Search by name, origin, size…" aria-label="Search rugs">
+    <input type="text" class="search" id="q" placeholder="Search by stock #, name, origin, size…" aria-label="Search rugs">
     <div class="list" id="list"></div>
   </section>
 
@@ -162,7 +162,8 @@
       <p class="tip">Tip: shoot the rug flat and straight on, in good light, with the whole rug in frame.</p>
 
       <div class="grid2">
-        <div class="full"><label class="f" for="f-name">Name <em>(e.g. Antique Heriz)</em></label><input type="text" id="f-name" maxlength="120"></div>
+        <div><label class="f" for="f-stock">Stock #</label><input type="text" id="f-stock" maxlength="40" placeholder="e.g. HER-19-1063"></div>
+        <div><label class="f" for="f-name">Name <em>(e.g. Antique Heriz)</em></label><input type="text" id="f-name" maxlength="120"></div>
         <div><label class="f" for="f-origin">Origin</label><input type="text" id="f-origin" maxlength="80" placeholder="e.g. Heriz, Iran"></div>
         <div><label class="f" for="f-size">Size</label><input type="text" id="f-size" maxlength="60" placeholder="e.g. 8'2&quot; × 10'4&quot;"></div>
         <div><label class="f" for="f-age">Age</label><input type="text" id="f-age" maxlength="60" placeholder="e.g. Circa 1920, or New"></div>
@@ -191,7 +192,7 @@
   var editing = null;      // rug being edited (null = new)
   var photoFile = null;    // newly chosen photo
   var $ = function(id){ return document.getElementById(id); };
-  var FIELDS = ['name','origin','size','age','material','price','description'];
+  var FIELDS = ['stock','name','origin','size','age','material','price','description'];
 
   function store(kind){ try{ return window[kind]; }catch(e){ return null; } }
   function saveKey(k, remember){
@@ -245,7 +246,7 @@
   $('signout').addEventListener('click', function(){ signOut(''); });
 
   // ---------- list ----------
-  function metaLine(r){ return [r.size, r.origin, r.price].filter(Boolean).join(' · '); }
+  function metaLine(r){ return [r.stock ? '#' + r.stock : '', r.size, r.origin, r.price].filter(Boolean).join(' · '); }
   function esc(s){ return String(s||'').replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 
   async function loadList(){

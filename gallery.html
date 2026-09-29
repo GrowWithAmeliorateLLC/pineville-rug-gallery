@@ -136,8 +136,8 @@
     var rugs=(j&&j.rugs)||[];
     if(!rugs.length){g.innerHTML='<p class="loading">New pieces are arriving — call us at (704) 889-2454 to hear what\'s on the floor.</p>';return;}
     g.innerHTML=rugs.map(function(r){
-      var named=r.name||r.size||r.origin;
-      var meta=[r.size,r.origin].filter(Boolean).join(' · ');
+      var named=r.name||r.size||r.origin||r.stock;
+      var meta=[r.size,r.origin].filter(Boolean).join(' · ')||(r.stock?'No. '+r.stock:'');
       return '<figure><a href="'+esc(r.url)+'"><div class="ph"><img loading="lazy" src="'+esc(r.thumb)+'" alt="'+esc(r.label)+'"></div>'+
         (named||r.price?'<figcaption>'+(r.name?'<b>'+esc(r.name)+'</b>':'')+(meta?'<span>'+esc(meta)+'</span>':'')+(r.price?'<em>'+esc(r.price)+'</em>':'')+'</figcaption>':'')+
         '</a></figure>';

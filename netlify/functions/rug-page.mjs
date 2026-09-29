@@ -74,7 +74,7 @@ export default async (req, context) => {
   }
 
   const r = publicRug(raw);
-  const rows = [["Origin", r.origin], ["Size", r.size], ["Age", r.age], ["Material", r.material]]
+  const rows = [["Stock #", r.stock], ["Origin", r.origin], ["Size", r.size], ["Age", r.age], ["Material", r.material]]
     .filter(([, v]) => v)
     .map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`)
     .join("");

@@ -30,7 +30,7 @@ const SEED = [
   "203852/a2030801bee0c91b054a8a97860b201a.jpg", "203852/eda51438fc8cebef68f993b7ed56060e.jpg",
 ];
 
-export const FIELDS = { name: 120, origin: 80, size: 60, age: 60, material: 80, price: 40, description: 4000 };
+export const FIELDS = { stock: 40, name: 120, origin: 80, size: 60, age: 60, material: 80, price: 40, description: 4000 };
 
 const blankRug = () => Object.fromEntries(Object.keys(FIELDS).map((k) => [k, ""]));
 
@@ -81,7 +81,7 @@ export function imgUrl(rug, size) {
 }
 
 export function label(rug) {
-  return rug.name || [rug.size, rug.origin].filter(Boolean).join(" ") || "Hand-knotted rug";
+  return rug.name || [rug.size, rug.origin].filter(Boolean).join(" ") || (rug.stock ? `Rug No. ${rug.stock}` : "Hand-knotted rug");
 }
 
 export function publicRug(rug) {

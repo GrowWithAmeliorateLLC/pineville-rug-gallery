@@ -51,7 +51,27 @@ export async function loadRugs() {
     data = { rugs: seedRugs(), updated: new Date().toISOString() };
     await s.setJSON("rugs", data);
   }
+  await runMigrations(s, data);
   return data.rugs;
+}
+
+// One-time data fixes. Each runs once; the "migrations" key records what has run.
+const MIGRATIONS = {
+  // 9/30/2026 — Renée: every rug's Material is "Cotton foundation, wool pile" (only blanks are filled).
+  "material-cotton-wool": (rugs) => {
+    let n = 0;
+    for (const r of rugs) if (!String(r.material || "").trim()) { r.material = "Cotton foundation, wool pile"; n++; }
+    return n;
+  },
+};
+
+async function runMigrations(s, data) {
+  const done = (await s.get("migrations", { type: "json" })) || {};
+  const todo = Object.keys(MIGRATIONS).filter((k) => !done[k]);
+  if (!todo.length) return;
+  for (const k of todo) done[k] = { at: new Date().toISOString(), changed: MIGRATIONS[k](data.rugs) };
+  await s.setJSON("rugs", { rugs: data.rugs, updated: new Date().toISOString() });
+  await s.setJSON("migrations", done);
 }
 
 export async function saveRugs(rugs) {

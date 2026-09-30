@@ -54,7 +54,7 @@ function shell(title, desc, body) {
   </div>
 </div></header>
 ${body}
-<footer>© ${new Date().getFullYear()} Pineville Rug Gallery · 310 Main Street, Pineville, NC · (704) 560-0318 · <a href="/index.html">Home</a></footer>
+<footer>© ${new Date().getFullYear()} Pineville Rug Gallery · 310 Main Street, Pineville, NC · (980) 288-2538 · <a href="/index.html">Home</a></footer>
 </body></html>`;
 }
 
@@ -93,7 +93,7 @@ export default async (req, context) => {
       ${r.description ? `<p class="desc">${esc(r.description)}</p>` : ""}
       <div class="actions">
         <a class="btn solid" href="${esc(book)}">Book a Viewing of This Rug</a>
-        <a class="btn" href="tel:7045600318">Call the Gallery · (704) 560-0318</a>
+        <a class="btn" href="tel:9802882538">Call the Gallery · (980) 288-2538</a>
       </div>
       <p class="note">This one is ready to meet your room. Complimentary local pickup &amp; delivery: we can bring it home so you can see it in your space.</p>
     </div>

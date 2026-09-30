@@ -202,7 +202,7 @@ export default async (req) => {
       `<p>Hi ${esc(firstName) || "there"},</p>` +
       `<p>Thank you for your ${what} request with <b>Pineville Rug Gallery</b>${when ? " " + when : ""}. ` +
       `We've received it and will confirm your time by ${confirmVia === "Call" ? "phone" : confirmVia ? confirmVia.toLowerCase() : "text, call or email"} shortly.</p>` +
-      `<p>Questions in the meantime? Call us anytime at <b>(704) 560-0318</b>.</p>` +
+      `<p>Questions in the meantime? Call us anytime at <b>(980) 288-2538</b>.</p>` +
       `<p>Warmly,<br>Pineville Rug Gallery<br>310 Main Street · Historic Downtown Pineville, NC</p>`;
     emailLead = await sendGhlEmail(contactId, "We've received your request — Pineville Rug Gallery", leadHtml);
 

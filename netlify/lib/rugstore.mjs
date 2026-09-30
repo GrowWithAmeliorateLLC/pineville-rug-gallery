@@ -56,12 +56,61 @@ export async function loadRugs() {
 }
 
 // One-time data fixes. Each runs once; the "migrations" key records what has run.
+// A migration may do slow work first (prepare), then apply() makes quick edits to a FRESH
+// read of the rug list right before saving, so edits made meanwhile in the admin aren't lost.
+const fillMaterial = (rugs) => {
+  let n = 0;
+  for (const r of rugs) if (!String(r.material || "").trim()) { r.material = "Cotton foundation, wool pile"; n++; }
+  return n;
+};
+
+// 9/30/2026 — Renée: the main photo should show the whole rug. Full-rug angle from Liane's
+// PhotoProofPro sets, copied into our own photo store like the original import.
+const WHOLE_RUG = {
+  "HER-26-111": "203753/5fba02639271c416659749a4ba5aca3e", // d
+  "HER-26-115": "203753/c22df501ac6981cc3699d05e1da3596d", // d
+  "HER-26-134": "203753/a024f7ee66f9cdbcc1631e3a6546c3b6", // g
+  "HER-26-137": "203753/863f7900725100344e625abc130c48bd", // f
+  "HER-26-139": "203753/37512ad2d3a912a6abc2938f56c4c9e7", // e
+  "HER-26-145": "203753/15a223cba012c8c37cd7982cdd137e0d", // f
+  "HER-26-160": "203753/39d10896339eb4c265dac900403e83f8", // d
+  "HER-86-124": "203753/12dae23a063666130766a02781d73edb", // e
+  "26766": "203852/2397a5a018f043d34965d20a96f229b8", // f
+  "Ousha2": "203852/e5af41bd16f16a50b89314a634633280", // b
+};
+
 const MIGRATIONS = {
   // 9/30/2026 — Renée: every rug's Material is "Cotton foundation, wool pile" (only blanks are filled).
-  "material-cotton-wool": (rugs) => {
-    let n = 0;
-    for (const r of rugs) if (!String(r.material || "").trim()) { r.material = "Cotton foundation, wool pile"; n++; }
-    return n;
+  "material-cotton-wool": { apply: fillMaterial },
+  // 9/30/2026 — refill any Material blanked by an admin tab opened before the first fill.
+  "material-cotton-wool-2": { apply: fillMaterial },
+  "whole-rug-main-photos": {
+    prepare: async (rugs) => {
+      const base = "https://cdn.photoproofpro.com/";
+      const ps = photoStore();
+      const done = [];
+      for (const r of rugs) {
+        const key = WHOLE_RUG[r.stock];
+        if (!key || !r.photo) continue;
+        try {
+          const [full, thumb] = await Promise.all([
+            fetch(`${base}uploads/resized/6950/202149/${key}.jpg`),
+            fetch(`${base}styles/large_thumb/s3/uploads/resized/6950/202149/${key}.jpg`),
+          ]);
+          if (!full.ok || !thumb.ok) continue;
+          await ps.set(`${r.id}/full`, await full.arrayBuffer(), { metadata: { contentType: "image/jpeg" } });
+          await ps.set(`${r.id}/thumb`, await thumb.arrayBuffer(), { metadata: { contentType: "image/jpeg" } });
+          done.push(r.id);
+        } catch (_) {}
+      }
+      return done;
+    },
+    apply: (rugs, ids) => {
+      const v = Date.now();
+      let n = 0;
+      for (const r of rugs) if (ids.includes(r.id)) { r.photo = { kind: "blob", v }; n++; }
+      return n;
+    },
   },
 };
 
@@ -69,9 +118,14 @@ async function runMigrations(s, data) {
   const done = (await s.get("migrations", { type: "json" })) || {};
   const todo = Object.keys(MIGRATIONS).filter((k) => !done[k]);
   if (!todo.length) return;
-  for (const k of todo) done[k] = { at: new Date().toISOString(), changed: MIGRATIONS[k](data.rugs) };
-  await s.setJSON("rugs", { rugs: data.rugs, updated: new Date().toISOString() });
+  const prepared = {};
+  for (const k of todo) prepared[k] = MIGRATIONS[k].prepare ? await MIGRATIONS[k].prepare(data.rugs) : null;
+  const fresh = await s.get("rugs", { type: "json" });
+  const rugs = (fresh && Array.isArray(fresh.rugs)) ? fresh.rugs : data.rugs;
+  for (const k of todo) done[k] = { at: new Date().toISOString(), changed: MIGRATIONS[k].apply(rugs, prepared[k]) };
+  await s.setJSON("rugs", { rugs, updated: new Date().toISOString() });
   await s.setJSON("migrations", done);
+  data.rugs = rugs;
 }
 
 export async function saveRugs(rugs) {

@@ -12,7 +12,7 @@
 //                          (needs: contacts.write/readonly + conversations/message.write for email)
 //   PRG_GHL_LOCATION_ID  - optional; defaults below
 //   PRG_NOTIFY_NUMBERS   - optional; cell(s) to text on a booking once SMS is live (placeholder below)
-//   PRG_NOTIFY_EMAIL     - optional; internal email that gets the team alert (placeholder below)
+//   PRG_NOTIFY_EMAIL     - optional; internal email(s) that get the team alert, comma-separated
 //   PRG_EMAIL_FROM       - optional; From address for outgoing email
 
 const GHL_BASE = "https://services.leadconnectorhq.com";
@@ -20,7 +20,8 @@ const GHL_VERSION = "2021-07-28";
 const LOCATION_ID = process.env.PRG_GHL_LOCATION_ID || "SEUOenwNjKokn5Nnb0cU";
 const TOKEN = process.env.PRG_GHL_TOKEN;
 const NOTIFY_NUMBERS = process.env.PRG_NOTIFY_NUMBERS || "9802882538,9803783162"; // Reza, Sardar — SMS (once A2P live)
-const NOTIFY_EMAIL = process.env.PRG_NOTIFY_EMAIL || "hi@growwithameliorate.com"; // internal email (placeholder)
+const NOTIFY_EMAILS = String(process.env.PRG_NOTIFY_EMAIL || "showroom@pinevilleruggallery.com,renee@pinevilleruggallery.com")
+  .split(",").map((e) => e.trim()).filter(Boolean);
 const EMAIL_FROM = process.env.PRG_EMAIL_FROM || "showroom@pinevilleruggallery.com";
 
 const CAPS = { Sales: 3, Cleaning: 3 };
@@ -206,12 +207,15 @@ export default async (req) => {
       `<p>Warmly,<br>Pineville Rug Gallery<br>310 Main Street · Historic Downtown Pineville, NC</p>`;
     emailLead = await sendGhlEmail(contactId, "We've received your request — Pineville Rug Gallery", leadHtml);
 
-    const notify = await upsertContact({ locationId: LOCATION_ID, name: "PRG Website Notifications", email: NOTIFY_EMAIL, tags: ["Internal Notifications"] });
-    if (notify.id) {
-      const teamHtml = `<p><b>${esc(heading)}</b></p><p>${esc(detail).replace(/\n/g, "<br>")}</p>`;
-      emailTeam = await sendGhlEmail(notify.id, `New ${esc(apptType || (isTrade ? "trade" : "website"))} lead: ${esc(name)}`, teamHtml);
-    } else {
-      emailTeam = { ok: false, detail: "notify contact not created", status: notify.status };
+    // One alert per team inbox. No name is sent, so an existing contact (e.g. Renée) keeps her name.
+    const teamHtml = `<p><b>${esc(heading)}</b></p><p>${esc(detail).replace(/\n/g, "<br>")}</p>`;
+    const teamSubject = `New ${esc(apptType || (isTrade ? "trade" : "website"))} lead: ${esc(name)}`;
+    emailTeam = [];
+    for (const addr of NOTIFY_EMAILS) {
+      const notify = await upsertContact({ locationId: LOCATION_ID, email: addr, tags: ["Internal Notifications"] });
+      emailTeam.push(notify.id
+        ? { to: addr, ...(await sendGhlEmail(notify.id, teamSubject, teamHtml)) }
+        : { to: addr, ok: false, detail: "notify contact not created", status: notify.status });
     }
   }
 

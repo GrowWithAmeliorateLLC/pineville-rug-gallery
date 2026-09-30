@@ -109,6 +109,8 @@ export default async (req) => {
     if (cur >= cap) return json({ error: "slot_full", message: "That time just filled — please choose another." }, 409);
   }
 
+  const confirmVia = ["Text", "Call", "Email"].find((v) => v.toLowerCase() === String(body.confirm_via || "").trim().toLowerCase()) || "";
+
   const fulfillment = (body.fulfillment || "").trim();
   const isPickup = /pick/i.test(fulfillment);
   const isDropoff = /drop/i.test(fulfillment);
@@ -128,6 +130,7 @@ export default async (req) => {
   if (!services.length && !isTrade && !apptType) tags.push("Interest: General Inquiry");
   if (isPickup) tags.push("Fulfillment: Pickup");
   else if (isDropoff) tags.push("Fulfillment: Drop-off");
+  if (confirmVia) tags.push(`Confirm by: ${confirmVia}`);
   if (smsT) tags.push("SMS Consent - Transactional");
   if (smsM) tags.push("SMS Consent - Marketing");
 
@@ -162,6 +165,7 @@ export default async (req) => {
     apptType ? `Appointment type: ${apptType}` : "",
     apptDate ? `Requested date: ${apptDate}` : "",
     apptSlot ? `Requested time: ${apptSlot}` : "",
+    confirmVia ? `CONFIRM BY: ${confirmVia.toUpperCase()}` : "",
     companyName ? `Company: ${companyName}` : "",
     services.length ? `Interested in: ${services.join(", ")}` : "",
     fulfillment ? `Pickup or drop-off: ${isPickup ? "Pickup & delivery" : isDropoff ? "Drop-off at gallery" : fulfillment}` : "",
@@ -197,8 +201,8 @@ export default async (req) => {
     const leadHtml =
       `<p>Hi ${esc(firstName) || "there"},</p>` +
       `<p>Thank you for your ${what} request with <b>Pineville Rug Gallery</b>${when ? " " + when : ""}. ` +
-      `We've received it and will confirm your time by text or call shortly.</p>` +
-      `<p>Questions in the meantime? Call us anytime at <b>(704) 889-2454</b>.</p>` +
+      `We've received it and will confirm your time by ${confirmVia === "Call" ? "phone" : confirmVia ? confirmVia.toLowerCase() : "text, call or email"} shortly.</p>` +
+      `<p>Questions in the meantime? Call us anytime at <b>(704) 560-0318</b>.</p>` +
       `<p>Warmly,<br>Pineville Rug Gallery<br>310 Main Street · Historic Downtown Pineville, NC</p>`;
     emailLead = await sendGhlEmail(contactId, "We've received your request — Pineville Rug Gallery", leadHtml);
 

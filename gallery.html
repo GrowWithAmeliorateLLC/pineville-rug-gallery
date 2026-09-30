@@ -89,7 +89,7 @@
     </a>
     <div class="nav-cta">
       <a class="back" href="/index.html">← Back to Home</a>
-      <span class="nav-phone">(704) 889-2454</span>
+      <span class="nav-phone">(704) 560-0318</span>
       <a href="/index.html#book-design" class="btn solid hdr-btn">Book a Design Appointment</a>
       <a href="/index.html#book-cleaning" class="btn hdr-btn">Book a Cleaning</a>
       <a href="/index.html#book" class="btn solid hdr-mobile">Book</a>
@@ -118,13 +118,13 @@
   <div class="row">
     <a href="/index.html#book-design" class="btn light">Book a Design Appointment</a>
     <a href="/index.html#book-cleaning" class="btn light">Book a Cleaning</a>
-    <a href="tel:7048892454" class="btn light">Call the Gallery · (704) 889-2454</a>
+    <a href="tel:7045600318" class="btn light">Call the Gallery · (704) 560-0318</a>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    <span>© 2026 Pineville Rug Gallery · 310 Main Street, Pineville, NC · (704) 889-2454 · <a href="/index.html">Home</a></span>
+    <span>© 2026 Pineville Rug Gallery · 310 Main Street, Pineville, NC · (704) 560-0318 · <a href="/index.html">Home</a></span>
   </div>
 </footer>
 
@@ -134,7 +134,7 @@
   function esc(t){return String(t||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   fetch('/api/rugs').then(function(r){return r.json();}).then(function(j){
     var rugs=(j&&j.rugs)||[];
-    if(!rugs.length){g.innerHTML='<p class="loading">New pieces are arriving — call us at (704) 889-2454 to hear what\'s on the floor.</p>';return;}
+    if(!rugs.length){g.innerHTML='<p class="loading">New pieces are arriving — call us at (704) 560-0318 to hear what\'s on the floor.</p>';return;}
     g.innerHTML=rugs.map(function(r){
       var named=r.name||r.size||r.origin||r.stock;
       var meta=[r.size,r.origin].filter(Boolean).join(' · ')||(r.stock?'No. '+r.stock:'');
@@ -142,7 +142,7 @@
         (named||r.price?'<figcaption>'+(r.name?'<b>'+esc(r.name)+'</b>':'')+(meta?'<span>'+esc(meta)+'</span>':'')+(r.price?'<em>'+esc(r.price)+'</em>':'')+'</figcaption>':'')+
         '</a></figure>';
     }).join('');
-  }).catch(function(){g.innerHTML='<p class="loading">We couldn\'t load the collection just now — please refresh, or call (704) 889-2454.</p>';});
+  }).catch(function(){g.innerHTML='<p class="loading">We couldn\'t load the collection just now — please refresh, or call (704) 560-0318.</p>';});
 })();
 </script>
 

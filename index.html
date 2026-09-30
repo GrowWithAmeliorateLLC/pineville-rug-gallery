@@ -51,8 +51,8 @@
   .brand{flex:none}
   nav a{white-space:nowrap}
   .nav-cta .nav-phone{display:none}
-  @media(max-width:1440px){nav ul{gap:24px}}
-  @media(max-width:1280px){nav ul{display:none} .nav-cta .burger{display:flex}}
+  @media(max-width:1600px){nav ul{gap:22px}}
+  @media(max-width:1440px){nav ul{display:none} .nav-cta .burger{display:flex}}
   .burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer}
   .burger span{width:24px;height:1.5px;background:var(--pine)}
 
@@ -145,8 +145,8 @@
   .visit .eyebrow{color:var(--clay-soft)}
   .visit h2{font-size:clamp(2rem,3.8vw,3.2rem);color:#fff;margin:14px 0 24px}
   .visit .rows{margin:26px 0}
-  .visit .rows div{display:flex;gap:16px;padding:14px 0;border-top:1px solid rgba(245,239,228,.16);font-size:.95rem}
-  .visit .rows .k{width:120px;text-transform:uppercase;letter-spacing:.16em;font-size:.7rem;color:rgba(245,239,228,.6);padding-top:3px}
+  .visit .rows div{display:flex;flex-direction:column;gap:4px;padding:14px 0;border-top:1px solid rgba(245,239,228,.16);font-size:.95rem;text-align:left}
+  .visit .rows .k{width:auto;text-transform:uppercase;letter-spacing:.16em;font-size:.7rem;color:rgba(245,239,228,.6);padding-top:3px}
   .visit-media{display:grid;gap:14px}
   .visit-media .storefront{width:100%;height:400px;object-fit:cover;object-position:50% 66%;display:block}
   .visit-media .storefront-ph{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:400px;background:var(--pine-soft);color:rgba(245,239,228,.9);padding:26px;gap:8px}
@@ -154,6 +154,11 @@
   .visit-media .storefront-ph em{font-style:italic;color:var(--clay-soft);font-size:.9rem}
   .visit-media iframe{width:100%;height:220px;border:0;display:block;filter:grayscale(.12)}
 
+  .form-hero{background:var(--pine);color:var(--cream);padding:22px 24px;margin-bottom:6px}
+  .form-hero h3{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:1.55rem;line-height:1.15;color:#fff;margin:8px 0 6px}
+  .form-hero p{font-size:.92rem;color:rgba(245,239,228,.82)}
+  .new-tag{display:inline-block;background:var(--clay);color:#fff;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;padding:4px 10px;font-weight:500}
+  .announce a{color:inherit}
   /* book an appointment / trade application */
   .book{background:var(--cream)}
   .book .wrap{max-width:760px}
@@ -277,7 +282,7 @@
 </head>
 <body>
 
-<div class="announce">Complimentary local pickup &amp; delivery &nbsp;·&nbsp; <b>Book your design appointment today</b></div>
+<div class="announce"><b>New</b> &nbsp;·&nbsp; A <b>FREE</b> consultation with our in-house interior designer, just for <b>You</b>, at your appointment &nbsp;·&nbsp; <a href="#book-design" style="color:var(--clay-soft);border-bottom:1px solid var(--clay-soft)">Book now</a></div>
 
 <header>
   <div class="nav">
@@ -289,12 +294,13 @@
         <li><a href="#collection">The Collection</a></li>
         <li><a href="#services">Services</a></li>
         <li><a href="/trade.html">Trade Program</a></li>
+        <li><a href="/photos.html">Photo Gallery</a></li>
         <li><a href="#story">Our Story</a></li>
         <li><a href="#visit">Visit</a></li>
       </ul>
     </nav>
     <div class="nav-cta">
-      <span class="nav-phone">(704) 889-2454</span>
+      <span class="nav-phone">(704) 560-0318</span>
       <a href="#book-design" class="btn solid hdr-btn">Book a Design Appointment</a>
       <a href="#book-cleaning" class="btn hdr-btn">Book a Cleaning</a>
       <a href="#book" class="btn solid hdr-mobile">Book</a>
@@ -338,11 +344,12 @@
         <p>Pineville Rug Gallery was founded in 1986 on a simple belief: that a great rug is not only décor, but also an heirloom. Owner Reza Elyasi is a third-generation rug dealer, and his family brings a century of knowledge, importing breathtaking hand-knotted pieces from around the world, including Isfahan, Tabriz, Kashan, and Heriz.</p>
         <p>Every rug is chosen for quality, durability, and authenticity, then cared for by hand in our own gallery. It's craftsmanship you can feel underfoot — and hand down through generations, often lasting more than a hundred years.</p>
         <a href="#collection" class="btn">Experience the Gallery</a>
+        <a href="/photos.html" style="margin-left:18px;font-size:.72rem;text-transform:uppercase;letter-spacing:.18em;color:var(--clay);border-bottom:1px solid var(--clay);padding-bottom:2px">Meet the team &amp; see our 40th →</a>
         <p style="margin-top:22px;font-size:.7rem;text-transform:uppercase;letter-spacing:.2em;color:var(--stone)">As featured on <a href="https://spectrumlocalnews.com/nc/charlotte/news/2024/06/18/small-business--mecklenburg-county--funding-options--loans--pineville-rug-gallery" target="_blank" rel="noopener" style="color:var(--clay);border-bottom:1px solid var(--clay);padding-bottom:2px">Spectrum News 1</a></p>
       </div>
       <div class="split-img">
-        <img src="/.netlify/images?url=https%3A%2F%2Fstorage.googleapis.com%2Fpineville-rug%2FDSC02577_1.jpg&w=1400&q=76" alt="Reza Elyasi, his wife Reyhaneh, and family at Pineville Rug Gallery" style="object-position:center top">
-        <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.02rem;color:var(--stone);margin-top:14px;text-align:center">Reza Elyasi, his wife Reyhaneh &amp; family — celebrating 40 years in Charlotte.</p>
+        <img src="/.netlify/images?url=https%3A%2F%2Fstorage.googleapis.com%2Fpineville-rug%2FDSC02582_1.jpg&w=1400&q=76" alt="Reza Elyasi and his wife Reyhaneh at Pineville Rug Gallery" style="object-position:center 30%">
+        <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.02rem;color:var(--stone);margin-top:14px;text-align:center">Reza Elyasi and his wife Reyhaneh, celebrating 40 years in Charlotte.</p>
       </div>
     </div>
   </div>
@@ -354,7 +361,7 @@
     <div class="glimpse-head">
       <span class="eyebrow">Browse the Collection</span>
       <h2>A look at the gallery floor.</h2>
-      <p>A selection from our collection of over 1,000 hand-knotted rugs from around the world, including Heriz, Oushak and Tabriz — each one-of-a-kind. See something you love? Book a viewing or give us a call and we'll have it waiting.</p>
+      <p>A selection from our collection of over 1,000 hand-knotted rugs from around the world, including Heriz, Oushak and Tabriz — each one-of-a-kind, each with its own story. See one that speaks to you? Book a viewing and it will be waiting. Or come in and let one find you.</p>
     </div>
     <div class="cgrid" id="home-grid">
       <figure><div class="ph"><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fresized%2F6950%2F202149%2F203753%2F15a661c7353250e366c3c3b141720438.jpg&w=520&q=72" alt="Hand-knotted Oriental rug"></div></figure>
@@ -405,7 +412,7 @@
           <span class="num">03</span>
           <h3>Appraisal</h3>
           <p>Uncover the true value and origin of your rug with four decades of expertise. A verbal appraisal is complimentary; a printed certificate — mailed and emailed as a PDF — is $250, with a discount for multiple pieces.</p>
-          <a href="#book">Book Appraisal →</a>
+          <a href="#book-cleaning">Book Appraisal →</a>
         </div>
       </div>
     </div>
@@ -455,17 +462,18 @@
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow">Book an Appointment</span>
-      <h2>Book an Appointment.</h2>
-      <p>Choose the kind of visit and a time — we'll confirm by text or call. Prefer to talk it through? Call us anytime at <a href="tel:7048892454" style="color:var(--clay);border-bottom:1px solid var(--clay)">(704) 889-2454</a>.</p>
+      <h2>Let's find the one.</h2>
+      <p>Somewhere in our gallery, a rug is waiting for your room. Choose the kind of visit and a time, and we'll confirm by text, call or email, whichever you prefer. Rather talk it through? Call us anytime at <a href="tel:7045600318" style="color:var(--clay);border-bottom:1px solid var(--clay)">(704) 560-0318</a>.</p>
     </div>
 
     <div class="toggle">
       <button type="button" id="tab-sales" class="active">Design Appointment</button>
-      <button type="button" id="tab-clean">Cleaning &amp; Repair</button>
+      <button type="button" id="tab-clean">Cleaning, Repair &amp; Appraisal</button>
     </div>
 
     <!-- SALES / DESIGN APPOINTMENT -->
     <form id="book-form" novalidate>
+      <div class="full form-hero"><span class="new-tag">New</span><h3>FREE Complimentary Consultation with our In-house Interior Designer</h3><p>Bring your room, your colors, your ideas. Our designer will help you find the rug that belongs there.</p></div>
       <div><label class="fld" for="s-name">Name</label><input id="s-name" name="name" autocomplete="name" required></div>
       <div><label class="fld" for="s-phone">Phone</label><input id="s-phone" name="phone" type="tel" autocomplete="tel" required></div>
       <div><label class="fld" for="s-email">Email</label><input id="s-email" name="email" type="email" autocomplete="email" required></div>
@@ -485,10 +493,9 @@
         <div class="svc-opts">
           <label><input type="checkbox" name="services" value="Design Appointment"><span>Design appointment</span></label>
           <label><input type="checkbox" name="services" value="Browsing the Collection"><span>Browse the collection</span></label>
-          <label><input type="checkbox" name="services" value="Appraisal"><span>Appraisal</span></label>
         </div>
       </div>
-      <label class="perk"><input type="checkbox" name="services" value="FREE Interior Designer at Appointment"><span><b>Yes — I'd love a FREE interior designer at my appointment</b>, compliments of Pineville Rug Gallery.</span></label>
+      <label class="perk"><input type="checkbox" name="services" value="FREE Interior Designer at Appointment"><span><b>Yes, I'd love the FREE complimentary consultation with your in-house interior designer</b> at my appointment.</span></label>
       <div><label class="fld" for="s-date">Preferred date</label><input id="s-date" name="appt_date" type="date" required></div>
       <div class="full svc-select">
         <span class="fld">Preferred time <em>Mon–Sat showroom hours</em></span>
@@ -501,8 +508,16 @@
           <label><input type="radio" name="appt_slot" value="Sunday after 1:00 PM"><span>Sunday after 1:00 PM</span></label>
         </div>
       </div>
-      <div class="full" id="s-custom-wrap" hidden><label class="fld" for="s-custom">What time works best? <em>Evenings &amp; Sundays are by request — we'll confirm</em></label><input id="s-custom" name="appt_custom_time" placeholder="e.g. 6:30 PM, or Sunday around 2:00"></div>
+      <div class="full" id="s-custom-wrap" hidden><label class="fld" for="s-custom">What time works best? <em>Required · evenings &amp; Sundays are by request</em></label><input id="s-custom" name="appt_custom_time" placeholder="e.g. 6:30 PM, or Sunday at 2:00 PM"></div>
       <div class="full"><label class="fld" for="s-project">Anything you'd like us to know? <em>(optional)</em></label><textarea id="s-project" name="project" placeholder="Room, approximate size, colors, the feeling you're after…"></textarea></div>
+      <div class="full svc-select">
+        <span class="fld">How should we confirm? <em>Your choice</em></span>
+        <div class="svc-opts">
+          <label><input type="radio" name="confirm_via" value="Text"><span>Text</span></label>
+          <label><input type="radio" name="confirm_via" value="Call"><span>Call</span></label>
+          <label><input type="radio" name="confirm_via" value="Email"><span>Email</span></label>
+        </div>
+      </div>
       <label class="consent"><input type="checkbox" name="sms_transactional" value="1"><span>Text me about my appointment at the number above. Msg &amp; data rates may apply; message frequency varies. Reply STOP to opt out, HELP for help.</span></label>
       <label class="consent"><input type="checkbox" name="sms_marketing" value="1"><span>I'd also like occasional texts about new arrivals and private sales. (Optional — opt out anytime.)</span></label>
       <input type="hidden" name="appt_type" value="Sales">
@@ -536,6 +551,7 @@
         <div class="svc-opts">
           <label><input type="checkbox" name="services" value="Rug Cleaning"><span>Rug cleaning</span></label>
           <label><input type="checkbox" name="services" value="Repair &amp; Restoration"><span>Repair &amp; restoration</span></label>
+          <label><input type="checkbox" name="services" value="Appraisal"><span>Appraisal</span></label>
         </div>
       </div>
       <label class="perk"><input type="checkbox" name="services" value="FREE Cleaning &amp; Repair Consultation"><span><b>Yes — I'd like a FREE cleaning &amp; repair consultation</b>, at my home or at the gallery.</span></label>
@@ -565,6 +581,14 @@
         </div>
       </div>
       <div class="full"><label class="fld" for="c-project">Tell us about the rug(s) <em>(size, material, the issue)</em></label><textarea id="c-project" name="project" placeholder="e.g. 8x10 wool Heriz, fringe damage on one end; and a 5x7 silk that needs cleaning."></textarea></div>
+      <div class="full svc-select">
+        <span class="fld">How should we confirm? <em>Your choice</em></span>
+        <div class="svc-opts">
+          <label><input type="radio" name="confirm_via" value="Text"><span>Text</span></label>
+          <label><input type="radio" name="confirm_via" value="Call"><span>Call</span></label>
+          <label><input type="radio" name="confirm_via" value="Email"><span>Email</span></label>
+        </div>
+      </div>
       <label class="consent"><input type="checkbox" name="sms_transactional" value="1"><span>Text me about my pickup / appointment at the number above. Msg &amp; data rates may apply; message frequency varies. Reply STOP to opt out, HELP for help.</span></label>
       <label class="consent"><input type="checkbox" name="sms_marketing" value="1"><span>I'd also like occasional texts about new arrivals and private sales. (Optional — opt out anytime.)</span></label>
       <input type="hidden" name="appt_type" value="Cleaning">
@@ -585,11 +609,11 @@
     <div class="visit-txt">
       <span class="eyebrow">Plan Your Visit</span>
       <h2>See it in your space — book a design appointment.</h2>
-      <p style="color:rgba(245,239,228,.82)">Tell us your room and your style. We'll have the right rugs waiting, or bring them to you. No pressure — just the pleasure of finding the one.</p>
+      <p style="color:rgba(245,239,228,.82)">Tell us your room and your style. We'll have the right rugs waiting to meet you, or bring them home to you. No pressure, just the pleasure of finding the one.</p>
       <div class="rows">
         <div><span class="k">Showroom</span><span>310 Main Street · Historic Downtown Pineville, NC 28134</span></div>
         <div><span class="k">Hours</span><span>Mon – Sat · 10am – 5pm &nbsp;·&nbsp; After 5pm &amp; Sun after 1pm by appointment</span></div>
-        <div><span class="k">Call</span><span>(704) 889-2454</span></div>
+        <div><span class="k">Call</span><span>(704) 560-0318</span></div>
         <div><span class="k">Email</span><span>showroom@pinevilleruggallery.com</span></div>
         <div><span class="k">Shipping</span><span>Serving the Charlotte area and beyond · Free shipping to the contiguous U.S. · Worldwide shipping available</span></div>
       </div>
@@ -599,10 +623,7 @@
       </div>
     </div>
     <div class="visit-media">
-      <div class="storefront-ph">
-        <b>Storefront photo coming soon</b>
-        <em>New exterior shot pending from Liane (LR Morgan Photography)</em>
-      </div>
+      <img class="storefront" src="/.netlify/images?url=https%3A%2F%2Fstorage.googleapis.com%2Fpineville-rug%2FPineville%2520Rug%2520Storefront.jpeg&w=1200&q=78" alt="Pineville Rug Gallery storefront at 310 Main Street, Pineville" loading="lazy">
       <iframe title="Map to Pineville Rug Gallery" src="https://www.google.com/maps?q=310+Main+St+Pineville+NC+28134&z=15&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
   </div>
@@ -646,6 +667,7 @@
           <li><a href="#services">Repair &amp; Restoration</a></li>
           <li><a href="#services">Appraisal</a></li>
           <li><a href="/trade.html">Trade Program</a></li>
+          <li><a href="/photos.html">Photo Gallery</a></li>
         </ul>
       </div>
       <div>
@@ -653,7 +675,7 @@
         <ul>
           <li>310 Main Street</li>
           <li>Pineville, NC 28134</li>
-          <li>(704) 889-2454</li>
+          <li>(704) 560-0318</li>
           <li>Mon–Sat 10–5 · After 5 &amp; Sun after 1 by appt</li>
         </ul>
       </div>
@@ -708,6 +730,7 @@
       r.addEventListener('change',function(){
         var v=(f.querySelector('input[name="appt_slot"]:checked')||{}).value||'';
         wrap.hidden=!/after 5|sunday/i.test(v);
+        document.getElementById('s-custom').required=!wrap.hidden;
       });
     });
   })();
@@ -766,6 +789,8 @@
       data.page=location.href;
       if(!data.name||!data.phone||!data.email){ msg.className='msg err'; msg.textContent='Please add your name, phone, and email.'; btn.disabled=false; return; }
       if(!data.appt_date||!data.appt_slot){ msg.className='msg err'; msg.textContent='Please choose a date and a time.'; btn.disabled=false; return; }
+      if(/after 5|sunday/i.test(data.appt_slot) && !(data.appt_custom_time||'').trim()){ msg.className='msg err'; msg.textContent='Please tell us what time works best.'; var ct=document.getElementById('s-custom'); if(ct) ct.focus(); btn.disabled=false; return; }
+      if(!data.confirm_via){ msg.className='msg err'; msg.textContent='Please choose how we should confirm: text, call or email.'; btn.disabled=false; return; }
       try{
         var r=await fetch('/api/pineville-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
         var j=await r.json().catch(function(){return {};});
@@ -774,8 +799,8 @@
         f.reset();
         var ab=f.querySelector('.addr-block'); if(ab) ab.hidden=true;
         var cw=document.getElementById('s-custom-wrap'); if(cw&&formId==='book-form') cw.hidden=true;
-        msg.className='msg ok'; msg.textContent='Thank you — we’ll confirm your appointment by text or call shortly.';
-      }catch(_){ msg.className='msg err'; msg.textContent='Something went wrong — please call us at (704) 889-2454.'; }
+        msg.className='msg ok'; msg.textContent='Thank you! We’ll confirm your appointment by '+({Text:'text',Call:'phone',Email:'email'}[data.confirm_via]||'text, call or email')+' shortly.';
+      }catch(_){ msg.className='msg err'; msg.textContent='Something went wrong — please call us at (704) 560-0318.'; }
       btn.disabled=false;
     });
   }

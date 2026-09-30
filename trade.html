@@ -33,7 +33,7 @@
 
   /* announcement */
   .announce{background:var(--pine-deep);color:var(--cream);text-align:center;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;padding:9px 20px}
-  .announce b{color:#fff;font-weight:500}
+  .announce a{color:inherit} .announce b{color:#fff;font-weight:500}
 
   /* header */
   header{position:sticky;top:0;z-index:50;background:rgba(253,250,244,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
@@ -52,8 +52,8 @@
   .brand{flex:none}
   nav a{white-space:nowrap}
   .nav-cta .nav-phone{display:none}
-  @media(max-width:1440px){nav ul{gap:24px}}
-  @media(max-width:1280px){nav ul{display:none} .nav-cta .burger{display:flex}}
+  @media(max-width:1600px){nav ul{gap:22px}}
+  @media(max-width:1440px){nav ul{display:none} .nav-cta .burger{display:flex}}
   .burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer}
   .burger span{width:24px;height:1.5px;background:var(--pine)}
 
@@ -278,7 +278,7 @@
 </head>
 <body>
 
-<div class="announce">Complimentary local pickup &amp; delivery &nbsp;·&nbsp; <b>Book your design appointment today</b></div>
+<div class="announce"><b>New</b> &nbsp;·&nbsp; A <b>FREE</b> consultation with our in-house interior designer, just for <b>You</b>, at your appointment &nbsp;·&nbsp; <a href="/index.html#book-design" style="color:var(--clay-soft);border-bottom:1px solid var(--clay-soft)">Book now</a></div>
 
 <header>
   <div class="nav">
@@ -290,12 +290,13 @@
         <li><a href="/index.html#collection">The Collection</a></li>
         <li><a href="/index.html#services">Services</a></li>
         <li><a href="/trade.html" aria-current="page">Trade Program</a></li>
+        <li><a href="/photos.html">Photo Gallery</a></li>
         <li><a href="/index.html#story">Our Story</a></li>
         <li><a href="/index.html#visit">Visit</a></li>
       </ul>
     </nav>
     <div class="nav-cta">
-      <span class="nav-phone">(704) 889-2454</span>
+      <span class="nav-phone">(704) 560-0318</span>
       <a href="/index.html#book-design" class="btn solid hdr-btn">Book a Design Appointment</a>
       <a href="/index.html#book-cleaning" class="btn hdr-btn">Book a Cleaning</a>
       <a href="/index.html#book" class="btn solid hdr-mobile">Book</a>
@@ -381,6 +382,7 @@
           <li><a href="/index.html#services">Repair &amp; Restoration</a></li>
           <li><a href="/index.html#services">Appraisal</a></li>
           <li><a href="/trade.html">Trade Program</a></li>
+          <li><a href="/photos.html">Photo Gallery</a></li>
         </ul>
       </div>
       <div>
@@ -388,7 +390,7 @@
         <ul>
           <li>310 Main Street</li>
           <li>Pineville, NC 28134</li>
-          <li>(704) 889-2454</li>
+          <li>(704) 560-0318</li>
           <li>Mon–Sat 10–5 · After 5 &amp; Sun after 1 by appt</li>
         </ul>
       </div>
@@ -437,7 +439,7 @@
         f.reset();
         msg.className='msg ok'; msg.textContent='Thank you — we’ll review and reach out to confirm your trade account.';
       }catch(_){
-        msg.className='msg err'; msg.textContent='Something went wrong — please call us at (704) 889-2454.';
+        msg.className='msg err'; msg.textContent='Something went wrong — please call us at (704) 560-0318.';
       }
       btn.disabled = false;
     });

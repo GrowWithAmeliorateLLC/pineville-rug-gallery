@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Photo Gallery — Pineville Rug Gallery</title>
+<meta name="description" content="Photos from Pineville Rug Gallery in Pineville, NC: our team, our gallery floor, and our 40th anniversary celebration.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#fdfaf4; --cream:#f5efe4; --sand:#ece3d3;
+    --pine:#12312b; --pine-deep:#0c221d; --pine-soft:#2c4a43;
+    --clay:#b0663f; --clay-soft:#c98b64; --brass:#a98c5f;
+    --ink:#221e18; --stone:#6d645a; --line:rgba(34,30,24,.14);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Jost',sans-serif;color:var(--ink);background:var(--paper);line-height:1.65;font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  h1,h2,h3,.serif{font-family:'Cormorant Garamond',serif;font-weight:500;line-height:1.08;letter-spacing:.005em}
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 40px}
+  .eyebrow{font-size:.72rem;text-transform:uppercase;letter-spacing:.32em;font-weight:500;color:var(--clay)}
+  .btn{display:inline-block;font-size:.74rem;text-transform:uppercase;letter-spacing:.22em;font-weight:500;padding:16px 30px;border:1px solid var(--pine);color:var(--pine);background:transparent;transition:.35s;cursor:pointer}
+  .btn:hover{background:var(--pine);color:var(--paper)}
+  .btn.solid{background:var(--pine);color:var(--paper)}
+  .btn.solid:hover{background:var(--pine-deep);border-color:var(--pine-deep)}
+  .btn.light{border-color:rgba(253,250,244,.6);color:var(--paper)}
+  .btn.light:hover{background:var(--paper);color:var(--pine);border-color:var(--paper)}
+
+  /* announcement */
+  .announce{background:var(--pine-deep);color:var(--cream);text-align:center;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;padding:9px 20px}
+  .announce a{color:inherit} .announce b{color:#fff;font-weight:500}
+
+  /* header */
+  header{position:sticky;top:0;z-index:50;background:rgba(253,250,244,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 40px;max-width:1400px;margin:0 auto}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand img{height:132px;width:auto;display:block;margin:-28px 0 -29px -8px}
+  nav ul{display:flex;gap:34px;list-style:none;align-items:center}
+  nav a{font-size:.76rem;text-transform:uppercase;letter-spacing:.16em;color:var(--ink);transition:.25s;position:relative;padding-bottom:3px}
+  nav a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--clay);transition:.3s}
+  nav a:hover::after{width:100%}
+  .nav-cta{display:flex;align-items:center;gap:12px}
+  .nav-cta .hdr-btn{padding:13px 18px;font-size:.66rem;letter-spacing:.16em;white-space:nowrap}
+  .nav-cta .hdr-mobile{display:none}
+  .brand{flex:none}
+  nav a{white-space:nowrap}
+  .nav-cta .nav-phone{display:none}
+  @media(max-width:1600px){nav ul{gap:22px}}
+  @media(max-width:1440px){nav ul{display:none} .nav-cta .burger{display:flex}}
+  .burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer}
+  .burger span{width:24px;height:1.5px;background:var(--pine)}
+  .hero-actions{display:flex;gap:16px;margin-top:34px;flex-wrap:wrap;align-items:center}
+
+  /* photo gallery */
+  .pg-hero{background:var(--cream);text-align:center;padding:84px 0 56px}
+  .pg-hero h1{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(2.4rem,5vw,3.8rem);color:var(--pine);margin:14px 0 16px;line-height:1.08}
+  .pg-hero p{color:var(--stone);font-size:1.06rem;max-width:640px;margin:0 auto}
+  .pg-sec{padding:70px 0}
+  .pg-sec.alt{background:var(--cream)}
+  .pg-head{max-width:640px;margin-bottom:34px}
+  .pg-head h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(1.9rem,3.4vw,2.7rem);color:var(--pine);margin:12px 0 10px;line-height:1.1}
+  .pg-head p{color:var(--stone)}
+  .pg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .pg-grid figure{margin:0;overflow:hidden;background:var(--sand)}
+  .pg-grid figure.wide{grid-column:span 2}
+  .pg-grid img{width:100%;height:300px;object-fit:cover;display:block;transition:transform .9s ease}
+  .pg-grid figure.wide img{height:420px}
+  .pg-grid figure:hover img{transform:scale(1.03)}
+  .pg-cta{background:var(--pine-deep);color:var(--cream);text-align:center;padding:90px 20px}
+  .pg-cta h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(2rem,4vw,3rem);color:#fff;margin:14px 0 14px}
+  .pg-cta p{color:rgba(245,239,228,.82);max-width:560px;margin:0 auto 28px}
+  .pg-cta .eyebrow{color:var(--clay-soft)}
+
+  /* footer */
+  footer{background:var(--pine-deep);color:rgba(245,239,228,.8);padding:76px 0 34px;border-top:1px solid rgba(245,239,228,.12)}
+  .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;padding-bottom:50px;border-bottom:1px solid rgba(245,239,228,.14)}
+  .foot-brand .name{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:#fff;letter-spacing:.04em}
+  .foot-brand p{font-size:.9rem;margin-top:16px;max-width:34ch;color:rgba(245,239,228,.62)}
+  footer h4{font-size:.7rem;text-transform:uppercase;letter-spacing:.22em;color:var(--clay-soft);margin-bottom:20px;font-weight:500}
+  footer ul{list-style:none}
+  footer li{margin-bottom:11px;font-size:.9rem}
+  footer li a:hover{color:#fff}
+  .foot-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;padding-top:26px;font-size:.76rem;color:rgba(245,239,228,.5)}
+  .foot-bottom a{color:rgba(245,239,228,.7)}
+  .foot-bottom a:hover{color:#fff}
+
+  @media(max-width:980px){
+    .foot-grid{grid-template-columns:1fr}
+    .pg-grid{grid-template-columns:1fr 1fr}
+    .pg-grid figure.wide img{height:320px}
+    nav ul{display:none}
+    .nav-cta .hdr-btn{display:none}
+    .nav-cta .hdr-mobile{display:inline-block}
+    .burger{display:flex}
+  }
+  @media(max-width:560px){
+    .wrap{padding-left:22px;padding-right:22px}
+    .nav{padding:12px 22px}
+    .announce{font-size:.6rem;letter-spacing:.12em;padding:8px 14px;line-height:1.5}
+    .brand img{height:92px;margin:-19px 0 -20px -6px}
+    .nav-cta .btn.solid{padding:11px 14px;font-size:.58rem;letter-spacing:.1em}
+    .pg-hero{padding:56px 0 40px}
+    .pg-sec{padding:50px 0}
+    .pg-grid{grid-template-columns:1fr}
+    .pg-grid figure.wide{grid-column:auto}
+    .pg-grid img,.pg-grid figure.wide img{height:280px}
+    .hero-actions{gap:12px}
+    .hero-actions .btn{width:100%;text-align:center}
+    footer{padding:56px 0 30px}
+    .foot-grid{gap:32px}
+    .foot-bottom{flex-direction:column;gap:6px}
+  }
+</style>
+</head>
+<body>
+
+<div class="announce"><b>New</b> &nbsp;·&nbsp; A <b>FREE</b> consultation with our in-house interior designer, just for <b>You</b>, at your appointment &nbsp;·&nbsp; <a href="/index.html#book-design" style="color:var(--clay-soft);border-bottom:1px solid var(--clay-soft)">Book now</a></div>
+
+<header>
+  <div class="nav">
+    <a class="brand" href="/index.html" aria-label="Pineville Rug Gallery">
+      <img src="https://storage.googleapis.com/pineville-rug/Trans_PRG.png" alt="Pineville Rug Gallery — Est. 1986">
+    </a>
+    <nav>
+      <ul>
+        <li><a href="/index.html#collection">The Collection</a></li>
+        <li><a href="/index.html#services">Services</a></li>
+        <li><a href="/trade.html">Trade Program</a></li>
+        <li><a href="/photos.html" aria-current="page">Photo Gallery</a></li>
+        <li><a href="/index.html#story">Our Story</a></li>
+        <li><a href="/index.html#visit">Visit</a></li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a href="/index.html#book-design" class="btn solid hdr-btn">Book a Design Appointment</a>
+      <a href="/index.html#book-cleaning" class="btn hdr-btn">Book a Cleaning</a>
+      <a href="/index.html#book" class="btn solid hdr-mobile">Book</a>
+      <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<section class="pg-hero">
+  <div class="wrap">
+    <span class="eyebrow">Photo Gallery</span>
+    <h1>Rugs &amp; relationships, since 1986.</h1>
+    <p>The people, the gallery floor, and the friends who filled it for our 40th anniversary. Every rug here has a story, and so does everyone who helps you find yours.</p>
+  </div>
+</section>
+
+<section class="pg-sec">
+  <div class="wrap">
+    <div class="pg-head"><span class="eyebrow">Meet the Team</span><h2>The faces behind the gallery.</h2><p>A family business with a gallery full of people who love rugs as much as you will. Stop by and say hello.</p></div>
+    <div class="pg-grid">
+      <figure class="wide"><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fwatermarked%2F6950%2F202149%2F202150%2Fb9d927ae8f3328e27fd08e62ac81d530.jpg&w=1100&q=78" alt="The Pineville Rug Gallery team"></figure>
+      <figure><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fstorage.googleapis.com%2Fpineville-rug%2FDSC02582_1.jpg&w=900&q=78" alt="Reza Elyasi and his wife Reyhaneh at the 40th anniversary celebration" style="object-position:center 25%"></figure>
+    </div>
+  </div>
+</section>
+
+<section class="pg-sec alt">
+  <div class="wrap">
+    <div class="pg-head"><span class="eyebrow">40th Anniversary</span><h2>Forty years, celebrated with you.</h2><p>Thank you to everyone who came out to celebrate four decades in Charlotte. Here's to the next forty.</p></div>
+    <div class="pg-grid">
+      <figure class="wide"><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fwatermarked%2F6950%2F202149%2F202150%2F49b09f89d8b6583863aa4a9e8fb159e3.jpg&w=1100&q=78" alt="Guests exploring the gallery floor at the celebration"></figure>
+      <figure><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fwatermarked%2F6950%2F202149%2F202150%2F972738ab43860dde1997b3f14a185d8f.jpg&w=900&q=78" alt="Anniversary welcome table with framed photos"></figure>
+      <figure><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fwatermarked%2F6950%2F202149%2F202150%2F8f9a48803216f3b5060c66b0c1edda53.jpg&w=900&q=78" alt="Anniversary spread served on a hand-knotted rug"></figure>
+      <figure><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fwatermarked%2F6950%2F202149%2F202150%2F84107c6251489331530d5d9f01bf0f92.jpg&w=900&q=78" alt="Champagne glasses set out for the 40th anniversary"></figure>
+      <figure><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fwatermarked%2F6950%2F202149%2F202150%2Fd4b8dd67f62ad59d1fbb472e38c55340.jpg&w=900&q=78" alt="Guests browsing rugs during the 40th anniversary"></figure>
+      <figure><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fwatermarked%2F6950%2F202149%2F202150%2F5b48049239380d9b3fbad65c1ac4e913.jpg&w=900&q=78" alt="Guests sitting with rugs on the gallery floor"></figure>
+      <figure class="wide"><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fwatermarked%2F6950%2F202149%2F202150%2F573954e806eca57283401699c4962b3d.jpg&w=1100&q=78" alt="The team showing rugs to guests"></figure>
+      <figure><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fwatermarked%2F6950%2F202149%2F202150%2Fe976c6fabcbb8408d1d3c2f1af64eff0.jpg&w=900&q=78" alt="Rugs turned back for guests to compare"></figure>
+    </div>
+  </div>
+</section>
+
+<section class="pg-sec">
+  <div class="wrap">
+    <div class="pg-head"><span class="eyebrow">The Gallery Floor</span><h2>Over 1,000 rugs, waiting to meet you.</h2><p>Five hundred on the floor, five hundred more in the warehouse, and every one of them one-of-a-kind.</p></div>
+    <div class="pg-grid">
+      <figure class="wide"><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fwatermarked%2F6950%2F202149%2F202150%2Fda8292589c3d4668866b0cf97e8ffa63.jpg&w=1100&q=78" alt="The gallery floor at 310 Main Street"></figure>
+      <figure><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fwatermarked%2F6950%2F202149%2F202150%2F1c03b620fad13ab15d13c6fdcd54ead2.jpg&w=900&q=78" alt="A stack of round rugs"></figure>
+      <figure><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fwatermarked%2F6950%2F202149%2F202150%2F4a9340299cd41e4cc68c156bb513d75a.jpg&w=900&q=78" alt="Hand-knotted rugs laid out on the gallery floor"></figure>
+      <figure><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fwatermarked%2F6950%2F202149%2F202150%2Fd9c072a8365d93abde2410a9f4e5bd7c.jpg&w=900&q=78" alt="Rugs displayed on the gallery walls"></figure>
+      <figure><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fwatermarked%2F6950%2F202149%2F202150%2F7db4654cae03131c3a1cf350e13f9944.jpg&w=900&q=78" alt="Folded rugs showing their weave"></figure>
+      <figure><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fwatermarked%2F6950%2F202149%2F202150%2F6907fe0f640434acf1f35ea75a8ffbbc.jpg&w=900&q=78" alt="A stack of rugs with tags"></figure>
+      <figure><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fwatermarked%2F6950%2F202149%2F202150%2F17c565a4d3a578b8bde8e2851b694a4c.jpg&w=900&q=78" alt="Rolled rugs lined up in the gallery"></figure>
+      <figure><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fwatermarked%2F6950%2F202149%2F202150%2F48411757c86675621569c7059fb8bc6b.jpg&w=900&q=78" alt="Close-up of a green floral rug"></figure>
+      <figure><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fwatermarked%2F6950%2F202149%2F202150%2F1e1ae58f2081762cf13194fdd14f3ef3.jpg&w=900&q=78" alt="Close-up of a red floral rug"></figure>
+      <figure><img loading="lazy" src="/.netlify/images?url=https%3A%2F%2Fcdn.photoproofpro.com%2Fstyles%2Flarge_thumb%2Fs3%2Fuploads%2Fwatermarked%2F6950%2F202149%2F202150%2F3e43c9660077d2f201dc06d7c001a663.jpg&w=900&q=78" alt="Close-up of a black and gold medallion"></figure>
+    </div>
+  </div>
+</section>
+
+<section class="pg-cta">
+  <span class="eyebrow">Come See Us</span>
+  <h2>Let's find the one.</h2>
+  <p>Book a visit and bring your room, your colors and your ideas. Our in-house designer's consultation is on us.</p>
+  <div class="hero-actions" style="justify-content:center">
+    <a href="/index.html#book-design" class="btn light">Book a Design Appointment</a>
+    <a href="/index.html#book-cleaning" class="btn light">Book a Cleaning</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="name">Pineville Rug Gallery</div>
+        <p>Charlotte's family-owned home for fine hand-knotted Oriental &amp; Persian rugs since 1986. Sales · Cleaning · Repair · Appraisal. Serving the Charlotte area and beyond — free shipping to the contiguous U.S., worldwide shipping available.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="/gallery.html">The Collection</a></li>
+          <li><a href="/gallery.html">Browse Rugs</a></li>
+          <li><a href="/index.html#services">Services</a></li>
+          <li><a href="/index.html#book">Book an Appointment</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/index.html#services">Rug Cleaning</a></li>
+          <li><a href="/index.html#services">Repair &amp; Restoration</a></li>
+          <li><a href="/index.html#services">Appraisal</a></li>
+          <li><a href="/trade.html">Trade Program</a></li>
+          <li><a href="/photos.html">Photo Gallery</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Visit</h4>
+        <ul>
+          <li>310 Main Street</li>
+          <li>Pineville, NC 28134</li>
+          <li>(704) 560-0318</li>
+          <li>Mon–Sat 10–5 · After 5 &amp; Sun after 1 by appt</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Pineville Rug Gallery. All rights reserved.</span>
+      <span><a href="/privacy.html">Privacy Policy</a> &nbsp;·&nbsp; <a href="/terms.html">Terms of Service</a></span>
+      <span>Family-owned since 1986 · Free U.S. shipping · Worldwide available</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelector('.burger').addEventListener('click',function(){
+    var n=document.querySelector('nav ul');
+    n.style.display = n.style.display==='flex' ? 'none' : 'flex';
+    n.style.position='absolute'; n.style.flexDirection='column'; n.style.background='var(--paper)';
+    n.style.top='100%'; n.style.right='20px'; n.style.padding='24px 30px'; n.style.gap='18px';
+    n.style.border='1px solid var(--line)'; n.style.boxShadow='0 20px 40px rgba(12,34,29,.15)';
+  });
+</script>
+
+</body>
+</html>

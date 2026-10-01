@@ -1,16 +1,16 @@
 // Rug list API.
-// GET  /api/rugs            -> public list (rugs with a photo, in display order)
+// GET  /api/rugs            -> public list (rugs with a photo AND a name, in display order)
 // GET  /api/rugs?all=1      -> admin list (needs x-admin-key)
 // POST /api/rugs            -> admin actions (needs x-admin-key):
 //   {action:"login"} | {action:"save", rug} | {action:"delete", id} | {action:"move", id, to:"up"|"down"|"top"}
-import { loadRugs, saveRugs, newId, cleanFields, publicRug, isAdmin, photoStore, json } from "../lib/rugstore.mjs";
+import { loadRugs, saveRugs, newId, cleanFields, publicRug, isPublic, isAdmin, photoStore, json } from "../lib/rugstore.mjs";
 
 export default async (req) => {
   if (req.method === "GET") {
     const all = new URL(req.url).searchParams.get("all") === "1";
     if (all && !isAdmin(req)) return json({ error: "unauthorized" }, 401);
     const rugs = await loadRugs();
-    const list = (all ? rugs : rugs.filter((r) => r.photo)).map(publicRug);
+    const list = (all ? rugs : rugs.filter(isPublic)).map(publicRug);
     return json({ rugs: list });
   }
 

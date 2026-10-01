@@ -1,5 +1,5 @@
 // Individual rug page: /rug/<id>  (server-rendered from the rug manager data)
-import { loadRugs, publicRug, esc } from "../lib/rugstore.mjs";
+import { loadRugs, publicRug, isPublic, esc } from "../lib/rugstore.mjs";
 
 const CSS = `
 :root{--paper:#fdfaf4;--cream:#f5efe4;--sand:#ece3d3;--pine:#12312b;--pine-deep:#0c221d;--clay:#b0663f;--clay-soft:#c98b64;--ink:#221e18;--stone:#6d645a;--line:rgba(34,30,24,.14)}
@@ -61,7 +61,7 @@ ${body}
 export default async (req, context) => {
   const id = (context.params && context.params.id) || "";
   const rugs = await loadRugs();
-  const raw = rugs.find((r) => r.id === id && r.photo);
+  const raw = rugs.find((r) => r.id === id && isPublic(r));
 
   if (!raw) {
     const html = shell("Rug not found — Pineville Rug Gallery", "", `

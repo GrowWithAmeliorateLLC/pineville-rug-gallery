@@ -158,6 +158,9 @@ export function label(rug) {
   return rug.name || [rug.size, rug.origin].filter(Boolean).join(" ") || (rug.stock ? `Rug No. ${rug.stock}` : "Hand-knotted rug");
 }
 
+// Shown on the public site only once it has a photo and a name (unfinished rugs stay hidden until filled in).
+export const isPublic = (rug) => !!(rug && rug.photo && String(rug.name || "").trim());
+
 export function publicRug(rug) {
   return {
     id: rug.id,

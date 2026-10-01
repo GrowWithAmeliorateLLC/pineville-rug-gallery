@@ -90,6 +90,46 @@
   .bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;align-items:center}
   .tip{font-size:.82rem;color:var(--muted);margin-top:10px}
 
+  /* tabs */
+  .tabs{display:flex;gap:8px;margin-bottom:22px;background:var(--white);border:1px solid var(--line);border-radius:999px;padding:5px;width:max-content;max-width:100%}
+  .tabs button{border:none;background:none;border-radius:999px;padding:10px 20px;font-weight:700;cursor:pointer;font-size:.95rem;color:var(--muted)}
+  .tabs button.on{background:var(--dark);color:var(--white)}
+  .tabs .badge{display:inline-block;min-width:20px;padding:1px 6px;margin-left:6px;border-radius:999px;background:var(--lime);color:var(--dark);font-size:.72rem}
+
+  /* appointments */
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .chip{border:1.5px solid var(--line);background:var(--white);border-radius:999px;padding:7px 14px;font-weight:700;font-size:.85rem;cursor:pointer}
+  .chip.on{background:var(--navy);border-color:var(--navy);color:var(--white)}
+  .day{margin:26px 0 10px;display:flex;align-items:baseline;gap:10px}
+  .day h2{font-size:1.15rem}
+  .day span{color:var(--muted);font-size:.85rem}
+  .day.today h2{color:var(--navy)}
+  .appt{display:grid;grid-template-columns:92px 1fr;gap:16px;background:var(--white);border:1px solid var(--line);border-left:6px solid var(--navy);border-radius:14px;padding:16px;margin-bottom:10px}
+  .appt.Cleaning{border-left-color:#2f8f83}
+  .appt.Trade{border-left-color:#8a5bb0}
+  .appt.st-Canceled{opacity:.55}
+  .appt .when{font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.05rem;line-height:1.2}
+  .appt .when small{display:block;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.78rem;color:var(--muted);margin-top:4px}
+  .appt .nm{font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.2rem;margin:6px 0 2px}
+  .pill{display:inline-block;font-size:.72rem;font-weight:700;border-radius:999px;padding:3px 10px;margin:0 6px 4px 0;background:var(--lavender)}
+  .pill.Design{background:#e3e9f7;color:#2c4683} .pill.Cleaning{background:#dcefeb;color:#1f6158} .pill.Trade{background:#efe3f6;color:#5d3a7a}
+  .pill.s-New{background:#ffe7d6;color:#8a3b00} .pill.s-Confirmed{background:#dff2e1;color:#2f7a3d} .pill.s-Done{background:#eee;color:#444} .pill.s-Canceled{background:#f6dede;color:var(--danger)}
+  .confirm{display:inline-block;font-weight:800;font-size:.8rem;background:var(--lime);border-radius:8px;padding:3px 9px;margin:6px 0 8px}
+  .kv{display:grid;grid-template-columns:120px 1fr;gap:4px 12px;font-size:.92rem;margin-top:8px}
+  .kv dt{color:var(--muted);font-weight:500}
+  .kv dd{white-space:pre-line;word-break:break-word}
+  .contact{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+  .contact a{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line);border-radius:999px;padding:7px 13px;font-weight:700;font-size:.88rem;text-decoration:none;color:var(--dark);background:var(--white)}
+  .appt .acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+  .appt .acts .btn.on{background:var(--dark);color:var(--white)}
+  .appt textarea{min-height:70px;margin-top:12px;font-size:.92rem}
+  .appt .meta{font-size:.78rem;color:var(--muted);margin-top:10px}
+  @media(max-width:640px){
+    .appt{grid-template-columns:1fr;gap:6px}
+    .kv{grid-template-columns:1fr;gap:0}
+    .kv dt{margin-top:6px;font-size:.8rem}
+  }
+
   footer{text-align:center;font-size:.8rem;color:var(--muted);padding:22px 20px 30px}
   footer b{font-family:'Montserrat',sans-serif;font-weight:800;color:var(--dark)}
 
@@ -122,7 +162,7 @@
   <!-- LOGIN -->
   <section id="v-login" class="login card" hidden>
     <h1>Welcome back.</h1>
-    <p>Sign in to add, edit, or remove rugs from your website gallery.</p>
+    <p>Sign in to see appointments and manage your rug gallery.</p>
     <form id="login-form">
       <label class="f" for="pw">Password</label>
       <input type="password" id="pw" autocomplete="current-password" required>
@@ -130,6 +170,32 @@
       <button class="btn primary" style="width:100%" type="submit">Sign in</button>
       <div class="msg" id="login-msg" role="status"></div>
     </form>
+  </section>
+
+  <nav class="tabs" id="tabs" hidden>
+    <button type="button" data-tab="v-appts">Appointments<span class="badge" id="new-badge" hidden></span></button>
+    <button type="button" data-tab="v-list">Rugs</button>
+  </nav>
+
+  <!-- APPOINTMENTS -->
+  <section id="v-appts" hidden>
+    <div class="head">
+      <div>
+        <h1>Appointments</h1>
+        <p id="a-count">Loading…</p>
+      </div>
+      <div class="acts"><button class="btn ghost" id="a-refresh">↻ Refresh</button></div>
+    </div>
+    <div class="chips" id="a-chips">
+      <button class="chip on" data-f="upcoming">Upcoming</button>
+      <button class="chip" data-f="today">Today</button>
+      <button class="chip" data-f="new">Needs confirming</button>
+      <button class="chip" data-f="past">Past</button>
+      <button class="chip" data-f="trade">Trade applications</button>
+      <button class="chip" data-f="all">All</button>
+    </div>
+    <input type="text" class="search" id="a-q" placeholder="Search by name, phone, email, rug…" aria-label="Search appointments">
+    <div id="a-list"></div>
   </section>
 
   <!-- LIST -->
@@ -207,8 +273,11 @@
   }
 
   function show(view){
-    ['v-login','v-list','v-edit'].forEach(function(v){ $(v).hidden = (v !== view); });
+    ['v-login','v-list','v-edit','v-appts'].forEach(function(v){ $(v).hidden = (v !== view); });
     $('signout').hidden = (view === 'v-login');
+    $('tabs').hidden = (view === 'v-login' || view === 'v-edit');
+    document.querySelectorAll('#tabs button').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-tab') === view); });
+    if(view === 'v-appts' || view === 'v-list'){ try{ localStorage.setItem('prg_admin_tab', view); }catch(e){} }
     window.scrollTo(0,0);
   }
 
@@ -240,7 +309,7 @@
       if(!r.ok) throw new Error();
       saveKey(key, $('remember').checked);
       m.textContent = '';
-      await loadList(); show('v-list');
+      await openStart();
     }catch(err){ key=''; m.className = 'msg err'; m.textContent = 'That password didn’t work. Please try again.'; }
   });
   $('signout').addEventListener('click', function(){ signOut(''); });
@@ -401,9 +470,177 @@
     btn.disabled = false;
   });
 
+  // ---------- appointments ----------
+  var appts = [], aFilter = 'upcoming', LOC = '';
+  var DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function todayStr(){ var d = new Date(); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+  function dayLabel(ds){
+    if(!ds) return 'No date requested';
+    var p = ds.split('-'); var d = new Date(+p[0], +p[1]-1, +p[2]);
+    if(isNaN(d)) return ds;
+    return DAYS[d.getDay()] + ', ' + MONTHS[d.getMonth()] + ' ' + d.getDate() + (d.getFullYear() !== new Date().getFullYear() ? ', ' + d.getFullYear() : '');
+  }
+  function mins(a){
+    var t = (a.customTime && /after 5|sunday/i.test(a.time) ? a.customTime : a.time) || '';
+    var m = t.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i);
+    if(!m) return 9999;
+    var h = +m[1] % 12; if(/pm/i.test(m[3] || '') || (!m[3] && h < 8)) h += 12;
+    return h * 60 + (+m[2] || 0);
+  }
+  function whenText(a){
+    if(a.customTime && /after 5|sunday/i.test(a.time)) return esc(a.customTime) + '<small>' + esc(a.time) + '</small>';
+    return esc(a.time || '—');
+  }
+  function crmLink(a){ return a.contactId && LOC ? 'https://app.gohighlevel.com/v2/location/' + LOC + '/contacts/detail/' + encodeURIComponent(a.contactId) : ''; }
+  function addr(a){ return [a.address1, [a.city, a.state].filter(Boolean).join(', '), a.postalCode].filter(Boolean).join(' '); }
+
+  async function loadAppts(){
+    $('a-count').textContent = 'Loading…';
+    var j = await api('/api/appointments');
+    appts = j.appointments || []; LOC = j.locationId || '';
+    renderAppts();
+  }
+
+  function renderAppts(){
+    var t = todayStr(), q = $('a-q').value.trim().toLowerCase();
+    var visits = appts.filter(function(a){ return a.type !== 'Trade'; });
+    var up = visits.filter(function(a){ return a.status !== 'Canceled' && a.status !== 'Done' && (!a.date || a.date >= t); });
+    var needs = visits.filter(function(a){ return a.status === 'New'; }).length;
+    $('a-count').textContent = up.length + ' upcoming · ' + needs + ' need confirming';
+    var b = $('new-badge'); b.hidden = !needs; b.textContent = needs;
+
+    var shown = appts.filter(function(a){
+      if(aFilter === 'trade') return a.type === 'Trade';
+      if(aFilter === 'all') return true;
+      if(a.type === 'Trade') return false;
+      if(aFilter === 'upcoming') return a.status !== 'Canceled' && a.status !== 'Done' && (!a.date || a.date >= t);
+      if(aFilter === 'today') return a.date === t;
+      if(aFilter === 'new') return a.status === 'New';
+      if(aFilter === 'past') return a.date && a.date < t;
+      return true;
+    }).filter(function(a){
+      if(!q) return true;
+      return [a.name, a.phone, a.email, a.company, a.details, a.message, a.address1, (a.services||[]).join(' ')].join(' ').toLowerCase().indexOf(q) > -1;
+    });
+    var desc = (aFilter === 'past' || aFilter === 'trade' || aFilter === 'all');
+    shown.sort(function(x, y){
+      var dx = x.date || (desc ? '' : '9999'), dy = y.date || (desc ? '' : '9999');
+      if(dx !== dy) return desc ? (dx < dy ? 1 : -1) : (dx < dy ? -1 : 1);
+      return mins(x) - mins(y) || String(x.created).localeCompare(String(y.created));
+    });
+
+    var list = $('a-list'); list.innerHTML = '';
+    if(!shown.length){ list.innerHTML = '<div class="empty">' + (q ? 'No appointments match that search.' : aFilter === 'upcoming' ? 'No upcoming appointments yet. New website bookings show up here automatically.' : 'Nothing here.') + '</div>'; return; }
+    var lastDay = null;
+    shown.forEach(function(a){
+      var dk = a.type === 'Trade' ? 'trade:' + String(a.created).slice(0,10) : (a.date || '');
+      if(dk !== lastDay){
+        lastDay = dk;
+        var h = document.createElement('div');
+        var isToday = a.date === t && a.type !== 'Trade';
+        h.className = 'day' + (isToday ? ' today' : '');
+        h.innerHTML = a.type === 'Trade'
+          ? '<h2>Received ' + esc(dayLabel(String(a.created).slice(0,10))) + '</h2>'
+          : '<h2>' + (isToday ? 'Today · ' : '') + esc(dayLabel(a.date)) + '</h2>';
+        list.appendChild(h);
+      }
+      list.appendChild(apptCard(a));
+    });
+  }
+
+  function apptCard(a){
+    var el = document.createElement('div');
+    el.className = 'appt ' + (a.type || '') + ' st-' + (a.status || 'New');
+    var rows = [];
+    function row(k, v){ if(v) rows.push('<dt>' + k + '</dt><dd>' + esc(v) + '</dd>'); }
+    if(a.services && a.services.length) row('Interested in', a.services.join(', '));
+    if(a.fulfillment) row('Pickup / drop-off', a.fulfillment);
+    var ad = addr(a);
+    if(ad) rows.push('<dt>Address</dt><dd>' + esc(ad) + ' · <a target="_blank" rel="noopener" href="https://maps.google.com/?q=' + encodeURIComponent(ad) + '">Map ↗</a></dd>');
+    row('Company', a.company);
+    row(a.type === 'Cleaning' ? 'About the rug(s)' : 'Notes from client', a.details);
+    row('Message', a.message);
+    row('Heard about us', a.referral);
+    row('Text updates', a.smsTransactional ? 'Yes, OK to text about this appointment' + (a.smsMarketing ? ' · also OK for offers' : '') : (a.smsMarketing ? 'Offers only' : 'Not requested'));
+    var typeLabel = a.type === 'Cleaning' ? 'Cleaning / Repair' : a.type === 'Trade' ? 'Trade application' : 'Design appointment';
+    var tel = (a.phone || '').replace(/[^\d+]/g, '');
+    var crm = crmLink(a);
+    var created = a.created ? new Date(a.created) : null;
+    el.innerHTML =
+      '<div class="when">' + (a.type === 'Trade' ? '—' : whenText(a)) + '</div>' +
+      '<div>' +
+        '<span class="pill ' + esc(a.type) + '">' + typeLabel + '</span><span class="pill s-' + esc(a.status || 'New') + '">' + esc(a.status || 'New') + '</span>' +
+        '<div class="nm">' + esc(a.name || '(no name)') + '</div>' +
+        (a.confirmVia ? '<div class="confirm">Confirm by ' + esc(a.confirmVia.toUpperCase()) + '</div>' : '') +
+        '<div class="contact">' +
+          (tel ? '<a href="tel:' + esc(tel) + '">📞 ' + esc(a.phone) + '</a><a href="sms:' + esc(tel) + '">💬 Text</a>' : '') +
+          (a.email ? '<a href="mailto:' + esc(a.email) + '">✉️ ' + esc(a.email) + '</a>' : '') +
+        '</div>' +
+        (rows.length ? '<dl class="kv">' + rows.join('') + '</dl>' : '') +
+        '<textarea placeholder="Team note (only your team sees this)…">' + esc(a.teamNote || '') + '</textarea>' +
+        '<div class="acts">' +
+          ['Confirmed','Done','Canceled','New'].filter(function(s){ return !(s === 'New' && (a.status || 'New') === 'New'); }).map(function(s){ return '<button class="btn sm' + (a.status === s ? ' on' : '') + '" data-s="' + s + '">' + (s === 'New' ? 'Mark new' : s) + '</button>'; }).join('') +
+          '<button class="btn sm ghost" data-a="note">Save note</button>' +
+          (crm ? '<a class="btn sm ghost" target="_blank" rel="noopener" href="' + esc(crm) + '">Open in CRM ↗</a>' : '') +
+          '<button class="btn sm danger" data-a="del" style="margin-left:auto">Remove</button>' +
+        '</div>' +
+        '<div class="meta">Requested ' + (created && !isNaN(created) ? esc(created.toLocaleString([], {month:'numeric', day:'numeric', year:'numeric', hour:'numeric', minute:'2-digit'})) : '') + (a.statusAt ? ' · ' + esc(a.status) + ' ' + esc(new Date(a.statusAt).toLocaleString([], {month:'numeric', day:'numeric', hour:'numeric', minute:'2-digit'})) : '') + '</div>' +
+      '</div>';
+    el.querySelectorAll('[data-s]').forEach(function(b){
+      b.addEventListener('click', async function(){
+        b.disabled = true;
+        try{ var j = await api('/api/appointments', {method:'POST', body:JSON.stringify({action:'status', id:a.id, status:b.getAttribute('data-s')})}); Object.assign(a, j.appointment); renderAppts(); }
+        catch(e){ b.disabled = false; alert('Could not update: ' + e.message); }
+      });
+    });
+    var nb = el.querySelector('[data-a="note"]');
+    nb.addEventListener('click', async function(){
+      nb.disabled = true; nb.textContent = 'Saving…';
+      try{ await api('/api/appointments', {method:'POST', body:JSON.stringify({action:'note', id:a.id, note:el.querySelector('textarea').value})}); a.teamNote = el.querySelector('textarea').value; nb.textContent = '✓ Saved'; }
+      catch(e){ nb.textContent = 'Save note'; alert('Could not save: ' + e.message); }
+      setTimeout(function(){ nb.disabled = false; nb.textContent = 'Save note'; }, 1500);
+    });
+    var db = el.querySelector('[data-a="del"]');
+    db.addEventListener('click', async function(){
+      if(!db.classList.contains('armed')){ db.classList.add('armed'); db.textContent = 'Tap again to remove'; setTimeout(function(){ if(db.isConnected){ db.classList.remove('armed'); db.textContent = 'Remove'; } }, 4000); return; }
+      db.disabled = true;
+      try{ await api('/api/appointments', {method:'POST', body:JSON.stringify({action:'delete', id:a.id})}); appts = appts.filter(function(x){ return x.id !== a.id; }); renderAppts(); }
+      catch(e){ db.disabled = false; alert('Could not remove: ' + e.message); }
+    });
+    return el;
+  }
+
+  $('a-chips').addEventListener('click', function(e){
+    var c = e.target.closest('.chip'); if(!c) return;
+    aFilter = c.getAttribute('data-f');
+    document.querySelectorAll('#a-chips .chip').forEach(function(x){ x.classList.toggle('on', x === c); });
+    renderAppts();
+  });
+  $('a-q').addEventListener('input', renderAppts);
+  $('a-refresh').addEventListener('click', function(){ loadAppts().catch(function(){}); });
+
+  document.querySelectorAll('#tabs button').forEach(function(b){
+    b.addEventListener('click', function(){
+      var v = b.getAttribute('data-tab'); show(v);
+      (v === 'v-appts' ? loadAppts() : loadList()).catch(function(){});
+    });
+  });
+
+  async function openStart(){
+    var tab = 'v-appts';
+    try{ tab = localStorage.getItem('prg_admin_tab') || 'v-appts'; }catch(e){}
+    if(location.hash === '#rugs') tab = 'v-list';
+    if(location.hash === '#appointments') tab = 'v-appts';
+    show(tab);
+    var other = tab === 'v-appts' ? loadList : loadAppts;
+    try{ await (tab === 'v-appts' ? loadAppts() : loadList()); }
+    catch(e){ if(e.message !== 'unauthorized'){ if(tab === 'v-appts') $('a-count').textContent = 'Could not load appointments. Please refresh to try again.'; else $('count').textContent = 'Could not load your rugs. Please refresh to try again.'; } return; }
+    other().catch(function(){});
+  }
+
   // ---------- boot ----------
   key = readKey();
-  if(key){ loadList().then(function(){ show('v-list'); }).catch(function(e){ if(e.message !== 'unauthorized'){ show('v-list'); $('count').textContent = 'Could not load your rugs — please refresh to try again.'; } }); }
+  if(key){ openStart().catch(function(){}); }
   else show('v-login');
 })();
 </script>

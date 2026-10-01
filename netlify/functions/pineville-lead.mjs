@@ -15,6 +15,8 @@
 //   PRG_NOTIFY_EMAIL     - optional; internal email(s) that get the team alert, comma-separated
 //   PRG_EMAIL_FROM       - optional; From address for outgoing email
 
+import { saveAppt } from "../lib/apptstore.mjs";
+
 const GHL_BASE = "https://services.leadconnectorhq.com";
 const GHL_VERSION = "2021-07-28";
 const LOCATION_ID = process.env.PRG_GHL_LOCATION_ID || "SEUOenwNjKokn5Nnb0cU";
@@ -157,6 +159,32 @@ export default async (req) => {
   if (store) {
     try { const cur = await readCount(store, apptType, apptDate, apptSlot); await store.set(bkey(apptType, apptDate, apptSlot), String(cur + 1)); }
     catch (_) {}
+  }
+
+  // 2b) Save the full request for the admin Appointments calendar (best-effort).
+  if (apptType || isTrade) {
+    try {
+      await saveAppt({
+        created: new Date().toISOString(),
+        source: "website",
+        type: isTrade ? "Trade" : apptType === "Cleaning" ? "Cleaning" : "Design",
+        date: apptDate,
+        time: (body.appt_slot || "").trim(),
+        customTime: apptCustom,
+        confirmVia,
+        name, firstName, lastName, phone, email,
+        company: companyName,
+        services,
+        fulfillment: isPickup ? "Pickup & delivery" : isDropoff ? "Drop-off at gallery" : fulfillment,
+        address1, city, state, postalCode,
+        details: String(body.project || "").trim(),
+        referral: String(body.referral || "").trim(),
+        message: String(body.message || "").trim(),
+        smsTransactional: smsT, smsMarketing: smsM,
+        contactId: contactId || "",
+        page: String(body.page || ""),
+      });
+    } catch (_) {}
   }
 
   // 3) Note.

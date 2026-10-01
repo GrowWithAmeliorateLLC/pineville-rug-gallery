@@ -812,15 +812,6 @@
   prgBook('book-form','s-msg');
   prgBook('clean-form','c-msg');
 
-  // Collection preview: first 6 live rugs from the rug manager (static photos stay if this fails).
-  (function(){
-    var g=document.getElementById('home-grid'); if(!g) return;
-    function esc(t){return String(t||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-    fetch('/api/rugs').then(function(r){return r.json();}).then(function(j){
-      var rugs=((j&&j.rugs)||[]).slice(0,6); if(!rugs.length) return;
-      g.innerHTML=rugs.map(function(r){ return '<figure><a href="'+esc(r.url)+'"><div class="ph"><img loading="lazy" src="'+esc(r.thumb)+'" alt="'+esc(r.label)+'"></div></a></figure>'; }).join('');
-    }).catch(function(){});
-  })();
 
   // Coming from a rug page: note which rug they want to see.
   (function(){

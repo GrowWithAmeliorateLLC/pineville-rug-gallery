@@ -95,7 +95,7 @@
     document.head.appendChild(st);
     box = document.createElement("div");
     box.className = "rz-box";
-    box.innerHTML = '<img alt=""><button class="rz-x" aria-label="Close">×</button><div class="rz-tip">Tap the rug to zoom in · drag to look around</div>';
+    box.innerHTML = '<img alt=""><button class="rz-x" aria-label="Close">\\u00d7</button><div class="rz-tip">Tap the rug to zoom in \\u00b7 drag to look around</div>';
     document.body.appendChild(box);
     pic = box.querySelector("img");
     box.querySelector(".rz-x").addEventListener("click", close);

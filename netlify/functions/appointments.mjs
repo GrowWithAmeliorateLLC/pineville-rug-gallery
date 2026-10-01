@@ -10,6 +10,34 @@ const LOCATION_ID = process.env.PRG_GHL_LOCATION_ID || "SEUOenwNjKokn5Nnb0cU";
 const TOKEN = process.env.PRG_GHL_TOKEN;
 const ghlHeaders = () => ({ Authorization: `Bearer ${TOKEN}`, Version: "2021-07-28", Accept: "application/json" });
 
+// Copy an admin team note onto the client's GHL contact (one GHL note per appointment, kept in sync).
+async function syncNoteToGhl(rec) {
+  if (!TOKEN || !rec.contactId) return "skipped";
+  const h = { ...ghlHeaders(), "Content-Type": "application/json" };
+  const base = `${GHL_BASE}/contacts/${encodeURIComponent(rec.contactId)}/notes`;
+  const text = String(rec.teamNote || "").trim();
+  try {
+    if (!text) {
+      if (rec.ghlNoteId) { await fetch(`${base}/${rec.ghlNoteId}`, { method: "DELETE", headers: h }); delete rec.ghlNoteId; }
+      return "cleared";
+    }
+    const kind = rec.type === "Cleaning" ? "Cleaning / repair appointment" : rec.type === "Trade" ? "Trade application" : "Design appointment";
+    const when = [rec.date, rec.customTime || rec.time].filter(Boolean).join(" ");
+    const body = `TEAM NOTE (from website admin)\n${kind}${when ? " · " + when : ""}\n\n${text}`;
+    if (rec.ghlNoteId) {
+      const r = await fetch(`${base}/${rec.ghlNoteId}`, { method: "PUT", headers: h, body: JSON.stringify({ body }) });
+      if (r.ok) return "updated";
+      if (r.status !== 404) return "failed";
+    }
+    const r = await fetch(base, { method: "POST", headers: h, body: JSON.stringify({ body }) });
+    if (!r.ok) return "failed";
+    const j = await r.json().catch(() => ({}));
+    const id = (j.note && j.note.id) || j.id;
+    if (id) rec.ghlNoteId = id;
+    return "saved";
+  } catch (_) { return "failed"; }
+}
+
 async function ghl(path) {
   const r = await fetch(GHL_BASE + path, { headers: ghlHeaders() });
   if (!r.ok) throw new Error(`GHL ${r.status} on ${path.split("?")[0]}`);
@@ -116,6 +144,7 @@ export default async (req) => {
     rec.statusAt = new Date().toISOString();
   } else if (body.action === "note") {
     rec.teamNote = String(body.note || "").slice(0, 2000);
+    rec.ghlSync = await syncNoteToGhl(rec);
   } else if (body.action === "delete") {
     await s.delete(key);
     return json({ ok: true });

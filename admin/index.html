@@ -577,7 +577,7 @@
           (a.email ? '<a href="mailto:' + esc(a.email) + '">✉️ ' + esc(a.email) + '</a>' : '') +
         '</div>' +
         (rows.length ? '<dl class="kv">' + rows.join('') + '</dl>' : '') +
-        '<textarea placeholder="Team note (only your team sees this)…">' + esc(a.teamNote || '') + '</textarea>' +
+        '<textarea placeholder="Team note (only your team sees this; also saved to the client’s CRM contact)…">' + esc(a.teamNote || '') + '</textarea>' +
         '<div class="acts">' +
           ['Confirmed','Done','Canceled','New'].filter(function(s){ return !(s === 'New' && (a.status || 'New') === 'New'); }).map(function(s){ return '<button class="btn sm' + (a.status === s ? ' on' : '') + '" data-s="' + s + '">' + (s === 'New' ? 'Mark new' : s) + '</button>'; }).join('') +
           '<button class="btn sm ghost" data-a="note">Save note</button>' +
@@ -596,9 +596,9 @@
     var nb = el.querySelector('[data-a="note"]');
     nb.addEventListener('click', async function(){
       nb.disabled = true; nb.textContent = 'Saving…';
-      try{ await api('/api/appointments', {method:'POST', body:JSON.stringify({action:'note', id:a.id, note:el.querySelector('textarea').value})}); a.teamNote = el.querySelector('textarea').value; nb.textContent = '✓ Saved'; }
+      try{ var nj = await api('/api/appointments', {method:'POST', body:JSON.stringify({action:'note', id:a.id, note:el.querySelector('textarea').value})}); Object.assign(a, nj.appointment); var g = a.ghlSync; nb.textContent = (g === 'saved' || g === 'updated') ? '✓ Saved + added to CRM' : g === 'failed' ? '✓ Saved (CRM copy failed)' : '✓ Saved'; }
       catch(e){ nb.textContent = 'Save note'; alert('Could not save: ' + e.message); }
-      setTimeout(function(){ nb.disabled = false; nb.textContent = 'Save note'; }, 1500);
+      setTimeout(function(){ nb.disabled = false; nb.textContent = 'Save note'; }, 2500);
     });
     var db = el.querySelector('[data-a="del"]');
     db.addEventListener('click', async function(){

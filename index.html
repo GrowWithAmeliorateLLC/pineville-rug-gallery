@@ -31,7 +31,7 @@
   .btn.light:hover{background:var(--paper);color:var(--pine);border-color:var(--paper)}
 
   /* announcement */
-  .announce{background:var(--pine-deep);color:var(--cream);text-align:center;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;padding:9px 20px}
+  .announce{background:var(--pine-deep);color:var(--cream);text-align:center;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;padding:9px 20px;line-height:1.9}
   .announce b{color:#fff;font-weight:500}
 
   /* header */
@@ -101,6 +101,9 @@
   .cgrid .ph img{width:100%;height:300px;object-fit:contain;transition:transform 1s ease}
   .cgrid figure:hover img{transform:scale(1.04)}
   .cgrid a{display:block}
+  .cgrid figcaption{text-align:center;margin-top:14px}
+  .cgrid figcaption b{display:block;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:1.3rem;color:var(--pine)}
+  .cgrid figcaption span{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.16em;color:var(--stone);margin-top:4px}
   .collection .center{text-align:center;margin-top:60px}
   .collection .center p{color:var(--stone);font-size:.92rem;margin-bottom:22px}
   .collection .center .btn{margin:6px}
@@ -282,7 +285,7 @@
 </head>
 <body>
 
-<div class="announce"><b>New</b> &nbsp;·&nbsp; A <b>FREE</b> consultation with our in-house interior designer, just for <b>You</b>, at your appointment &nbsp;·&nbsp; <a href="#book-design" style="color:var(--clay-soft);border-bottom:1px solid var(--clay-soft)">Book now</a></div>
+<div class="announce"><b>New</b> &nbsp;·&nbsp; A <b>FREE</b> consultation with our in-house interior designer, just for <b>You</b>, at your appointment &nbsp;·&nbsp; <a href="#book-design" style="color:var(--clay-soft);border-bottom:1px solid var(--clay-soft)">Book now</a> <br><b>Rug Cleaning, Repair &amp; Appraisal</b> &nbsp;·&nbsp; Complimentary local pickup &amp; delivery &nbsp;·&nbsp; <a href="#book-cleaning" style="color:var(--clay-soft);border-bottom:1px solid var(--clay-soft)">Book a cleaning</a></div>
 
 <header>
   <div class="nav">
@@ -348,8 +351,8 @@
         <p style="margin-top:22px;font-size:.7rem;text-transform:uppercase;letter-spacing:.2em;color:var(--stone)">As featured on <a href="https://spectrumlocalnews.com/nc/charlotte/news/2024/06/18/small-business--mecklenburg-county--funding-options--loans--pineville-rug-gallery" target="_blank" rel="noopener" style="color:var(--clay);border-bottom:1px solid var(--clay);padding-bottom:2px">Spectrum News 1</a></p>
       </div>
       <div class="split-img">
-        <img src="/.netlify/images?url=https%3A%2F%2Fstorage.googleapis.com%2Fpineville-rug%2FDSC02582_1.jpg&w=1400&q=76" alt="Reza Elyasi and his wife Reyhaneh at Pineville Rug Gallery" style="object-position:center 30%">
-        <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.02rem;color:var(--stone);margin-top:14px;text-align:center">Reza Elyasi and his wife Reyhaneh, celebrating 40 years in Charlotte.</p>
+        <img src="/.netlify/images?url=https%3A%2F%2Fstorage.googleapis.com%2Fpineville-rug%2FDSC02582_1.jpg&w=1400&q=76" alt="Reza and Reyhaneh Elyasi at Pineville Rug Gallery" style="object-position:center 30%">
+        <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.02rem;color:var(--stone);margin-top:14px;text-align:center">Reza and Reyhaneh Elyasi, celebrating 40 years in Charlotte.</p>
       </div>
     </div>
   </div>
@@ -508,7 +511,7 @@
           <label><input type="radio" name="appt_slot" value="Sunday after 1:00 PM"><span>Sunday after 1:00 PM</span></label>
         </div>
       </div>
-      <div class="full" id="s-custom-wrap" hidden><label class="fld" for="s-custom">What time works best? <em>Required · evenings &amp; Sundays are by request</em></label><input id="s-custom" name="appt_custom_time" placeholder="e.g. 6:30 PM, or Sunday at 2:00 PM"></div>
+      <div class="full" id="s-custom-wrap" hidden><label class="fld" for="s-custom">What time works best? <em>Required · Evenings &amp; Sundays are by request</em></label><input id="s-custom" name="appt_custom_time" placeholder="e.g. 6:30 PM, or Sunday at 2:00 PM"></div>
       <div class="full"><label class="fld" for="s-project">Anything you'd like us to know? <em>(optional)</em></label><textarea id="s-project" name="project" placeholder="Room, approximate size, colors, the feeling you're after…"></textarea></div>
       <div class="full svc-select">
         <span class="fld">How should we confirm? <em>Your choice</em></span>
@@ -826,6 +829,19 @@
     var b=document.querySelector('#book-form input[value="Browsing the Collection"]'); if(b) b.checked=true;
   })();
 
+
+// Gallery floor glimpse: show the first 6 rugs from the live Collection, with their names and details.
+(function(){
+  var g=document.getElementById('home-grid'); if(!g||!window.fetch) return;
+  var esc=function(t){return String(t||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  fetch('/api/rugs').then(function(r){return r.json();}).then(function(d){
+    var rugs=(d&&d.rugs||[]).slice(0,6); if(rugs.length<3) return;
+    g.innerHTML=rugs.map(function(r){
+      var meta=[r.origin,r.size,r.age].filter(Boolean).join(' · ');
+      return '<figure><a href="'+esc(r.url)+'"><div class="ph"><img loading="lazy" src="'+esc(r.thumb)+'" alt="'+esc(r.label)+'"></div><figcaption><b>'+esc(r.label)+'</b>'+(meta?'<span>'+esc(meta)+'</span>':'')+'</figcaption></a></figure>';
+    }).join('');
+  }).catch(function(){});
+})();
 </script>
 
 </body>

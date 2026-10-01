@@ -30,7 +30,66 @@ const SEED = [
   "203852/a2030801bee0c91b054a8a97860b201a.jpg", "203852/eda51438fc8cebef68f993b7ed56060e.jpg",
 ];
 
-export const FIELDS = { stock: 40, name: 120, origin: 80, size: 60, age: 60, material: 80, price: 40, description: 4000 };
+export const FIELDS = { stock: 40, name: 120, origin: 80, size: 60, age: 60, material: 80, price: 40, description: 4000,
+  // Collection filters: blank = sorted automatically from the details above. turn = photo rotation ("" = auto).
+  sizeCat: 20, ageCat: 20, styleCat: 20, turn: 10 };
+
+// ---------- Collection filter groups (10/1/2026, per Renée's list) ----------
+export const SIZE_GROUPS = ["3x5", "4x6", "5x7", "6x9", "8x10", "9x12", "10x14", "Large Gallery", "Runner"];
+export const AGE_GROUPS = ["Antique", "New"];
+export const STYLE_GROUPS = ["Persian", "Turkish", "Oriental"];
+export const TURNS = ["", "left", "right", "none"];
+
+// "9'7\"x12'6\"", "5'x7'", "3'x16'x7\"" (= 3' x 16'7"), "5'3\"x7\"" -> [shortFt, longFt]
+export function parseSize(text) {
+  let parts = String(text || "").toLowerCase().replace(/[×*]/g, "x").split("x").map((p) => p.trim()).filter(Boolean);
+  if (parts.length === 3) parts = [parts[0], parts[1] + parts[2]];
+  if (parts.length !== 2) return null;
+  const ft = (p) => {
+    const n = (p.match(/\d+(?:\.\d+)?/g) || []).map(Number);
+    if (!n.length) return NaN;
+    return n[0] + (n.length > 1 && n[1] < 12 ? n[1] / 12 : 0);
+  };
+  const a = ft(parts[0]), b = ft(parts[1]);
+  if (!(a > 0 && b > 0)) return null;
+  return [Math.min(a, b), Math.max(a, b)];
+}
+
+const STD = [[3, 5], [4, 6], [5, 7], [6, 9], [8, 10], [9, 12], [10, 14]];
+export function autoSize(text) {
+  const d = parseSize(text);
+  if (!d) return "";
+  const [w, l] = d;
+  if (w <= 4.2 && l / w >= 2.2) return "Runner";
+  if (w > 10.6 || l > 14.6) return "Large Gallery";
+  let best = 0, bd = Infinity;
+  STD.forEach(([W, L], i) => { const dd = Math.hypot(w - W, l - L); if (dd < bd) { bd = dd; best = i; } });
+  return `${STD[best][0]}x${STD[best][1]}`;
+}
+export function autoAge(rug) {
+  const t = `${rug.name || ""} ${rug.age || ""}`;
+  if (/\bnew\b|contemporary|modern/i.test(t)) return "New";
+  const y = (String(rug.age || "").match(/\b(1[5-9]\d\d|20\d\d)\b/) || [])[1];
+  if (y && +y >= 2000) return "New";
+  return "Antique";
+}
+const PERSIAN_NAMES = /heriz|tabriz|kerman|kirman|mahal|malayer|kashan|isfahan|nain|qum|qom|bijar|bidjar|sarouk|saruk|hamadan|hamedan|bakht|baktiary|ardabil|ardebil|lilihan|liliyan|farahan|mishan|sarab|joshegan|ghochan|quchan|kurdish|senneh|sultanabad|mashad|mashhad|kazvin|qashqai|gabbeh|afshar/i;
+export function autoStyle(rug) {
+  const o = String(rug.origin || "");
+  if (/pers|iran|azerbaijan|malayer/i.test(o)) return "Persian";
+  if (/turk/i.test(o)) return "Turkish";
+  if (o.trim()) return "Oriental";
+  if (/oushak|ushak|kars|konya/i.test(rug.name || "")) return "Turkish";
+  if (PERSIAN_NAMES.test(rug.name || "")) return "Persian";
+  return "Oriental";
+}
+export function rugGroups(rug) {
+  return {
+    sizeGroup: SIZE_GROUPS.includes(rug.sizeCat) ? rug.sizeCat : autoSize(rug.size),
+    ageGroup: AGE_GROUPS.includes(rug.ageCat) ? rug.ageCat : autoAge(rug),
+    styleGroup: STYLE_GROUPS.includes(rug.styleCat) ? rug.styleCat : autoStyle(rug),
+  };
+}
 
 const blankRug = () => Object.fromEntries(Object.keys(FIELDS).map((k) => [k, ""]));
 
@@ -166,6 +225,7 @@ export function publicRug(rug) {
     id: rug.id,
     ...cleanFields(rug),
     label: label(rug),
+    ...rugGroups(rug),
     thumb: imgUrl(rug, "thumb"),
     full: imgUrl(rug, "full"),
     url: `/rug/${rug.id}`,

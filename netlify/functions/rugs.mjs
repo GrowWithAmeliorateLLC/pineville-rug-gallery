@@ -30,7 +30,9 @@ export default async (req) => {
     if (id) {
       const r = rugs.find((x) => x.id === id);
       if (!r) return json({ error: "not_found" }, 404);
-      Object.assign(r, fields, { updated: Date.now() });
+      // Only change fields the editor actually sent (an older open admin tab won't blank newer fields).
+      for (const k of Object.keys(fields)) if (body.rug && body.rug[k] !== undefined) r[k] = fields[k];
+      r.updated = Date.now();
       await saveRugs(rugs);
       return json({ ok: true, rug: publicRug(r) });
     }

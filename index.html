@@ -65,6 +65,8 @@
   .hero h1{font-size:clamp(2.8rem,6vw,5.4rem);margin:20px 0 18px;max-width:16ch;font-weight:400;text-shadow:0 2px 24px rgba(12,34,29,.7),0 1px 3px rgba(12,34,29,.6)}
   .hero p{font-weight:300;font-size:1.12rem;max-width:44ch;color:#fdfaf4;text-shadow:0 1px 14px rgba(12,34,29,.85),0 1px 2px rgba(12,34,29,.7)}
   .hero-actions{display:flex;gap:16px;margin-top:34px;flex-wrap:wrap;align-items:center}
+  .hero-call{margin-top:22px;font-size:.95rem;letter-spacing:.04em;color:#fdfaf4;text-shadow:0 1px 10px rgba(12,34,29,.8)}
+  .hero-call a{color:#fff;font-weight:500;border-bottom:1px solid rgba(253,250,244,.5)}
   .hero-rev{display:flex;align-items:center;gap:10px;margin-top:30px;font-size:.82rem;letter-spacing:.06em;color:#fdfaf4;text-shadow:0 1px 10px rgba(12,34,29,.75)}
   .stars{color:#e8b45e;letter-spacing:2px}
 
@@ -97,8 +99,10 @@
   .glimpse-head p{color:var(--stone);font-size:1.06rem}
   .cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:8px}
   .cgrid figure{margin:0}
-  .cgrid .ph{overflow:hidden;background:var(--paper);padding:16px;border:1px solid rgba(34,30,24,.12);box-shadow:0 12px 30px rgba(12,34,29,.10)}
-  .cgrid .ph img{width:100%;height:300px;object-fit:contain;transition:transform 1s ease}
+  .cgrid .ph{overflow:hidden;background:var(--sand);aspect-ratio:3/4;box-shadow:0 12px 30px rgba(12,34,29,.12)}
+  .cgrid .ph img{width:100%;height:100%;object-fit:cover;transition:transform 1s ease}
+  .cgrid .ph img[data-upright]{opacity:0;transition:transform 1s ease,opacity .4s ease}
+  .cgrid .ph img[data-upright].ready{opacity:1}
   .cgrid figure:hover img{transform:scale(1.04)}
   .cgrid a{display:block}
   .cgrid figcaption{text-align:center;margin-top:14px}
@@ -260,7 +264,6 @@
     .sec-head{margin-bottom:44px}
     .glimpse-head{margin-bottom:46px}
     .cgrid{grid-template-columns:1fr;gap:20px}
-    .cgrid .ph img{height:340px}
     .split{gap:34px}
     .split-img img{height:400px}
     .values .wrap{grid-template-columns:1fr;gap:30px}
@@ -323,6 +326,7 @@
       <a href="#book-design" class="btn light">Book a Design Appointment</a>
       <a href="#book-cleaning" class="btn light">Book a Cleaning</a>
     </div>
+    <div class="hero-call">Call the gallery <a href="tel:9802882538">(980) 288-2538</a> &nbsp;·&nbsp; Store <a href="tel:7048892454">(704) 889-2454</a></div>
     <div class="hero-rev"><span class="stars">★★★★★</span> 4.9 · 56 Google reviews</div>
   </div>
 </section>
@@ -616,7 +620,7 @@
       <div class="rows">
         <div><span class="k">Showroom</span><span>310 Main Street · Historic Downtown Pineville, NC 28134</span></div>
         <div><span class="k">Hours</span><span>Mon – Sat · 10am – 5pm &nbsp;·&nbsp; After 5pm &amp; Sun after 1pm by appointment</span></div>
-        <div><span class="k">Call</span><span>(980) 288-2538</span></div>
+        <div><span class="k">Call</span><span>(980) 288-2538<br>Store (704) 889-2454</span></div>
         <div><span class="k">Email</span><span>showroom@pinevilleruggallery.com</span></div>
         <div><span class="k">Shipping</span><span>Serving the Charlotte area and beyond · Free shipping to the contiguous U.S. · Worldwide shipping available</span></div>
       </div>
@@ -679,6 +683,7 @@
           <li>310 Main Street</li>
           <li>Pineville, NC 28134</li>
           <li>(980) 288-2538</li>
+          <li>Store (704) 889-2454</li>
           <li>Mon–Sat 10–5 · After 5 &amp; Sun after 1 by appt</li>
         </ul>
       </div>
@@ -829,11 +834,13 @@
     var rugs=(d&&d.rugs||[]).slice(0,6); if(rugs.length<3) return;
     g.innerHTML=rugs.map(function(r){
       var meta=[r.origin,r.size,r.age].filter(Boolean).join(' · ');
-      return '<figure><a href="'+esc(r.url)+'"><div class="ph"><img loading="lazy" src="'+esc(r.thumb)+'" alt="'+esc(r.label)+'"></div><figcaption><b>'+esc(r.label)+'</b>'+(meta?'<span>'+esc(meta)+'</span>':'')+'</figcaption></a></figure>';
+      return '<figure><a href="'+esc(r.url)+'"><div class="ph"><img data-upright="'+esc(r.thumb)+'" data-turn="'+esc(r.turn||'')+'" alt="'+esc(r.label)+'"></div><figcaption><b>'+esc(r.label)+'</b>'+(meta?'<span>'+esc(meta)+'</span>':'')+'</figcaption></a></figure>';
     }).join('');
+    if(window.PRGRugs) PRGRugs.wire(g);
   }).catch(function(){});
 })();
 </script>
+<script src="/assets/rugview.js"></script>
 
 </body>
 </html>

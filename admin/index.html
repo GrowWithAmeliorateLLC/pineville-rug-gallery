@@ -52,7 +52,11 @@
   label.f{display:block;font-weight:700;font-size:.85rem;margin-bottom:6px}
   label.f em{font-style:normal;font-weight:400;color:var(--muted)}
   input[type=text],input[type=password],textarea{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:13px 14px;background:var(--white);outline:none;font-size:16px}
-  input:focus,textarea:focus{border-color:var(--navy)}
+  input:focus,textarea:focus,select:focus{border-color:var(--navy)}
+  select{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:13px 14px;background:var(--white);outline:none;font-size:16px;font:inherit}
+  .sect{border-top:1px solid var(--line);padding-top:16px;margin-top:4px}
+  .sect b{display:block;font-family:'Montserrat',sans-serif;font-weight:800}
+  .sect span{font-size:.85rem;color:var(--muted)}
   textarea{min-height:140px;resize:vertical}
   .check{display:flex;gap:10px;align-items:center;font-size:.9rem;color:var(--muted);margin:14px 0 20px}
   .msg{font-size:.9rem;font-weight:500;min-height:1.4em;margin-top:12px}
@@ -235,6 +239,11 @@
         <div><label class="f" for="f-age">Age</label><input type="text" id="f-age" maxlength="60" placeholder="e.g. Circa 1920, or New"></div>
         <div><label class="f" for="f-material">Material</label><input type="text" id="f-material" maxlength="80" placeholder="e.g. Hand-knotted wool"></div>
         <div class="full"><label class="f" for="f-price">Price <em>(leave blank to hide)</em></label><input type="text" id="f-price" maxlength="40" placeholder="e.g. $4,800"></div>
+        <div class="full sect"><b>Collection filters</b><span>Left on Automatic, each rug is sorted from its size, name and origin. Change any that look wrong.</span></div>
+        <div><label class="f" for="f-sizeCat">Size group</label><select id="f-sizeCat"><option value="">Automatic</option><option>3x5</option><option>4x6</option><option>5x7</option><option>6x9</option><option>8x10</option><option>9x12</option><option>10x14</option><option value="Large Gallery">Large Gallery size</option><option value="Runner">Runner</option></select></div>
+        <div><label class="f" for="f-ageCat">Age</label><select id="f-ageCat"><option value="">Automatic</option><option>Antique</option><option>New</option></select></div>
+        <div><label class="f" for="f-styleCat">Style</label><select id="f-styleCat"><option value="">Automatic</option><option>Persian</option><option>Turkish</option><option>Oriental</option></select></div>
+        <div><label class="f" for="f-turn">Photo direction</label><select id="f-turn"><option value="">Automatic (stand the rug upright)</option><option value="left">Turn left</option><option value="right">Turn right</option><option value="none">Don't turn</option></select></div>
         <div class="full"><label class="f" for="f-description">Description</label><textarea id="f-description" maxlength="4000" placeholder="Colors, design, condition, story — anything that helps it sell."></textarea></div>
       </div>
 
@@ -258,7 +267,7 @@
   var editing = null;      // rug being edited (null = new)
   var photoFile = null;    // newly chosen photo
   var $ = function(id){ return document.getElementById(id); };
-  var FIELDS = ['stock','name','origin','size','age','material','price','description'];
+  var FIELDS = ['stock','name','origin','size','age','material','price','description','sizeCat','ageCat','styleCat','turn'];
 
   function store(kind){ try{ return window[kind]; }catch(e){ return null; } }
   function saveKey(k, remember){
@@ -316,6 +325,7 @@
 
   // ---------- list ----------
   function metaLine(r){ return [r.stock ? '#' + r.stock : '', r.size, r.origin, r.price].filter(Boolean).join(' · '); }
+  function groupLine(r){ return [r.sizeGroup === 'Large Gallery' ? 'Large Gallery size' : r.sizeGroup, r.ageGroup, r.styleGroup].filter(Boolean).join(' · '); }
   function esc(s){ return String(s||'').replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 
   async function loadList(){
@@ -343,6 +353,7 @@
         (r.thumb ? '<img loading="lazy" src="' + esc(r.thumb) + '" alt="">' : '<div class="noimg">No photo<br>(hidden)</div>') +
         '<div><div class="t">' + esc(r.label) + '</div>' +
         (metaLine(r) ? '<div class="s">' + esc(metaLine(r)) + '</div>' : '') +
+        (groupLine(r) ? '<span class="tag">' + esc(groupLine(r)) + '</span> ' : '') +
         (needsInfo ? '<span class="tag warn">Needs details</span>' : '') + '</div>' +
         '<div class="ops">' +
           '<button class="iconbtn" data-a="top" title="Move to top" aria-label="Move to top"' + (i === 0 || q ? ' disabled' : '') + '>⤒</button>' +
@@ -371,8 +382,12 @@
     $('ed-title').textContent = r ? 'Edit rug' : 'Add a rug';
     $('ed-sub').textContent = r ? 'Change anything below, then save. Changes go live right away.' : 'Add a photo and the details. It goes live on your gallery the moment you save.';
     FIELDS.forEach(function(f){ $('f-' + f).value = r ? (r[f] || '') : ''; });
+    [['sizeCat','sizeGroup'],['ageCat','ageGroup'],['styleCat','styleGroup']].forEach(function(p){
+      var o = $('f-' + p[0]).options[0];
+      o.textContent = (r && !r[p[0]] && r[p[1]]) ? 'Automatic (' + (r[p[1]] === 'Large Gallery' ? 'Large Gallery size' : r[p[1]]) + ')' : 'Automatic';
+    });
     var pv = $('preview');
-    if(r && r.full){ pv.src = r.full; pv.hidden = false; $('drop-t').textContent = 'Tap to replace the photo'; }
+    if(r && r.full){ showPreview(); pv.hidden = false; $('drop-t').textContent = 'Tap to replace the photo'; }
     else { pv.removeAttribute('src'); pv.hidden = true; $('drop-t').textContent = 'Tap to take or choose a photo'; }
     $('ed-msg').textContent = ''; $('ed-msg').className = 'msg';
     $('save').disabled = false;
@@ -387,6 +402,12 @@
     }
     show('v-edit');
   }
+  function showPreview(){
+    var pv = $('preview'), src = photoFile ? URL.createObjectURL(photoFile) : (editing && editing.full);
+    if(!src) return;
+    if(window.PRGRugs) PRGRugs.upright(src, $('f-turn').value).then(function(u){ pv.src = u; }); else pv.src = src;
+  }
+  $('f-turn').addEventListener('change', showPreview);
   $('add').addEventListener('click', function(){ openEditor(null); });
   $('cancel').addEventListener('click', function(){ show('v-list'); });
 
@@ -413,7 +434,7 @@
   function pick(f){
     if(!/^image\//.test(f.type) && !/\.(jpe?g|png|heic|heif|webp)$/i.test(f.name)){ setMsg('err', 'That file isn’t a photo. Please choose a JPG or PNG.'); return; }
     photoFile = f;
-    var pv = $('preview'); pv.src = URL.createObjectURL(f); pv.hidden = false;
+    var pv = $('preview'); showPreview(); pv.hidden = false;
     $('drop-t').textContent = 'Photo ready — tap to choose a different one';
     setMsg('', '');
   }
@@ -644,5 +665,6 @@
   else show('v-login');
 })();
 </script>
+<script src="/assets/rugview.js"></script>
 </body>
 </html>

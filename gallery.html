@@ -50,8 +50,28 @@
   .collection{background:var(--cream);padding:0 0 100px}
   .cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
   .cgrid figure{margin:0}
-  .cgrid .ph{overflow:hidden;background:var(--paper);padding:16px;border:1px solid rgba(34,30,24,.12);box-shadow:0 12px 30px rgba(12,34,29,.10)}
-  .cgrid .ph img{width:100%;height:320px;object-fit:contain;transition:transform 1s ease}
+  .cgrid .ph{overflow:hidden;background:var(--sand);aspect-ratio:3/4;box-shadow:0 12px 30px rgba(12,34,29,.12)}
+  .cgrid .ph img{width:100%;height:100%;object-fit:cover;transition:transform 1s ease,opacity .4s ease;opacity:0}
+  .cgrid .ph img.ready{opacity:1}
+
+  /* filters */
+  .filters{background:var(--paper);border:1px solid var(--line);padding:22px 24px;margin:0 0 34px;display:grid;gap:16px}
+  .fgroup{display:flex;align-items:flex-start;gap:14px}
+  .fgroup > b{flex:none;width:58px;font-size:.68rem;text-transform:uppercase;letter-spacing:.2em;font-weight:500;color:var(--stone);padding-top:9px}
+  .fopts{display:flex;flex-wrap:wrap;gap:8px}
+  .fchip{position:relative;cursor:pointer}
+  .fchip input{position:absolute;opacity:0;pointer-events:none}
+  .fchip span{display:inline-block;border:1px solid var(--line);background:#fff;padding:7px 14px;font-size:.86rem;color:var(--ink);transition:.2s;white-space:nowrap}
+  .fchip span i{font-style:normal;color:var(--stone);font-size:.75rem;margin-left:5px}
+  .fchip input:checked + span{background:var(--pine);border-color:var(--pine);color:#fff}
+  .fchip input:checked + span i{color:rgba(255,255,255,.7)}
+  .fchip input:focus-visible + span{outline:2px solid var(--clay);outline-offset:2px}
+  .fchip.off{opacity:.4;pointer-events:none}
+  .fbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:14px}
+  .fbar p{font-size:.9rem;color:var(--stone)}
+  .fall{background:none;border:1px solid var(--pine);color:var(--pine);font:500 .7rem 'Jost',sans-serif;text-transform:uppercase;letter-spacing:.18em;padding:9px 16px;cursor:pointer}
+  .fall:hover{background:var(--pine);color:#fff}
+  @media(max-width:560px){.filters{padding:18px 16px}.fgroup{flex-direction:column;gap:8px}.fgroup > b{padding-top:0;width:auto}.fchip span{padding:7px 11px;font-size:.82rem}}
   .cgrid figure:hover img{transform:scale(1.04)}
   .cgrid a{display:block}
   .cgrid figcaption{padding:14px 2px 0}
@@ -75,7 +95,6 @@
     .nav{padding:12px 22px}.brand img{height:92px;margin:-19px 0 -20px -6px}
     .nav-cta a.back,.nav-phone{display:none}
     .cgrid{grid-template-columns:1fr;gap:20px}
-    .cgrid .ph img{height:360px}
     .head{padding:56px 0 44px}
   }
 </style>
@@ -107,6 +126,12 @@
 
 <section class="collection">
   <div class="wrap">
+    <div class="filters" id="filters" hidden>
+      <div class="fgroup"><b>Size</b><div class="fopts" data-g="sizeGroup"></div></div>
+      <div class="fgroup"><b>Age</b><div class="fopts" data-g="ageGroup"></div></div>
+      <div class="fgroup"><b>Style</b><div class="fopts" data-g="styleGroup"></div></div>
+      <div class="fbar"><p id="fcount"></p><button type="button" class="fall" id="fall">All rugs</button></div>
+    </div>
     <div class="cgrid" id="grid"><p class="loading">Loading the collection…</p></div>
   </div>
 </section>
@@ -124,24 +149,67 @@
 
 <footer>
   <div class="wrap">
-    <span>© 2026 Pineville Rug Gallery · 310 Main Street, Pineville, NC · (980) 288-2538 · <a href="/index.html">Home</a></span>
+    <span>© 2026 Pineville Rug Gallery · 310 Main Street, Pineville, NC · (980) 288-2538 · Store (704) 889-2454 · <a href="/index.html">Home</a></span>
   </div>
 </footer>
 
+<script src="/assets/rugview.js"></script>
 <script>
 (function(){
-  var g=document.getElementById('grid');
+  var g=document.getElementById('grid'), F=document.getElementById('filters');
+  var GROUPS={
+    sizeGroup:['3x5','4x6','5x7','6x9','8x10','9x12','10x14','Large Gallery','Runner'],
+    ageGroup:['Antique','New'],
+    styleGroup:['Persian','Turkish','Oriental']
+  };
+  var LABEL={'Large Gallery':'Large Gallery size','Runner':'Runners'};
+  var rugs=[];
   function esc(t){return String(t||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function picked(){
+    var p={};
+    Object.keys(GROUPS).forEach(function(k){ p[k]=[].map.call(F.querySelectorAll('[data-g="'+k+'"] input:checked'),function(i){return i.value;}); });
+    return p;
+  }
+  function matches(r,p,skip){
+    return Object.keys(p).every(function(k){ return k===skip || !p[k].length || p[k].indexOf(r[k])>-1; });
+  }
+  function card(r){
+    var meta=[r.size,r.origin].filter(Boolean).join(' · ')||(r.stock?'No. '+r.stock:'');
+    return '<figure><a href="'+esc(r.url)+'"><div class="ph"><img data-upright="'+esc(r.thumb)+'" data-turn="'+esc(r.turn||'')+'" alt="'+esc(r.label)+'"></div>'+
+      '<figcaption>'+(r.name?'<b>'+esc(r.name)+'</b>':'')+(meta?'<span>'+esc(meta)+'</span>':'')+(r.price?'<em>'+esc(r.price)+'</em>':'')+'</figcaption>'+
+      '</a></figure>';
+  }
+  function render(){
+    var p=picked();
+    var shown=rugs.filter(function(r){return matches(r,p);});
+    // counts per option, given the other groups' picks
+    Object.keys(GROUPS).forEach(function(k){
+      F.querySelectorAll('[data-g="'+k+'"] .fchip').forEach(function(l){
+        var v=l.querySelector('input').value;
+        var n=rugs.filter(function(r){return r[k]===v && matches(r,p,k);}).length;
+        l.querySelector('i').textContent=n;
+        l.classList.toggle('off', !n && !l.querySelector('input').checked);
+      });
+    });
+    var any=Object.keys(p).some(function(k){return p[k].length;});
+    document.getElementById('fcount').textContent= any ? 'Showing '+shown.length+' of '+rugs.length+' rugs' : 'Showing all '+rugs.length+' rugs';
+    document.getElementById('fall').hidden=!any;
+    g.innerHTML = shown.length ? shown.map(card).join('') : '<p class="loading">No rugs match those choices online yet — with over 1,000 in the gallery, call us at (980) 288-2538 and we\'ll pull options for you.</p>';
+    if(window.PRGRugs) PRGRugs.wire(g);
+  }
   fetch('/api/rugs').then(function(r){return r.json();}).then(function(j){
-    var rugs=(j&&j.rugs)||[];
+    rugs=(j&&j.rugs)||[];
     if(!rugs.length){g.innerHTML='<p class="loading">New pieces are arriving — call us at (980) 288-2538 to hear what\'s on the floor.</p>';return;}
-    g.innerHTML=rugs.map(function(r){
-      var named=r.name||r.size||r.origin||r.stock;
-      var meta=[r.size,r.origin].filter(Boolean).join(' · ')||(r.stock?'No. '+r.stock:'');
-      return '<figure><a href="'+esc(r.url)+'"><div class="ph"><img loading="lazy" src="'+esc(r.thumb)+'" alt="'+esc(r.label)+'"></div>'+
-        (named||r.price?'<figcaption>'+(r.name?'<b>'+esc(r.name)+'</b>':'')+(meta?'<span>'+esc(meta)+'</span>':'')+(r.price?'<em>'+esc(r.price)+'</em>':'')+'</figcaption>':'')+
-        '</a></figure>';
-    }).join('');
+    Object.keys(GROUPS).forEach(function(k){
+      var box=F.querySelector('[data-g="'+k+'"]');
+      box.innerHTML=GROUPS[k].filter(function(v){ return v!=='Runner' || rugs.some(function(r){return r[k]===v;}); }).map(function(v){
+        return '<label class="fchip"><input type="checkbox" value="'+esc(v)+'"><span>'+esc(LABEL[v]||v)+'<i></i></span></label>';
+      }).join('');
+    });
+    F.hidden=false;
+    F.addEventListener('change',render);
+    document.getElementById('fall').addEventListener('click',function(){ F.querySelectorAll('input:checked').forEach(function(i){i.checked=false;}); render(); });
+    render();
   }).catch(function(){g.innerHTML='<p class="loading">We couldn\'t load the collection just now — please refresh, or call (980) 288-2538.</p>';});
 })();
 </script>

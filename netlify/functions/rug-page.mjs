@@ -17,8 +17,10 @@ header{position:sticky;top:0;z-index:50;background:rgba(253,250,244,.94);backdro
 .wrap{max-width:1240px;margin:0 auto;padding:60px 40px 100px}
 .crumb{font-size:.72rem;text-transform:uppercase;letter-spacing:.2em;color:var(--clay);margin-bottom:28px;display:inline-block}
 .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:60px;align-items:start}
-.photo{background:var(--cream);border:1px solid var(--line);padding:20px;box-shadow:0 12px 30px rgba(12,34,29,.10)}
-.photo img{width:100%;max-height:78vh;object-fit:contain;margin:0 auto}
+.photo{position:relative;display:block;cursor:zoom-in}
+.photo img{width:100%;max-height:82vh;object-fit:contain;margin:0 auto;box-shadow:0 14px 34px rgba(12,34,29,.16);opacity:0;transition:opacity .4s ease}
+.photo img.ready{opacity:1}
+.photo .zoomhint{position:absolute;right:12px;bottom:12px;background:rgba(12,34,29,.78);color:#fff;font-size:.68rem;text-transform:uppercase;letter-spacing:.16em;padding:8px 12px}
 h1{font-size:clamp(2.2rem,4vw,3.2rem);color:var(--pine);margin-bottom:10px}
 .price{font-family:'Cormorant Garamond',serif;font-size:1.7rem;color:var(--clay);margin-bottom:24px}
 dl{border-top:1px solid var(--line);margin-bottom:26px}
@@ -30,7 +32,7 @@ dd{font-size:1rem}
 .note{font-size:.85rem;color:var(--stone);margin-top:18px}
 footer{background:var(--pine-deep);color:rgba(245,239,228,.7);padding:40px 20px;text-align:center;font-size:.8rem}
 @media(max-width:900px){.grid{grid-template-columns:1fr;gap:34px}}
-@media(max-width:620px){.nav{padding:12px 22px}.brand img{height:92px;margin:-19px 0 -20px -6px}.nav-cta a.back,.nav-cta .hdr-btn{display:none}.wrap{padding:36px 22px 70px}.photo{padding:12px}}
+@media(max-width:620px){.nav{padding:12px 22px}.brand img{height:92px;margin:-19px 0 -20px -6px}.nav-cta a.back,.nav-cta .hdr-btn{display:none}.wrap{padding:36px 22px 70px}}
 .nav-cta .hdr-mobile{display:none} @media(max-width:620px){.nav-cta .hdr-mobile{display:inline-block}}
 `;
 
@@ -54,7 +56,8 @@ function shell(title, desc, body) {
   </div>
 </div></header>
 ${body}
-<footer>© ${new Date().getFullYear()} Pineville Rug Gallery · 310 Main Street, Pineville, NC · (980) 288-2538 · <a href="/index.html">Home</a></footer>
+<footer>© ${new Date().getFullYear()} Pineville Rug Gallery · 310 Main Street, Pineville, NC · (980) 288-2538 · Store (704) 889-2454 · <a href="/index.html">Home</a></footer>
+<script src="/assets/rugview.js"></script>
 </body></html>`;
 }
 
@@ -85,7 +88,7 @@ export default async (req, context) => {
 <div class="wrap">
   <a class="crumb" href="/gallery.html">← Back to the collection</a>
   <div class="grid">
-    <div class="photo"><img src="${esc(r.full)}" alt="${esc(r.label)}"></div>
+    <a class="photo" href="${esc(r.full)}" data-zoom="${esc(r.full)}" data-turn="${esc(r.turn || "")}" aria-label="Zoom in on this rug"><img data-upright="${esc(r.full)}" data-turn="${esc(r.turn || "")}" alt="${esc(r.label)}"><span class="zoomhint">Tap to zoom</span></a>
     <div>
       <h1>${esc(r.label)}</h1>
       ${r.price ? `<div class="price">${esc(r.price)}</div>` : ""}
@@ -94,6 +97,7 @@ export default async (req, context) => {
       <div class="actions">
         <a class="btn solid" href="${esc(book)}">Book a Viewing of This Rug</a>
         <a class="btn" href="tel:9802882538">Call the Gallery · (980) 288-2538</a>
+        <a class="btn" href="tel:7048892454">Store · (704) 889-2454</a>
       </div>
       <p class="note">This one is ready to meet your room. Complimentary local pickup &amp; delivery: we can bring it home so you can see it in your space.</p>
     </div>

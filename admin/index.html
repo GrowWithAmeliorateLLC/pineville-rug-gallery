@@ -259,7 +259,7 @@
         <div class="full"><label class="f" for="f-price">Price <em>(leave blank to hide)</em></label><input type="text" id="f-price" maxlength="40" placeholder="e.g. $4,800"></div>
         <div class="full sect"><b>Collection filters</b><span>Left on Automatic, each rug is sorted from its size, name and origin. Change any that look wrong.</span></div>
         <div><label class="f" for="f-sizeCat">Size group</label><select id="f-sizeCat"><option value="">Automatic</option><option>3x5</option><option>4x6</option><option>5x7</option><option>6x9</option><option>8x10</option><option>9x12</option><option>10x14</option><option value="Large Gallery">Large Gallery size</option><option value="Runner">Runner</option></select></div>
-        <div><label class="f" for="f-ageCat">Age</label><select id="f-ageCat"><option value="">Automatic</option><option>Antique</option><option>New</option></select></div>
+        <div><label class="f" for="f-ageCat">Era</label><select id="f-ageCat"><option value="">Automatic</option><option value="Antique">Antique &amp; Vintage</option><option value="New">New</option></select></div>
         <div><label class="f" for="f-styleCat">Style</label><select id="f-styleCat"><option value="">Automatic</option><option>Persian</option><option>Turkish</option><option>Oriental</option></select></div>
         <div><label class="f" for="f-turn">Photo direction</label><select id="f-turn"><option value="">Automatic (stand the rug upright)</option><option value="left">Turn left</option><option value="right">Turn right</option><option value="none">Don't turn</option></select></div>
         <div class="full"><label class="f" for="f-description">Description</label><textarea id="f-description" maxlength="4000" placeholder="Colors, design, condition, story — anything that helps it sell."></textarea></div>
@@ -349,7 +349,7 @@
 
   // ---------- list ----------
   function metaLine(r){ return [r.stock ? '#' + r.stock : '', r.size, r.origin, r.price].filter(Boolean).join(' · '); }
-  function groupLine(r){ return [r.sizeGroup === 'Large Gallery' ? 'Large Gallery size' : r.sizeGroup, r.ageGroup, r.styleGroup].filter(Boolean).join(' · '); }
+  function groupLine(r){ return [r.sizeGroup === 'Large Gallery' ? 'Large Gallery size' : r.sizeGroup, r.ageGroup === 'Antique' ? 'Antique & Vintage' : r.ageGroup, r.styleGroup].filter(Boolean).join(' · '); }
   function esc(s){ return String(s||'').replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 
   async function loadList(){
@@ -409,7 +409,7 @@
     FIELDS.forEach(function(f){ $('f-' + f).value = r ? (r[f] || '') : ''; });
     [['sizeCat','sizeGroup'],['ageCat','ageGroup'],['styleCat','styleGroup']].forEach(function(p){
       var o = $('f-' + p[0]).options[0];
-      o.textContent = (r && !r[p[0]] && r[p[1]]) ? 'Automatic (' + (r[p[1]] === 'Large Gallery' ? 'Large Gallery size' : r[p[1]]) + ')' : 'Automatic';
+      o.textContent = (r && !r[p[0]] && r[p[1]]) ? 'Automatic (' + (r[p[1]] === 'Large Gallery' ? 'Large Gallery size' : r[p[1]] === 'Antique' ? 'Antique & Vintage' : r[p[1]]) + ')' : 'Automatic';
     });
     var pv = $('preview');
     if(r && r.full){ showPreview(); pv.hidden = false; $('drop-t').textContent = 'Tap to replace the photo'; }

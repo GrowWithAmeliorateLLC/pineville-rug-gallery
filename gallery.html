@@ -128,7 +128,7 @@
   <div class="wrap">
     <div class="filters" id="filters" hidden>
       <div class="fgroup"><b>Size</b><div class="fopts" data-g="sizeGroup"></div></div>
-      <div class="fgroup"><b>Age</b><div class="fopts" data-g="ageGroup"></div></div>
+      <div class="fgroup"><b>Era</b><div class="fopts" data-g="ageGroup"></div></div>
       <div class="fgroup"><b>Style</b><div class="fopts" data-g="styleGroup"></div></div>
       <div class="fbar"><p id="fcount"></p><button type="button" class="fall" id="fall">All rugs</button></div>
     </div>
@@ -162,7 +162,7 @@
     ageGroup:['Antique','New'],
     styleGroup:['Persian','Turkish','Oriental']
   };
-  var LABEL={'Large Gallery':'Large Gallery size','Runner':'Runners'};
+  var LABEL={'Large Gallery':'Large Gallery size','Runner':'Runners','Antique':'Antique & Vintage'};
   var rugs=[];
   function esc(t){return String(t||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   function picked(){

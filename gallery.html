@@ -175,7 +175,7 @@
   }
   function card(r){
     var meta=[r.size,r.origin].filter(Boolean).join(' · ')||(r.stock?'No. '+r.stock:'');
-    return '<figure><a href="'+esc(r.url)+'"><div class="ph"><img data-upright="'+esc(r.thumb)+'" data-turn="'+esc(r.turn||'')+'" alt="'+esc(r.label)+'"></div>'+
+    return '<figure><a href="'+esc(r.url)+'"><div class="ph"><img data-upright="'+esc(r.full||r.thumb)+'" data-turn="'+esc(r.turn||'')+'" alt="'+esc(r.label)+'"></div>'+
       '<figcaption>'+(r.name?'<b>'+esc(r.name)+'</b>':'')+(meta?'<span>'+esc(meta)+'</span>':'')+(r.price?'<em>'+esc(r.price)+'</em>':'')+'</figcaption>'+
       '</a></figure>';
   }

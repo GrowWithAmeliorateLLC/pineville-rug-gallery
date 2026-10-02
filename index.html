@@ -834,7 +834,7 @@
     var rugs=(d&&d.rugs||[]).slice(0,6); if(rugs.length<3) return;
     g.innerHTML=rugs.map(function(r){
       var meta=[r.origin,r.size,r.age].filter(Boolean).join(' · ');
-      return '<figure><a href="'+esc(r.url)+'"><div class="ph"><img data-upright="'+esc(r.thumb)+'" data-turn="'+esc(r.turn||'')+'" alt="'+esc(r.label)+'"></div><figcaption><b>'+esc(r.label)+'</b>'+(meta?'<span>'+esc(meta)+'</span>':'')+'</figcaption></a></figure>';
+      return '<figure><a href="'+esc(r.url)+'"><div class="ph"><img data-upright="'+esc(r.full||r.thumb)+'" data-turn="'+esc(r.turn||'')+'" alt="'+esc(r.label)+'"></div><figcaption><b>'+esc(r.label)+'</b>'+(meta?'<span>'+esc(meta)+'</span>':'')+'</figcaption></a></figure>';
     }).join('');
     if(window.PRGRugs) PRGRugs.wire(g);
   }).catch(function(){});

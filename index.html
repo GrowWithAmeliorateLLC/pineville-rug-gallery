@@ -67,6 +67,7 @@
   .hero-actions{display:flex;gap:16px;margin-top:34px;flex-wrap:wrap;align-items:center}
   .hero-call{margin-top:22px;font-size:.95rem;letter-spacing:.04em;color:#fdfaf4;text-shadow:0 1px 10px rgba(12,34,29,.8)}
   .hero-call a{color:#fff;font-weight:500;border-bottom:1px solid rgba(253,250,244,.5)}
+  .nw{white-space:nowrap}
   .hero-rev{display:flex;align-items:center;gap:10px;margin-top:30px;font-size:.82rem;letter-spacing:.06em;color:#fdfaf4;text-shadow:0 1px 10px rgba(12,34,29,.75)}
   .stars{color:#e8b45e;letter-spacing:2px}
 
@@ -247,6 +248,10 @@
     .wrap,.hero-inner{padding-left:22px;padding-right:22px}
     .nav{padding:12px 22px}
     .announce{font-size:.6rem;letter-spacing:.12em;padding:8px 14px;line-height:1.5}
+    .announce .sep{display:none}
+    .announce .ai{display:inline-block;white-space:nowrap;margin:2px 7px}
+    .announce .ai.long{display:inline;white-space:normal;margin:0}
+    .announce .ai.long::after{content:"";display:block}
     .brand img{height:92px;margin:-19px 0 -20px -6px}
     .nav-cta{gap:12px}
     .nav-cta .btn.solid{padding:11px 14px;font-size:.58rem;letter-spacing:.1em}
@@ -257,6 +262,10 @@
     .hero-inner{padding-bottom:58px}
     .hero-actions{gap:12px}
     .hero-actions .btn{width:100%;text-align:center}
+    .hero .eyebrow .sep,.hero-call .sep{display:none}
+    .hero .eyebrow .nw{display:block;margin-top:4px}
+    .hero-call .nw{display:block;margin-top:8px}
+    .team-link{display:inline-block;margin:22px 0 0 !important}
     .heritage .wrap{gap:24px 12px}
     .heritage div{flex:0 0 44%;min-width:0}
     .heritage b{font-size:1.3rem}
@@ -288,7 +297,7 @@
 </head>
 <body>
 
-<div class="announce"><b>New</b> &nbsp;·&nbsp; A <b>FREE</b> consultation with our in-house interior designer, just for <b>You</b>, at your appointment &nbsp;·&nbsp; <a href="#book-design" style="color:var(--clay-soft);border-bottom:1px solid var(--clay-soft)">Book now</a> <br><b>Rug Cleaning, Repair &amp; Appraisal</b> &nbsp;·&nbsp; Complimentary local pickup &amp; delivery &nbsp;·&nbsp; <a href="#book-cleaning" style="color:var(--clay-soft);border-bottom:1px solid var(--clay-soft)">Book a cleaning</a></div>
+<div class="announce"><span class="ai long"><b>New</b> &nbsp;·&nbsp; A <b>FREE</b> consultation with our in-house interior designer, just for <b>You</b>, at your appointment</span><span class="sep"> &nbsp;·&nbsp; </span><span class="ai"><a href="#book-design" style="color:var(--clay-soft);border-bottom:1px solid var(--clay-soft)">Book now</a></span><br><span class="ai"><b>Rug Cleaning, Repair &amp; Appraisal</b></span><span class="sep"> &nbsp;·&nbsp; </span><span class="ai">Complimentary local pickup &amp; delivery</span><span class="sep"> &nbsp;·&nbsp; </span><span class="ai"><a href="#book-cleaning" style="color:var(--clay-soft);border-bottom:1px solid var(--clay-soft)">Book a cleaning</a></span></div>
 
 <header>
   <div class="nav">
@@ -297,7 +306,7 @@
     </a>
     <nav>
       <ul>
-        <li><a href="#collection">The Collection</a></li>
+        <li><a href="#collection">The Rug Collection</a></li>
         <li><a href="#services">Services</a></li>
         <li><a href="/trade.html">Trade Program</a></li>
         <li><a href="/photos.html">Photo Gallery</a></li>
@@ -319,14 +328,14 @@
 <section class="hero" style="padding:0">
   <div class="hero-img"></div>
   <div class="hero-inner">
-    <span class="eyebrow">Fine Oriental &amp; Persian Rugs · Charlotte, NC</span>
+    <span class="eyebrow">Fine Oriental &amp; Persian Rugs<span class="sep"> · </span><span class="nw">Charlotte, NC</span></span>
     <h1>Handwoven treasures, made to last generations.</h1>
     <p>A family-owned gallery curating the Carolinas' finest hand-knotted rugs since 1986 — sourced, cleaned, and restored with the care of four decades.</p>
     <div class="hero-actions">
       <a href="#book-design" class="btn light">Book a Design Appointment</a>
       <a href="#book-cleaning" class="btn light">Book a Cleaning</a>
     </div>
-    <div class="hero-call">Call the gallery <a href="tel:9802882538">(980) 288-2538</a> &nbsp;·&nbsp; Store <a href="tel:7048892454">(704) 889-2454</a></div>
+    <div class="hero-call"><span class="nw">Call the gallery <a href="tel:9802882538">(980) 288-2538</a></span><span class="sep"> &nbsp;·&nbsp; </span><span class="nw">Store <a href="tel:7048892454">(704) 889-2454</a></span></div>
     <div class="hero-rev"><span class="stars">★★★★★</span> 4.9 · 56 Google reviews</div>
   </div>
 </section>
@@ -351,7 +360,7 @@
         <p>Pineville Rug Gallery was founded in 1986 on a simple belief: that a great rug is not only décor, but also an heirloom. Owner Reza Elyasi is a third-generation rug dealer, and his family brings a century of knowledge, importing breathtaking hand-knotted pieces from around the world, including Isfahan, Tabriz, Kashan, and Heriz.</p>
         <p>Every rug is chosen for quality, durability, and authenticity, then cared for by hand in our own gallery. It's craftsmanship you can feel underfoot — and hand down through generations, often lasting more than a hundred years.</p>
         <a href="#collection" class="btn">Experience the Gallery</a>
-        <a href="/photos.html" style="margin-left:18px;font-size:.72rem;text-transform:uppercase;letter-spacing:.18em;color:var(--clay);border-bottom:1px solid var(--clay);padding-bottom:2px">Meet the team &amp; see our 40th →</a>
+        <a href="/photos.html" class="team-link" style="margin-left:18px;white-space:nowrap;font-size:.72rem;text-transform:uppercase;letter-spacing:.18em;color:var(--clay);border-bottom:1px solid var(--clay);padding-bottom:2px">Meet the team &amp; see our 40th →</a>
         <p style="margin-top:22px;font-size:.7rem;text-transform:uppercase;letter-spacing:.2em;color:var(--stone)">As featured on <a href="https://spectrumlocalnews.com/nc/charlotte/news/2024/06/18/small-business--mecklenburg-county--funding-options--loans--pineville-rug-gallery" target="_blank" rel="noopener" style="color:var(--clay);border-bottom:1px solid var(--clay);padding-bottom:2px">Spectrum News 1</a></p>
       </div>
       <div class="split-img">
@@ -366,7 +375,7 @@
 <section id="collection" class="collection">
   <div class="wrap">
     <div class="glimpse-head">
-      <span class="eyebrow">Browse the Collection</span>
+      <span class="eyebrow">Browse the Rug Collection</span>
       <h2>A look at the gallery floor.</h2>
       <p>A selection from our collection of over 1,000 hand-knotted rugs from around the world, including Heriz, Oushak and Tabriz — each one-of-a-kind, each with its own story. See one that speaks to you? Book a viewing and it will be waiting. Or come in and let one find you.</p>
     </div>
@@ -380,7 +389,7 @@
     </div>
     <div class="center">
       <p>A glimpse of the gallery — see the full collection online, then book a viewing or give us a call. Over 1,000 rugs in person.</p>
-      <a href="/gallery.html" class="btn solid">View the Full Collection</a>
+      <a href="/gallery.html" class="btn solid">View the Full Rug Collection</a>
       <a href="#book" class="btn">Book a Viewing</a>
     </div>
   </div>
@@ -499,7 +508,7 @@
         <span class="fld">What can we help with? <em>Select all that apply</em></span>
         <div class="svc-opts">
           <label><input type="checkbox" name="services" value="Design Appointment"><span>Design appointment</span></label>
-          <label><input type="checkbox" name="services" value="Browsing the Collection"><span>Browse the collection</span></label>
+          <label><input type="checkbox" name="services" value="Browsing the Collection"><span>Browse the rug collection</span></label>
         </div>
       </div>
       <label class="perk"><input type="checkbox" name="services" value="FREE Interior Designer at Appointment"><span><b>Yes, I'd love the FREE complimentary consultation with your in-house interior designer</b> at my appointment.</span></label>
@@ -661,7 +670,7 @@
       <div>
         <h4>Explore</h4>
         <ul>
-          <li><a href="/gallery.html">The Collection</a></li>
+          <li><a href="/gallery.html">The Rug Collection</a></li>
           <li><a href="/gallery.html">Browse Rugs</a></li>
           <li><a href="#services">Services</a></li>
           <li><a href="#book">Book an Appointment</a></li>
@@ -840,7 +849,7 @@
   }).catch(function(){});
 })();
 </script>
-<script src="/assets/rugview.js"></script>
+<script src="/assets/rugview.js?v=20261002"></script>
 
 </body>
 </html>

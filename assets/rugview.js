@@ -13,22 +13,32 @@
     return img.naturalWidth > img.naturalHeight * 1.05 ? 90 : 0; // auto
   }
 
-  // Finds the rug inside a plain white/light studio background so the border can be trimmed.
+  // Finds the rug inside the studio background so the border can be trimmed.
+  // Pass 1: trim plain white/light background. Pass 2 (inside that box): also treat near-black
+  // backdrop corners as background and trim crooked edges a little tighter. Pass 2 is ignored
+  // if it would cut more than 12% off either side length (protects dark or narrow rugs).
   // Returns null when there's nothing worth trimming (under 2% on every side).
   function trimBox(ctx, W, H) {
     var d = ctx.getImageData(0, 0, W, H).data;
     var light = function (i) { return d[i] > 228 && d[i + 1] > 228 && d[i + 2] > 228; };
+    var lightOrDark = function (i) { return light(i) || (d[i] < 45 && d[i + 1] < 45 && d[i + 2] < 45); };
     var step = Math.max(1, Math.round(Math.min(W, H) / 300));
-    var rowBusy = function (y) { var n = 0, t = 0; for (var x = 0; x < W; x += step) { t++; if (!light((y * W + x) * 4)) n++; } return n / t > 0.12; };
-    var colBusy = function (x) { var n = 0, t = 0; for (var y = 0; y < H; y += step) { t++; if (!light((y * W + x) * 4)) n++; } return n / t > 0.12; };
-    var top = 0, bot = H - 1, left = 0, right = W - 1;
-    while (top < H / 3 && !rowBusy(top)) top += step;
-    while (bot > H * 2 / 3 && !rowBusy(bot)) bot -= step;
-    while (left < W / 3 && !colBusy(left)) left += step;
-    while (right > W * 2 / 3 && !colBusy(right)) right -= step;
+    function scan(bx, by, bw, bh, bg, thr) {
+      var rowBusy = function (y) { var n = 0, t = 0; for (var x = bx; x < bx + bw; x += step) { t++; if (!bg((y * W + x) * 4)) n++; } return n / t > thr; };
+      var colBusy = function (x) { var n = 0, t = 0; for (var y = by; y < by + bh; y += step) { t++; if (!bg((y * W + x) * 4)) n++; } return n / t > thr; };
+      var top = by, bot = by + bh - 1, left = bx, right = bx + bw - 1;
+      while (top < by + bh / 3 && !rowBusy(top)) top += step;
+      while (bot > by + bh * 2 / 3 && !rowBusy(bot)) bot -= step;
+      while (left < bx + bw / 3 && !colBusy(left)) left += step;
+      while (right > bx + bw * 2 / 3 && !colBusy(right)) right -= step;
+      return { x: left, y: top, w: right - left + 1, h: bot - top + 1 };
+    }
+    var a = scan(0, 0, W, H, light, 0.12);
+    var b = scan(a.x, a.y, a.w, a.h, lightOrDark, 0.3);
+    if (b.w < a.w * 0.88 || b.h < a.h * 0.88) b = a;
     var minW = W * 0.02, minH = H * 0.02;
-    if (top < minH && left < minW && H - 1 - bot < minH && W - 1 - right < minW) return null;
-    return { x: left, y: top, w: right - left + 1, h: bot - top + 1 };
+    if (b.y < minH && b.x < minW && H - b.y - b.h < minH && W - b.x - b.w < minW) return null;
+    return b;
   }
 
   // Resolves to a URL for an upright copy of the image (or the original when no turn is needed).

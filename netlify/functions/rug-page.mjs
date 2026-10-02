@@ -54,7 +54,7 @@ function shell(title, desc, body) {
 <header><div class="nav">
   <a class="brand" href="/index.html" aria-label="Pineville Rug Gallery"><img src="https://storage.googleapis.com/pineville-rug/Trans_PRG.png" alt="Pineville Rug Gallery — Est. 1986"></a>
   <div class="nav-cta">
-    <a class="back" href="/gallery.html">← The Collection</a>
+    <a class="back" href="/gallery.html">← The Rug Collection</a>
     <a href="/index.html#book-design" class="btn solid hdr-btn">Book a Design Appointment</a>
     <a href="/index.html#book-cleaning" class="btn hdr-btn">Book a Cleaning</a>
     <a href="/index.html#book" class="btn solid hdr-mobile">Book</a>
@@ -62,7 +62,7 @@ function shell(title, desc, body) {
 </div></header>
 ${body}
 <footer>© ${new Date().getFullYear()} Pineville Rug Gallery · 310 Main Street, Pineville, NC · (980) 288-2538 · Store (704) 889-2454 · <a href="/index.html">Home</a></footer>
-<script src="/assets/rugview.js"></script>
+<script src="/assets/rugview.js?v=20261002"></script>
 </body></html>`;
 }
 
@@ -76,7 +76,7 @@ export default async (req, context) => {
 <div class="wrap" style="text-align:center">
   <h1>This rug has found its home.</h1>
   <p class="desc" style="margin:14px auto 30px;max-width:520px">It may have sold or moved off the floor. Browse the rest of the collection, or call us — we have over 1,000 rugs in the gallery.</p>
-  <a class="btn solid" href="/gallery.html">View the Collection</a>
+  <a class="btn solid" href="/gallery.html">View the Rug Collection</a>
 </div>`);
     return new Response(html, { status: 404, headers: { "Content-Type": "text/html; charset=utf-8" } });
   }
@@ -91,7 +91,7 @@ export default async (req, context) => {
 
   const html = shell(`${r.label} — Pineville Rug Gallery`, metaDesc, `
 <div class="wrap">
-  <a class="crumb" href="/gallery.html">← Back to the collection</a>
+  <a class="crumb" href="/gallery.html">← Back to the rug collection</a>
   <div class="grid">
     <div>
     <a class="photo" id="mainphoto" href="${esc(r.full)}" data-zoom="${esc(r.full)}" data-turn="${esc(r.turn || "")}" aria-label="Zoom in on this rug"><img data-upright="${esc(r.full)}" data-turn="${esc(r.turn || "")}" alt="${esc(r.label)}"><span class="zoomhint">Tap to zoom</span></a>

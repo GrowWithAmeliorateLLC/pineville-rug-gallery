@@ -138,7 +138,51 @@ const WHOLE_RUG = {
   "Ousha2": "203852/e5af41bd16f16a50b89314a634633280", // b
 };
 
+// 10/1/2026 — Liane's color-corrected full-rug photos (PhotoProofPro "Final Rugs", folder 206037). Approved by Amy.
+const COLOR_CORRECTED = {
+  "HER-86-124": "206037/e344bda31a153adca8e0026f620509ed",
+  "HOR-26-156": "206037/a742c39a8ec9d0d0d01ed1efe940da31",
+  "HER-26-111": "206037/5c0509c5723417146105da8b734b8923",
+  "HER-26-115": "206037/18c47a1e85f2e6ae51ac791f10c56ec5",
+  "HER-26-131": "206037/5a5980b84cb4c2b4fd07e07ad913bd97",
+  "HER-19-1063": "206037/a5311ef909a25787798a73f027b5288f",
+  "HER-26-139": "206037/2e637b3a13d8064809c10ac9c551c053",
+  "HER-22": "206037/45e32a35ffc4508228416b388892a8dd",
+  "HER-26-133": "206037/1ec83e9ae64534b1777e4fbbe59ea3d5",
+  "HER-26-134": "206037/410f63400814e28b43e150dc7ada57b8",
+  "HER-26-137": "206037/28dce0f6d76f4b579feebff9d304ac83",
+};
+
+// Copies PhotoProofPro photos (stock # -> "set/hash") into our photo store; returns the rug ids updated.
+const copyPhotos = (map) => async (rugs) => {
+  const base = "https://cdn.photoproofpro.com/";
+  const ps = photoStore();
+  const done = [];
+  for (const r of rugs) {
+    const key = map[String(r.stock || "").trim()];
+    if (!key) continue;
+    try {
+      const [full, thumb] = await Promise.all([
+        fetch(`${base}uploads/resized/6950/202149/${key}.jpg`),
+        fetch(`${base}styles/large_thumb/s3/uploads/resized/6950/202149/${key}.jpg`),
+      ]);
+      if (!full.ok || !thumb.ok) continue;
+      await ps.set(`${r.id}/full`, await full.arrayBuffer(), { metadata: { contentType: "image/jpeg" } });
+      await ps.set(`${r.id}/thumb`, await thumb.arrayBuffer(), { metadata: { contentType: "image/jpeg" } });
+      done.push(r.id);
+    } catch (_) {}
+  }
+  return done;
+};
+const markBlob = (rugs, ids) => {
+  const v = Date.now();
+  let n = 0;
+  for (const r of rugs) if (ids.includes(r.id)) { r.photo = { kind: "blob", v }; n++; }
+  return n;
+};
+
 const MIGRATIONS = {
+  "liane-color-corrected-2026-10-01": { prepare: copyPhotos(COLOR_CORRECTED), apply: markBlob },
   // 9/30/2026 — Renée: every rug's Material is "Cotton foundation, wool pile" (only blanks are filled).
   "material-cotton-wool": { apply: fillMaterial },
   // 9/30/2026 — refill any Material blanked by an admin tab opened before the first fill.

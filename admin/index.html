@@ -54,6 +54,14 @@
   input[type=text],input[type=password],textarea{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:13px 14px;background:var(--white);outline:none;font-size:16px}
   input:focus,textarea:focus,select:focus{border-color:var(--navy)}
   select{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:13px 14px;background:var(--white);outline:none;font-size:16px;font:inherit}
+  .xgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px;margin-top:12px}
+  .xgrid figure{position:relative;margin:0;aspect-ratio:3/4;border-radius:10px;overflow:hidden;background:var(--lavender)}
+  .xgrid img{width:100%;height:100%;object-fit:cover}
+  .xgrid button{position:absolute;top:4px;right:4px;width:28px;height:28px;border-radius:50%;border:none;background:rgba(0,0,0,.65);color:#fff;font-weight:700;cursor:pointer}
+  .xgrid button.armed{background:var(--danger)}
+  .bulk table{width:100%;border-collapse:collapse;font-size:.9rem;margin:14px 0}
+  .bulk td,.bulk th{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+  .bulk .bad{color:var(--danger)}
   .sect{border-top:1px solid var(--line);padding-top:16px;margin-top:4px}
   .sect b{display:block;font-family:'Montserrat',sans-serif;font-weight:800}
   .sect span{font-size:.85rem;color:var(--muted)}
@@ -211,8 +219,18 @@
       </div>
       <div class="acts">
         <a class="btn ghost" href="/gallery.html" target="_blank" rel="noopener">View gallery ↗</a>
+        <button class="btn ghost" id="bulk-btn">+ Add more photos (many rugs at once)</button>
         <button class="btn primary" id="add">+ Add a rug</button>
       </div>
+    </div>
+    <div class="card bulk" id="bulk" hidden style="margin-bottom:18px">
+      <h2 style="font-size:1.2rem;margin-bottom:6px">Add more photos to many rugs at once</h2>
+      <p style="color:var(--muted);font-size:.92rem">Choose photos named with the rug's stock number, like Liane's files (<b>HER-26-131b.jpg</b> goes to rug HER-26-131). We'll show you where each one goes before anything is saved. Photos without a stock number in the name can be added from that rug's Edit screen instead.</p>
+      <div class="bar" style="margin-top:14px">
+        <label class="btn navy" style="cursor:pointer">Choose photos<input type="file" id="bulk-files" accept="image/*" multiple hidden></label>
+        <button class="btn ghost" type="button" id="bulk-close">Close</button>
+      </div>
+      <div id="bulk-out"></div>
     </div>
     <input type="text" class="search" id="q" placeholder="Search by stock #, name, origin, size…" aria-label="Search rugs">
     <div class="list" id="list"></div>
@@ -245,6 +263,12 @@
         <div><label class="f" for="f-styleCat">Style</label><select id="f-styleCat"><option value="">Automatic</option><option>Persian</option><option>Turkish</option><option>Oriental</option></select></div>
         <div><label class="f" for="f-turn">Photo direction</label><select id="f-turn"><option value="">Automatic (stand the rug upright)</option><option value="left">Turn left</option><option value="right">Turn right</option><option value="none">Don't turn</option></select></div>
         <div class="full"><label class="f" for="f-description">Description</label><textarea id="f-description" maxlength="4000" placeholder="Colors, design, condition, story — anything that helps it sell."></textarea></div>
+      </div>
+
+      <div class="sect" id="x-sect" hidden style="margin-top:22px">
+        <b>More photos of this rug</b><span>Close-ups, corners, the back, the fringe. These show under the main photo on the rug's page. Tap × to remove one.</span>
+        <div class="xgrid" id="xgrid"></div>
+        <div class="bar" style="margin-top:12px"><label class="btn ghost sm" style="cursor:pointer">+ Add photos<input type="file" id="x-files" accept="image/*" multiple hidden></label><span class="msg" id="x-msg"></span></div>
       </div>
 
       <div class="bar">
@@ -354,6 +378,7 @@
         '<div><div class="t">' + esc(r.label) + '</div>' +
         (metaLine(r) ? '<div class="s">' + esc(metaLine(r)) + '</div>' : '') +
         (groupLine(r) ? '<span class="tag">' + esc(groupLine(r)) + '</span> ' : '') +
+        ((r.extras && r.extras.length) ? '<span class="tag">+' + r.extras.length + ' photos</span> ' : '') +
         (needsInfo ? '<span class="tag warn">Needs details</span>' : '') + '</div>' +
         '<div class="ops">' +
           '<button class="iconbtn" data-a="top" title="Move to top" aria-label="Move to top"' + (i === 0 || q ? ' disabled' : '') + '>⤒</button>' +
@@ -400,8 +425,76 @@
       d.addEventListener('click', function(){ removeRug(d); });
       $('ed-form').querySelector('.bar').appendChild(d);
     }
+    renderExtras();
     show('v-edit');
   }
+
+  // ---------- more photos (extras) ----------
+  function renderExtras(){
+    var sect = $('x-sect'), g = $('xgrid');
+    sect.hidden = !editing;
+    if(!editing) return;
+    var xs = editing.extras || [];
+    g.innerHTML = xs.length ? '' : '<p style="color:var(--muted);font-size:.88rem;grid-column:1/-1">No extra photos yet.</p>';
+    xs.forEach(function(x){
+      var fig = document.createElement('figure');
+      fig.innerHTML = '<img loading="lazy" alt=""><button type="button" title="Remove this photo" aria-label="Remove this photo">×</button>';
+      var im = fig.querySelector('img');
+      if(window.PRGRugs) PRGRugs.upright(x.thumb, '').then(function(u){ im.src = u; }); else im.src = x.thumb;
+      var b = fig.querySelector('button');
+      b.addEventListener('click', async function(){
+        if(!b.classList.contains('armed')){ b.classList.add('armed'); b.textContent = '?'; b.title = 'Tap again to remove'; setTimeout(function(){ if(b.isConnected){ b.classList.remove('armed'); b.textContent = '×'; } }, 3500); return; }
+        b.disabled = true;
+        try{ var j = await api('/api/rug-photo', {method:'POST', body:JSON.stringify({action:'delete-extra', id:editing.id, k:x.k})}); editing = j.rug; syncRug(j.rug); renderExtras(); }
+        catch(e){ b.disabled = false; alert('Could not remove: ' + e.message); }
+      });
+      g.appendChild(fig);
+    });
+  }
+  function syncRug(r){ var i = rugs.findIndex(function(x){ return x.id === r.id; }); if(i > -1) rugs[i] = r; }
+  async function uploadExtra(rugId, file){
+    var full = await resize(file, 2000, 0.85), thumb = await resize(file, 700, 0.8);
+    var j = await api('/api/rug-photo', {method:'POST', body:JSON.stringify({action:'add-extra', id:rugId, full:full, thumb:thumb, name:file.name})});
+    syncRug(j.rug); return j.rug;
+  }
+  $('x-files').addEventListener('change', async function(){
+    var files = [].slice.call(this.files || []); this.value = '';
+    if(!files.length || !editing) return;
+    var m = $('x-msg'); m.className = 'msg';
+    for(var i = 0; i < files.length; i++){
+      m.textContent = 'Uploading ' + (i + 1) + ' of ' + files.length + '…';
+      try{ editing = await uploadExtra(editing.id, files[i]); renderExtras(); }
+      catch(e){ m.className = 'msg err'; m.textContent = files[i].name + ' didn’t upload: ' + e.message; return; }
+    }
+    m.className = 'msg ok'; m.textContent = '✓ ' + files.length + ' photo' + (files.length === 1 ? '' : 's') + ' added — live on the rug’s page.';
+  });
+
+  // ---------- bulk add by filename ----------
+  function stockKey(s){ return String(s || '').toUpperCase().replace(/[^A-Z0-9]/g, ''); }
+  $('bulk-btn').addEventListener('click', function(){ $('bulk').hidden = false; $('bulk-out').innerHTML = ''; });
+  $('bulk-close').addEventListener('click', function(){ $('bulk').hidden = true; });
+  $('bulk-files').addEventListener('change', function(){
+    var files = [].slice.call(this.files || []); this.value = '';
+    var byKey = {}; rugs.forEach(function(r){ if(r.stock) byKey[stockKey(r.stock)] = r; });
+    var plan = files.map(function(f){ var b = String(f.name).replace(/\.[a-z0-9]+$/i, ''); var r = byKey[stockKey(b.replace(/[a-z]$/, ''))] || byKey[stockKey(b)]; return {file:f, rug:r}; });
+    var ok = plan.filter(function(p){ return p.rug; }), bad = plan.filter(function(p){ return !p.rug; });
+    var out = $('bulk-out');
+    out.innerHTML = '<table><tr><th>Photo</th><th>Goes to</th></tr>' +
+      ok.map(function(p){ return '<tr><td>' + esc(p.file.name) + '</td><td>' + esc(p.rug.stock) + ' · ' + esc(p.rug.label) + '</td></tr>'; }).join('') +
+      bad.map(function(p){ return '<tr><td>' + esc(p.file.name) + '</td><td class="bad">No rug with this stock number — add it from the rug’s Edit screen</td></tr>'; }).join('') + '</table>' +
+      (ok.length ? '<button class="btn primary" type="button" id="bulk-go">Add ' + ok.length + ' photo' + (ok.length === 1 ? '' : 's') + '</button> ' : '') + '<span class="msg" id="bulk-msg"></span>';
+    if(!ok.length) return;
+    $('bulk-go').addEventListener('click', async function(){
+      var btn = this; btn.disabled = true; var m = $('bulk-msg'); m.className = 'msg';
+      for(var i = 0; i < ok.length; i++){
+        m.textContent = 'Uploading ' + (i + 1) + ' of ' + ok.length + '…';
+        try{ await uploadExtra(ok[i].rug.id, ok[i].file); }
+        catch(e){ m.className = 'msg err'; m.textContent = ok[i].file.name + ' didn’t upload: ' + e.message + '. The ones before it are saved.'; btn.disabled = false; return; }
+      }
+      m.className = 'msg ok'; m.textContent = '✓ All ' + ok.length + ' photos added.';
+      renderList();
+    });
+  });
   function showPreview(){
     var pv = $('preview'), src = photoFile ? URL.createObjectURL(photoFile) : (editing && editing.full);
     if(!src) return;

@@ -272,6 +272,12 @@ export function publicRug(rug) {
     ...rugGroups(rug),
     thumb: imgUrl(rug, "thumb"),
     full: imgUrl(rug, "full"),
+    extras: (Array.isArray(rug.extras) ? rug.extras : []).map((x) => ({
+      k: x.k,
+      name: x.name || "",
+      thumb: `/api/rug-photo?id=${encodeURIComponent(rug.id)}&x=${encodeURIComponent(x.k)}&s=thumb&v=${x.v || 0}`,
+      full: `/api/rug-photo?id=${encodeURIComponent(rug.id)}&x=${encodeURIComponent(x.k)}&s=full&v=${x.v || 0}`,
+    })),
     url: `/rug/${rug.id}`,
   };
 }

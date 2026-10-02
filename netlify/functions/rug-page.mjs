@@ -20,6 +20,11 @@ header{position:sticky;top:0;z-index:50;background:rgba(253,250,244,.94);backdro
 .photo{position:relative;display:block;cursor:zoom-in}
 .photo img{width:100%;max-height:82vh;object-fit:contain;margin:0 auto;box-shadow:0 14px 34px rgba(12,34,29,.16);opacity:0;transition:opacity .4s ease}
 .photo img.ready{opacity:1}
+.strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:8px;margin-top:12px}
+.strip button{padding:0;border:2px solid transparent;background:var(--sand);cursor:pointer;aspect-ratio:3/4;overflow:hidden}
+.strip button.on{border-color:var(--clay)}
+.strip img{width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s}
+.strip img.ready{opacity:1}
 .photo .zoomhint{position:absolute;right:12px;bottom:12px;background:rgba(12,34,29,.78);color:#fff;font-size:.68rem;text-transform:uppercase;letter-spacing:.16em;padding:8px 12px}
 h1{font-size:clamp(2.2rem,4vw,3.2rem);color:var(--pine);margin-bottom:10px}
 .price{font-family:'Cormorant Garamond',serif;font-size:1.7rem;color:var(--clay);margin-bottom:24px}
@@ -88,7 +93,19 @@ export default async (req, context) => {
 <div class="wrap">
   <a class="crumb" href="/gallery.html">← Back to the collection</a>
   <div class="grid">
-    <a class="photo" href="${esc(r.full)}" data-zoom="${esc(r.full)}" data-turn="${esc(r.turn || "")}" aria-label="Zoom in on this rug"><img data-upright="${esc(r.full)}" data-turn="${esc(r.turn || "")}" alt="${esc(r.label)}"><span class="zoomhint">Tap to zoom</span></a>
+    <div>
+    <a class="photo" id="mainphoto" href="${esc(r.full)}" data-zoom="${esc(r.full)}" data-turn="${esc(r.turn || "")}" aria-label="Zoom in on this rug"><img data-upright="${esc(r.full)}" data-turn="${esc(r.turn || "")}" alt="${esc(r.label)}"><span class="zoomhint">Tap to zoom</span></a>
+    ${r.extras && r.extras.length ? `<div class="strip" aria-label="More photos of this rug">${[{ thumb: r.thumb, full: r.full, main: true }, ...r.extras].map((x, i) =>
+      `<button type="button" class="${i ? "" : "on"}" data-full="${esc(x.full)}" data-turn="${x.main ? esc(r.turn || "") : ""}" aria-label="Photo ${i + 1}"><img data-upright="${esc(x.thumb)}" data-turn="${x.main ? esc(r.turn || "") : ""}" alt=""></button>`).join("")}</div>
+    <script>
+    document.querySelectorAll('.strip button').forEach(function(b){ b.addEventListener('click', function(){
+      document.querySelectorAll('.strip button').forEach(function(x){ x.classList.toggle('on', x===b); });
+      var a=document.getElementById('mainphoto'), im=a.querySelector('img'), f=b.getAttribute('data-full'), t=b.getAttribute('data-turn')||'';
+      a.setAttribute('href', f); a.setAttribute('data-zoom', f); a.setAttribute('data-turn', t);
+      im.classList.remove('ready'); if(window.PRGRugs) PRGRugs.upright(f, t).then(function(u){ im.src=u; im.classList.add('ready'); });
+    }); });
+    </script>` : ""}
+    </div>
     <div>
       <h1>${esc(r.label)}</h1>
       ${r.price ? `<div class="price">${esc(r.price)}</div>` : ""}

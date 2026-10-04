@@ -35,7 +35,7 @@
 
   /* announcement */
   .announce{background:var(--pine-deep);color:var(--cream);text-align:center;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;padding:9px 20px;line-height:1.9}
-  .announce a{color:inherit} .announce b{color:#fff;font-weight:500}
+  .announce a{color:inherit} .announce b{color:#fff;font-weight:500} .announce .m{display:none}
 
   /* header */
   header{position:sticky;top:0;z-index:50;background:rgba(253,250,244,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
@@ -239,11 +239,11 @@
   @media(max-width:560px){
     .wrap,.hero-inner{padding-left:22px;padding-right:22px}
     .nav{padding:12px 22px}
-    .announce{font-size:.6rem;letter-spacing:.12em;padding:8px 14px;line-height:1.5}
-    .announce .sep{display:none}
-    .announce .ai{display:inline-block;white-space:nowrap;margin:2px 7px}
-    .announce .ai.long{display:inline;white-space:normal;margin:0}
-    .announce .ai.long::after{content:"";display:block}
+    .announce{font-size:.62rem;letter-spacing:.13em;padding:9px 14px;line-height:1.55}
+    .announce .d{display:none}
+    .announce .m{display:block;text-wrap:balance}
+    .announce .m2{margin-top:6px;padding-top:6px;border-top:1px solid rgba(247,231,203,.14)}
+    .announce .m a{margin-left:6px;white-space:nowrap}
     .brand img{height:92px;margin:-19px 0 -20px -6px}
     .nav-cta{gap:12px}
     .nav-cta .btn.solid{padding:11px 14px;font-size:.58rem;letter-spacing:.1em}
@@ -286,7 +286,7 @@
 </head>
 <body>
 
-<div class="announce"><span class="ai long"><b>New</b> &nbsp;·&nbsp; A <b>FREE</b> consultation with our in-house interior designer, just for <b>You</b>, at your appointment</span><span class="sep"> &nbsp;·&nbsp; </span><span class="ai"><a href="/index.html#book-design" style="color:var(--clay-soft);border-bottom:1px solid var(--clay-soft)">Book now</a></span><br><span class="ai"><b>Rug Cleaning, Repair &amp; Appraisal</b></span><span class="sep"> &nbsp;·&nbsp; </span><span class="ai">Complimentary local pickup &amp; delivery</span><span class="sep"> &nbsp;·&nbsp; </span><span class="ai"><a href="/index.html#book-cleaning" style="color:var(--clay-soft);border-bottom:1px solid var(--clay-soft)">Book a cleaning</a></span></div>
+<div class="announce"><span class="d"><span class="ai long"><b>New</b> &nbsp;·&nbsp; A <b>FREE</b> consultation with our in-house interior designer, just for <b>You</b>, at your appointment</span><span class="sep"> &nbsp;·&nbsp; </span><span class="ai"><a href="/index.html#book-design" style="color:var(--clay-soft);border-bottom:1px solid var(--clay-soft)">Book now</a></span><br><span class="ai"><b>Rug Cleaning, Repair &amp; Appraisal</b></span><span class="sep"> &nbsp;·&nbsp; </span><span class="ai">Complimentary local pickup &amp; delivery</span><span class="sep"> &nbsp;·&nbsp; </span><span class="ai"><a href="/index.html#book-cleaning" style="color:var(--clay-soft);border-bottom:1px solid var(--clay-soft)">Book a cleaning</a></span></span><span class="m"><b>New</b> &middot; A <b>free</b> designer consult <a class="nw" href="/index.html#book-design" style="color:var(--clay-soft);border-bottom:1px solid var(--clay-soft)">Book now</a></span><span class="m m2"><b>Rug cleaning</b> &middot; free pickup <a class="nw" href="/index.html#book-cleaning" style="color:var(--clay-soft);border-bottom:1px solid var(--clay-soft)">Book a cleaning</a></span></div>
 
 <header>
   <div class="nav">

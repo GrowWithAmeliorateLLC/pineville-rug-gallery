@@ -44,6 +44,9 @@ footer{background:var(--pine-deep);color:rgba(245,239,228,.7);padding:40px 20px;
 function shell(title, desc, body) {
   return `<!DOCTYPE html>
 <html lang="en"><head>
+<!-- Google Tag Manager (live domain only) + phone-tap tracking -->
+<script>window.dataLayer=window.dataLayer||[];if(/(^|[.])pinevilleruggallery[.]com$/.test(location.hostname)){(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-T52FQTZ8');}document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href^="tel:"]');if(a)window.dataLayer.push({event:'phone_click',phone_number:a.getAttribute('href').slice(4)});});</script>
+<!-- End Google Tag Manager -->
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <title>${esc(title)}</title>

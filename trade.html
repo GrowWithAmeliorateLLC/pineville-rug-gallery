@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Google Tag Manager (live domain only) + phone-tap tracking -->
+<script>window.dataLayer=window.dataLayer||[];if(/(^|[.])pinevilleruggallery[.]com$/.test(location.hostname)){(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-T52FQTZ8');}document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href^="tel:"]');if(a)window.dataLayer.push({event:'phone_click',phone_number:a.getAttribute('href').slice(4)});});</script>
+<!-- End Google Tag Manager -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
@@ -444,6 +447,7 @@
         var j = await r.json().catch(function(){return {};});
         if(!r.ok || j.error) throw new Error();
         f.reset();
+        window.dataLayer=window.dataLayer||[]; window.dataLayer.push({event:'generate_lead',form_type:'trade'});
         msg.className='msg ok'; msg.textContent='Thank you — we’ll review and reach out to confirm your trade account.';
       }catch(_){
         msg.className='msg err'; msg.textContent='Something went wrong — please call us at (980) 288-2538.';

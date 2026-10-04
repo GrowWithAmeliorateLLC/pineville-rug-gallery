@@ -1,0 +1,60 @@
+# Old WordPress site (pinevilleruggallery.com before 10/2026) -> new pages. All permanent (301).
+# Built from the old site's sitemaps: 28 pages, 3 blog posts, 145 shop products.
+
+# Services
+/cleaning                                    /#services        301
+/oriental-rug-cleaning-service-pineville     /#services        301
+/repair                                      /#services        301
+/oriental-rug-repair-service-pineville       /#services        301
+/appraisal                                   /#services        301
+/oriental-rug-appraisal-service-pineville    /#services        301
+
+# Booking pages
+/schedule-cleaning                           /#book-cleaning   301
+/schedule-repair                             /#book-cleaning   301
+/schedule-appraisal                          /#book-cleaning   301
+/rsvpc                                       /#book-cleaning   301
+/schedule-services                           /#book-design     301
+/rsvpp                                       /#book-design     301
+
+# About / contact
+/home                                        /                 301
+/about-us                                    /#story           301
+/contact-us                                  /#visit           301
+
+# Shop -> The Rug Collection
+/shop                                        /gallery.html     301
+/shop/*                                      /gallery.html     301
+/product/*                                   /gallery.html     301
+/product-category/*                          /gallery.html     301
+/product-tag/*                               /gallery.html     301
+/pads                                        /gallery.html     301
+/cart                                        /gallery.html     301
+/checkout                                    /gallery.html     301
+/checkout/*                                  /gallery.html     301
+/wishlist                                    /gallery.html     301
+/order-tracking                              /gallery.html     301
+/my-account                                  /gallery.html     301
+/my-account/*                                /gallery.html     301
+
+# Policies
+/privacy-policy                              /privacy.html     301
+/refund-returns                              /terms.html       301
+
+# Blog (no blog on the new site yet)
+/blog                                        /                 301
+/blog/*                                      /                 301
+/how-to-layer-rugs-guide                     /                 301
+/the-timeless-charm-and-practicality-of-oriental-rugs  /       301
+/category/*                                  /                 301
+/feed                                        /                 301
+/feed/*                                      /                 301
+
+# WordPress system pages
+/wp-admin                                    /                 301
+/wp-admin/*                                  /                 301
+/wp-login.php                                /                 301
+/sitemap_index.xml                           /sitemap.xml      301
+/page-sitemap.xml                            /sitemap.xml      301
+/post-sitemap.xml                            /sitemap.xml      301
+/product-sitemap.xml                         /sitemap.xml      301

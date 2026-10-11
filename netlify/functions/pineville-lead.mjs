@@ -116,7 +116,7 @@ export default async (req) => {
     const nowMins = Number(parts.hour) * 60 + Number(parts.minute);
     const start = SLOT_START[(body.appt_slot || "").trim()];
     if (!/^\d{4}-\d{2}-\d{2}$/.test(apptDate) || apptDate < today || (apptDate === today && typeof start === "number" && start <= nowMins)) {
-      return json({ error: "past_time", message: "That time has already passed. Please pick a later time or another day." }, 400);
+      return json({ error: "past_time", message: "That time has already passed. Please pick a later time or another day." }, 409);
     }
   }
 

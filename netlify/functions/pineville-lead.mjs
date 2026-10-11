@@ -120,8 +120,13 @@ export default async (req) => {
     }
   }
 
+  // Spam screen. Suspected spam is saved to GHL tagged "Spam - Suspected" (so nothing real is lost),
+  // but gets no customer email, no team alert, no slot hold and no calendar entry.
+  const spamReasons = spamCheck(body, { name, email, phone });
+  const isSpam = spamReasons.length > 0;
+
   const isFixedSlot = !!(SLOTS[apptType] && SLOTS[apptType].includes(apptSlot));
-  const store = (apptType && apptDate && isFixedSlot) ? await getBlobStore() : null;
+  const store = (!isSpam && apptType && apptDate && isFixedSlot) ? await getBlobStore() : null;
   if (store) {
     const cap = CAPS[apptType] || 99;
     const cur = await readCount(store, apptType, apptDate, apptSlot);
@@ -142,7 +147,7 @@ export default async (req) => {
   const companyName = (body.company_name || "").trim();
   const isTrade = body.form === "trade";
 
-  const tags = ["Website Lead"];
+  const tags = isSpam ? ["Spam - Suspected"] : ["Website Lead"];
   if (apptType) tags.push(`Appointment: ${apptType}`);
   services.forEach((s) => tags.push(`Interest: ${s}`));
   if (isTrade) tags.push("Trade Program Applicant");
@@ -178,7 +183,7 @@ export default async (req) => {
   }
 
   // 2b) Save the full request for the admin Appointments calendar (best-effort).
-  if (apptType || isTrade) {
+  if (!isSpam && (apptType || isTrade)) {
     try {
       await saveAppt({
         created: new Date().toISOString(),
@@ -228,7 +233,8 @@ export default async (req) => {
     `- Marketing (offers/new arrivals): ${smsM ? "YES" : "no"}\n` +
     `Team notify (SMS pending A2P): ${NOTIFY_NUMBERS}`;
 
-  const heading = isTrade ? "TRADE PROGRAM" : apptType ? `${apptType.toUpperCase()} APPOINTMENT REQUEST` : "WEBSITE INQUIRY";
+  const heading = (isSpam ? `SUSPECTED SPAM (${spamReasons.join("; ")}) — no alerts sent\n` : "") +
+    (isTrade ? "TRADE PROGRAM" : apptType ? `${apptType.toUpperCase()} APPOINTMENT REQUEST` : "WEBSITE INQUIRY");
   if (contactId) {
     try {
       await fetch(`${GHL_BASE}/contacts/${contactId}/notes`, {
@@ -240,7 +246,7 @@ export default async (req) => {
 
   // 4) EMAIL notifications (until SMS/A2P is live). Best-effort.
   let emailLead = null, emailTeam = null;
-  if (contactId && (apptType || isTrade)) {
+  if (!isSpam && contactId && (apptType || isTrade)) {
     const what = isTrade ? "trade program application" : `${apptType === "Cleaning" ? "cleaning / repair" : "design"} appointment`;
     const when = [apptDate ? `on <b>${esc(apptDate)}</b>` : "", apptSlot ? `at <b>${esc(apptSlot)}</b>` : ""].filter(Boolean).join(" ");
     const leadHtml =
@@ -263,9 +269,25 @@ export default async (req) => {
     }
   }
 
-  if (body.debug) return json({ ok: true, emailLead, emailTeam });
+  if (body.debug) return json({ ok: true, spam: spamReasons, emailLead, emailTeam });
   return json({ ok: true });
 };
+
+// Returns the reasons a submission looks like spam (empty array = looks real).
+function spamCheck(body, { name, email, phone }) {
+  const r = [];
+  if (body._g !== "prg1") r.push("not sent from the site form");
+  const elapsed = Number(body._t);
+  if (body._g === "prg1" && (!Number.isFinite(elapsed) || elapsed < 3000)) r.push("form filled in under 3 seconds");
+  const text = [name, email, body.project, body.message, body.appt_custom_time, body.company_name, body.address, body.city].map((v) => String(v || "")).join(" ");
+  const free = [name, body.project, body.message, body.appt_custom_time, body.company_name].map((v) => String(v || "")).join(" ");
+  if (/https?:\/\/|www\.|\[url|<a\s/i.test(free)) r.push("link in message");
+  if (/[Ѐ-ӿ぀-ヿ一-鿿฀-๿]/.test(text)) r.push("non-Latin characters");
+  if (/\d/.test(name) || name.length > 60) r.push("odd name");
+  const digits = phone.replace(/\D/g, "");
+  if (phone && !(digits.length === 10 || (digits.length === 11 && digits[0] === "1"))) r.push("not a US phone number");
+  return r;
+}
 
 function headers() {
   return {

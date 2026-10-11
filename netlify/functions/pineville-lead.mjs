@@ -62,6 +62,9 @@ async function upsertContact(payload) {
   return { ok: r.ok, status: r.status, id: j?.contact?.id || j?.id || null, detail: j };
 }
 
+// Slot start times in minutes after midnight (Eastern). Open-ended slots ("After 5", "Sunday after 1") use the customer's custom time, so they aren't time-blocked.
+const SLOT_START = { "11:00 AM": 660, "1:00 PM": 780, "3:00 PM": 900, "5:00 PM": 1020, "9:00–11:00 AM": 540, "11:00 AM–1:00 PM": 660, "1:00–3:00 PM": 780, "3:00–5:00 PM": 900 };
+
 export default async (req) => {
   if (!TOKEN) return json({ error: "CRM not configured (missing PRG_GHL_TOKEN)" }, 500);
 
@@ -103,6 +106,19 @@ export default async (req) => {
   let apptSlot = (body.appt_slot || "").trim();
   const apptCustom = (body.appt_custom_time || "").trim();
   if (apptCustom && /after 5|sunday|other/i.test(apptSlot)) apptSlot = `${apptSlot} — ${apptCustom}`;
+
+  // Reject past dates/times (store-local Eastern clock).
+  if (apptDate) {
+    const parts = {};
+    new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" })
+      .formatToParts(new Date()).forEach((x) => { parts[x.type] = x.value; });
+    const today = `${parts.year}-${parts.month}-${parts.day}`;
+    const nowMins = Number(parts.hour) * 60 + Number(parts.minute);
+    const start = SLOT_START[(body.appt_slot || "").trim()];
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(apptDate) || apptDate < today || (apptDate === today && typeof start === "number" && start <= nowMins)) {
+      return json({ error: "past_time", message: "That time has already passed. Please pick a later time or another day." }, 400);
+    }
+  }
 
   const isFixedSlot = !!(SLOTS[apptType] && SLOTS[apptType].includes(apptSlot));
   const store = (apptType && apptDate && isFixedSlot) ? await getBlobStore() : null;

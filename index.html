@@ -710,6 +710,7 @@
 </footer>
 
 <script>
+  var PRG_T0=Date.now();
   document.querySelector('.burger').addEventListener('click',function(){
     var n=document.querySelector('nav ul');
     n.style.display = n.style.display==='flex' ? 'none' : 'flex';
@@ -807,7 +808,7 @@
       var st=f.querySelector('input[name="sms_transactional"]'); if(st) data.sms_transactional=st.checked;
       var sm=f.querySelector('input[name="sms_marketing"]'); if(sm) data.sms_marketing=sm.checked;
       var svc=f.querySelectorAll('input[name="services"]:checked'); data.services=Array.prototype.map.call(svc,function(c){return c.value;});
-      data.page=location.href;
+      data.page=location.href; data._g='prg1'; data._t=Date.now()-PRG_T0;
       if(!data.name||!data.phone||!data.email){ msg.className='msg err'; msg.textContent='Please add your name, phone, and email.'; btn.disabled=false; return; }
       if(!data.appt_date||!data.appt_slot){ msg.className='msg err'; msg.textContent='Please choose a date and a time.'; btn.disabled=false; return; }
       if(/after 5|sunday/i.test(data.appt_slot) && !(data.appt_custom_time||'').trim()){ msg.className='msg err'; msg.textContent='Please tell us what time works best.'; var ct=document.getElementById('s-custom'); if(ct) ct.focus(); btn.disabled=false; return; }

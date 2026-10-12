@@ -2,16 +2,17 @@
 //
 // POST: the site's forms (Sales appointment, Cleaning/Repair, Trade). Enforces a
 //   per-slot booking cap (default 3), upserts the contact into GoHighLevel,
-//   records the requested slot + A2P SMS consent, and (until SMS/A2P is live)
-//   sends EMAIL notifications: a confirmation to the customer + an internal alert
-//   to the team — both via GHL's email API.
+//   records the requested slot + A2P SMS consent, then notifies via GHL:
+//   EMAIL confirmation to the customer + email alert to the team, a TEXT confirmation
+//   to the customer (only if they checked the appointment-texts box), and TEXT alerts
+//   to the team's cells (PRG_NOTIFY_NUMBERS). A2P 10DLC approved 10/2026.
 // GET:  ?form=sales|cleaning&date=YYYY-MM-DD -> per-slot booking counts (live availability).
 //
 // Env vars:
 //   PRG_GHL_TOKEN        - GHL Private Integration token
-//                          (needs: contacts.write/readonly + conversations/message.write for email)
+//                          (needs: contacts.write/readonly + conversations/message.write for email + SMS)
 //   PRG_GHL_LOCATION_ID  - optional; defaults below
-//   PRG_NOTIFY_NUMBERS   - optional; cell(s) to text on a booking once SMS is live (placeholder below)
+//   PRG_NOTIFY_NUMBERS   - optional; team cell(s) that get a text alert on every real lead, comma-separated
 //   PRG_NOTIFY_EMAIL     - optional; internal email(s) that get the team alert, comma-separated
 //   PRG_EMAIL_FROM       - optional; From address for outgoing email
 
@@ -21,7 +22,7 @@ const GHL_BASE = "https://services.leadconnectorhq.com";
 const GHL_VERSION = "2021-07-28";
 const LOCATION_ID = process.env.PRG_GHL_LOCATION_ID || "SEUOenwNjKokn5Nnb0cU";
 const TOKEN = process.env.PRG_GHL_TOKEN;
-const NOTIFY_NUMBERS = process.env.PRG_NOTIFY_NUMBERS || "9802882538,9803783162"; // Reza, Sardar — SMS (once A2P live)
+const NOTIFY_NUMBERS = process.env.PRG_NOTIFY_NUMBERS || "9802882538,9803783162,7045600318"; // Reza, Sardar, Renée
 const NOTIFY_EMAILS = String(process.env.PRG_NOTIFY_EMAIL || "showroom@pinevilleruggallery.com,renee@pinevilleruggallery.com")
   .split(",").map((e) => e.trim()).filter(Boolean);
 const EMAIL_FROM = process.env.PRG_EMAIL_FROM || "showroom@pinevilleruggallery.com";
@@ -55,6 +56,24 @@ async function sendGhlEmail(contactId, subject, html) {
     const t = await r.json().catch(() => ({}));
     return { status: r.status, ok: r.ok, detail: r.ok ? undefined : t };
   } catch (e) { return { status: 0, ok: false, detail: String(e && e.message || e) }; }
+}
+async function sendGhlSms(contactId, message) {
+  try {
+    const r = await fetch(`${GHL_BASE}/conversations/messages`, {
+      method: "POST",
+      headers: headers(),
+      body: JSON.stringify({ type: "SMS", contactId, message }),
+    });
+    const t = await r.json().catch(() => ({}));
+    return { status: r.status, ok: r.ok, detail: r.ok ? undefined : t };
+  } catch (e) { return { status: 0, ok: false, detail: String(e && e.message || e) }; }
+}
+const toE164 = (p) => { const d = String(p || "").replace(/\D/g, ""); return d.length === 10 ? `+1${d}` : d.length === 11 && d[0] === "1" ? `+${d}` : ""; };
+// "2026-10-13" -> "Tue 10/13"
+function usDate(iso) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || ""); if (!m) return iso || "";
+  const d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3], 12));
+  return `${["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getUTCDay()]} ${+m[2]}/${+m[3]}`;
 }
 async function upsertContact(payload) {
   const r = await fetch(`${GHL_BASE}/contacts/upsert`, { method: "POST", headers: headers(), body: JSON.stringify(payload) });
@@ -231,7 +250,7 @@ export default async (req) => {
     `SMS consent captured ${new Date().toISOString()} via ${body.page || "website"}.\n` +
     `- Transactional (appointment texts): ${smsT ? "YES" : "no"}\n` +
     `- Marketing (offers/new arrivals): ${smsM ? "YES" : "no"}\n` +
-    `Team notify (SMS pending A2P): ${NOTIFY_NUMBERS}`;
+    `Team text alerts: ${NOTIFY_NUMBERS}`;
 
   const heading = (isSpam ? `SUSPECTED SPAM (${spamReasons.join("; ")}) — no alerts sent\n` : "") +
     (isTrade ? "TRADE PROGRAM" : apptType ? `${apptType.toUpperCase()} APPOINTMENT REQUEST` : "WEBSITE INQUIRY");
@@ -244,7 +263,7 @@ export default async (req) => {
     } catch (_) {}
   }
 
-  // 4) EMAIL notifications (until SMS/A2P is live). Best-effort.
+  // 4) EMAIL notifications. Best-effort.
   let emailLead = null, emailTeam = null;
   if (!isSpam && contactId && (apptType || isTrade)) {
     const what = isTrade ? "trade program application" : `${apptType === "Cleaning" ? "cleaning / repair" : "design"} appointment`;
@@ -269,7 +288,33 @@ export default async (req) => {
     }
   }
 
-  if (body.debug) return json({ ok: true, spam: spamReasons, emailLead, emailTeam });
+  // 5) TEXT notifications (A2P approved). Best-effort; never blocks the booking.
+  let smsLead = null, smsTeam = null;
+  if (!isSpam && contactId && (apptType || isTrade)) {
+    const kind = isTrade ? "Trade Program application" : apptType === "Cleaning" ? "cleaning / repair request" : "design appointment request";
+    const rawSlot = (body.appt_slot || "").trim();
+    const timeTxt = (apptCustom && /after 5|sunday|other/i.test(rawSlot) ? apptCustom : rawSlot).replace(/[–—]/g, "-");
+    const whenTxt = [apptDate ? usDate(apptDate) : "", timeTxt ? `at ${timeTxt}` : ""].filter(Boolean).join(" ");
+    const via = confirmVia === "Call" ? "phone" : confirmVia ? confirmVia.toLowerCase() : "text, call or email";
+    if (smsT && toE164(phone)) {
+      const msg = `Pineville Rug Gallery: Thanks, ${firstName}! We got your ${kind}${whenTxt ? " for " + whenTxt : ""}. We'll confirm by ${via} shortly. Questions? Call (980) 288-2538. Reply STOP to opt out.`;
+      smsLead = await sendGhlSms(contactId, msg);
+    }
+    const teamMsg = [
+      `New website lead: ${name}`,
+      isTrade ? "Trade Program application" : `${apptType === "Cleaning" ? "Cleaning/repair" : "Design appt"}${whenTxt ? " " + whenTxt : ""}`,
+      confirmVia ? `Confirm by ${confirmVia}` : "",
+      phone || email,
+      "Details in GHL",
+    ].filter(Boolean).join(" | ");
+    smsTeam = [];
+    for (const num of NOTIFY_NUMBERS.split(",").map(toE164).filter(Boolean)) {
+      const t = await upsertContact({ locationId: LOCATION_ID, phone: num, tags: ["Internal Notifications"] });
+      smsTeam.push(t.id ? { to: num, ...(await sendGhlSms(t.id, teamMsg)) } : { to: num, ok: false, detail: "notify contact not created", status: t.status });
+    }
+  }
+
+  if (body.debug) return json({ ok: true, spam: spamReasons, emailLead, emailTeam, smsLead, smsTeam });
   return json({ ok: true });
 };
 

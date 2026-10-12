@@ -1,5 +1,6 @@
 // Inbox watcher: texts the team when a customer sends a NEW message into GHL
 // (website chat or a text reply to 980-577-2764), since nobody at Pineville has a GHL login yet.
+// Also sends the customer one friendly "we got your text" auto-reply (max once per 12 hours per conversation).
 // Used by inbox-watch.mjs (runs every 5 min) and inbox-watch-check.mjs (read-only health check).
 import { getStore } from "@netlify/blobs";
 
@@ -12,6 +13,10 @@ const NOTIFY_NUMBERS = (process.env.PRG_NOTIFY_NUMBERS || "9802882538,9803783162
 const headers = () => ({ Authorization: `Bearer ${TOKEN}`, Version: "2021-07-28", Accept: "application/json", "Content-Type": "application/json" });
 const store = () => getStore({ name: "prg-inbox-watch", consistency: "strong" });
 const last10 = (p) => String(p || "").replace(/\D/g, "").slice(-10);
+const STATE_KEY = "state-v2";
+const ACK_EVERY_MS = 12 * 60 * 60 * 1000;
+const KEYWORDS = /^\s*(stop|stopall|unsubscribe|cancel|end|quit|help|info|start|yes|unstop)\s*$/i;
+const ACK = "Thanks for texting Pineville Rug Gallery! A team member will text you back shortly (gallery hours Mon-Sat 10-5). Need us now? Call (980) 288-2538.";
 const ts = (v) => (typeof v === "number" ? v : Date.parse(v || "") || 0);
 
 export async function searchConversations() {
@@ -55,35 +60,46 @@ async function teamContactId(phone10) {
   return j?.contact?.id || j?.id || null;
 }
 
+export async function readState() {
+  return (await store().get(STATE_KEY, { type: "json" }).catch(() => null)) || {};
+}
+
 export async function runWatch() {
   if (!TOKEN) return { ok: false, reason: "no token" };
   const s = store();
-  const state = (await s.get("state", { type: "json" }).catch(() => null)) || {};
+  const state = await readState();
   const now = Date.now();
-  // First run: start watching from now, so old conversations never trigger alerts.
-  if (!state.since) { await s.setJSON("state", { since: now, seen: {} }); return { ok: true, initialized: true }; }
+  // First run: watch from 15 minutes back, so older conversations never trigger alerts.
+  if (!state.since) { state.since = now - 15 * 60 * 1000; state.seen = {}; state.acked = {}; }
   // Quiet hours 9 PM - 8 AM Eastern: hold alerts until morning.
   const h = etHour();
-  if (h >= 21 || h < 8) return { ok: true, quietHours: true };
+  if (h >= 21 || h < 8) { await s.setJSON(STATE_KEY, { ...state, lastRun: now, quietHours: true }); return { ok: true, quietHours: true }; }
 
   const res = await searchConversations();
   if (!res.ok) return { ok: false, status: res.status };
   const fresh = newInbound(res.conversations, state.seen || {}, state.since);
   const seen = { ...(state.seen || {}) };
-  let sent = 0;
+  const acked = { ...(state.acked || {}) };
+  let sent = 0, acks = 0;
   if (fresh.length) {
     const ids = [];
     for (const p of NOTIFY_NUMBERS) { const id = await teamContactId(p); if (id) ids.push(id); }
     for (const c of fresh.slice(0, 5)) {
-      const who = c.fullName || c.contactName || c.phone || "A customer";
+      const name = c.fullName || c.contactName || "";
+      const who = name && name !== c.phone ? `${name}${c.phone ? " (" + c.phone + ")" : ""}` : (c.phone || "a customer");
       const body = String(c.lastMessageBody || "").replace(/\s+/g, " ").slice(0, 160);
-      const msg = `New ${channel(c)} from ${who}${c.phone ? " (" + c.phone + ")" : ""}: "${body}" - Reply from the gallery inbox (LeadConnector app).`;
+      const msg = `New ${channel(c)} from ${who}: "${body}" - Reply from the gallery inbox (LeadConnector app).`;
       for (const id of ids) if (await sendSms(id, msg)) sent++;
       seen[c.id] = ts(c.lastMessageDate);
+      // One auto-reply to customers who TEXT in (website chat already shows its own on-screen reply).
+      if (channel(c) === "text" && c.contactId && !KEYWORDS.test(body) && now - (acked[c.id] || 0) > ACK_EVERY_MS) {
+        if (await sendSms(c.contactId, ACK)) { acks++; acked[c.id] = now; }
+      }
     }
   }
-  // Keep the seen map small.
-  const keep = Object.entries(seen).sort((a, b) => b[1] - a[1]).slice(0, 200);
-  await s.setJSON("state", { since: state.since, seen: Object.fromEntries(keep), lastRun: now });
-  return { ok: true, newMessages: fresh.length, textsSent: sent };
+  // Keep the maps small.
+  const trim = (o) => Object.fromEntries(Object.entries(o).sort((a, b) => b[1] - a[1]).slice(0, 200));
+  const result = { newMessages: fresh.length, teamTexts: sent, autoReplies: acks };
+  await s.setJSON(STATE_KEY, { since: state.since, seen: trim(seen), acked: trim(acked), lastRun: now, last: result });
+  return { ok: true, ...result };
 }

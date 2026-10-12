@@ -58,3 +58,12 @@
 /page-sitemap.xml                            /sitemap.xml      301
 /post-sitemap.xml                            /sitemap.xml      301
 /product-sitemap.xml                         /sitemap.xml      301
+
+# Older Shopify-era addresses Google still crawls (found in Search Console 404 report, 10/12/2026)
+/products/*                                  /gallery.html     301
+/collections/*                               /gallery.html     301
+/pages/about                                 /#story           301
+/pages/contact                               /#visit           301
+/pages/home                                  /                 301
+/pages/*                                     /                 301
+/blogs/*                                     /                 301

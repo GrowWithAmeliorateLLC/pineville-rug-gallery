@@ -84,7 +84,7 @@ async function upsertContact(payload) {
 // Slot start times in minutes after midnight (Eastern). Open-ended slots ("After 5", "Sunday after 1") use the customer's custom time, so they aren't time-blocked.
 const SLOT_START = { "11:00 AM": 660, "1:00 PM": 780, "3:00 PM": 900, "5:00 PM": 1020, "9:00–11:00 AM": 540, "11:00 AM–1:00 PM": 660, "1:00–3:00 PM": 780, "3:00–5:00 PM": 900 };
 
-export default async (req) => {
+export default async (req, context) => {
   if (!TOKEN) return json({ error: "CRM not configured (missing PRG_GHL_TOKEN)" }, 500);
 
   if (req.method === "GET") {
@@ -227,94 +227,104 @@ export default async (req) => {
     } catch (_) {}
   }
 
-  // 3) Note.
-  const addressLine = [address1, [city, state].filter(Boolean).join(", "), postalCode].filter(Boolean).join(" · ");
-  const detailLines = [
-    isTrade ? "TRADE PROGRAM APPLICATION" : "",
-    apptType ? `Appointment type: ${apptType}` : "",
-    apptDate ? `Requested date: ${apptDate}` : "",
-    apptSlot ? `Requested time: ${apptSlot}` : "",
-    confirmVia ? `CONFIRM BY: ${confirmVia.toUpperCase()}` : "",
-    companyName ? `Company: ${companyName}` : "",
-    services.length ? `Interested in: ${services.join(", ")}` : "",
-    fulfillment ? `Pickup or drop-off: ${isPickup ? "Pickup & delivery" : isDropoff ? "Drop-off at gallery" : fulfillment}` : "",
-    addressLine ? `Address: ${addressLine}` : "",
-    body.project ? `Details: ${body.project}` : "",
-    body.referral ? `Heard about us: ${body.referral}` : "",
-    body.message ? `Message: ${body.message}` : "",
-    `Contact: ${phone || ""} ${email || ""}`.trim(),
-  ].filter(Boolean);
-  const detail = detailLines.join("\n");
+  // Steps 3-5 (note, emails, texts) run AFTER the customer gets their "thank you".
+  // They used to run first, which made the form spin 9-12 seconds. Everything that
+  // must succeed before we answer (contact upsert, slot hold, calendar save) is above.
+  const followUps = async () => {
+    // 3) Note.
+    const addressLine = [address1, [city, state].filter(Boolean).join(", "), postalCode].filter(Boolean).join(" · ");
+    const detailLines = [
+      isTrade ? "TRADE PROGRAM APPLICATION" : "",
+      apptType ? `Appointment type: ${apptType}` : "",
+      apptDate ? `Requested date: ${apptDate}` : "",
+      apptSlot ? `Requested time: ${apptSlot}` : "",
+      confirmVia ? `CONFIRM BY: ${confirmVia.toUpperCase()}` : "",
+      companyName ? `Company: ${companyName}` : "",
+      services.length ? `Interested in: ${services.join(", ")}` : "",
+      fulfillment ? `Pickup or drop-off: ${isPickup ? "Pickup & delivery" : isDropoff ? "Drop-off at gallery" : fulfillment}` : "",
+      addressLine ? `Address: ${addressLine}` : "",
+      body.project ? `Details: ${body.project}` : "",
+      body.referral ? `Heard about us: ${body.referral}` : "",
+      body.message ? `Message: ${body.message}` : "",
+      `Contact: ${phone || ""} ${email || ""}`.trim(),
+    ].filter(Boolean);
+    const detail = detailLines.join("\n");
 
-  const consent =
-    `SMS consent captured ${new Date().toISOString()} via ${body.page || "website"}.\n` +
-    `- Transactional (appointment texts): ${smsT ? "YES" : "no"}\n` +
-    `- Marketing (offers/new arrivals): ${smsM ? "YES" : "no"}\n` +
-    `Team text alerts: ${NOTIFY_NUMBERS}`;
+    const consent =
+      `SMS consent captured ${new Date().toISOString()} via ${body.page || "website"}.\n` +
+      `- Transactional (appointment texts): ${smsT ? "YES" : "no"}\n` +
+      `- Marketing (offers/new arrivals): ${smsM ? "YES" : "no"}\n` +
+      `Team text alerts: ${NOTIFY_NUMBERS}`;
 
-  const heading = (isSpam ? `SUSPECTED SPAM (${spamReasons.join("; ")}) — no alerts sent\n` : "") +
-    (isTrade ? "TRADE PROGRAM" : apptType ? `${apptType.toUpperCase()} APPOINTMENT REQUEST` : "WEBSITE INQUIRY");
-  if (contactId) {
-    try {
-      await fetch(`${GHL_BASE}/contacts/${contactId}/notes`, {
-        method: "POST", headers: headers(),
-        body: JSON.stringify({ body: `${heading}\n${detail || "(no extra detail)"}\n\n${consent}` }),
-      });
-    } catch (_) {}
-  }
-
-  // 4) EMAIL notifications. Best-effort.
-  let emailLead = null, emailTeam = null;
-  if (!isSpam && contactId && (apptType || isTrade)) {
-    const what = isTrade ? "trade program application" : `${apptType === "Cleaning" ? "cleaning / repair" : "design"} appointment`;
-    const when = [apptDate ? `on <b>${esc(apptDate)}</b>` : "", apptSlot ? `at <b>${esc(apptSlot)}</b>` : ""].filter(Boolean).join(" ");
-    const leadHtml =
-      `<p>Hi ${esc(firstName) || "there"},</p>` +
-      `<p>Thank you for your ${what} request with <b>Pineville Rug Gallery</b>${when ? " " + when : ""}. ` +
-      `We've received it and will confirm your time by ${confirmVia === "Call" ? "phone" : confirmVia ? confirmVia.toLowerCase() : "text, call or email"} shortly.</p>` +
-      `<p>Questions in the meantime? Call us anytime at <b>(980) 288-2538</b>.</p>` +
-      `<p>Warmly,<br>Pineville Rug Gallery<br>310 Main Street · Historic Downtown Pineville, NC</p>`;
-    emailLead = await sendGhlEmail(contactId, "We've received your request — Pineville Rug Gallery", leadHtml);
-
-    // One alert per team inbox. No name is sent, so an existing contact (e.g. Renée) keeps her name.
-    const teamHtml = `<p><b>${esc(heading)}</b></p><p>${esc(detail).replace(/\n/g, "<br>")}</p>`;
-    const teamSubject = `New ${esc(apptType || (isTrade ? "trade" : "website"))} lead: ${esc(name)}`;
-    emailTeam = [];
-    for (const addr of NOTIFY_EMAILS) {
-      const notify = await upsertContact({ locationId: LOCATION_ID, email: addr, tags: ["Internal Notifications"] });
-      emailTeam.push(notify.id
-        ? { to: addr, ...(await sendGhlEmail(notify.id, teamSubject, teamHtml)) }
-        : { to: addr, ok: false, detail: "notify contact not created", status: notify.status });
+    const heading = (isSpam ? `SUSPECTED SPAM (${spamReasons.join("; ")}) — no alerts sent\n` : "") +
+      (isTrade ? "TRADE PROGRAM" : apptType ? `${apptType.toUpperCase()} APPOINTMENT REQUEST` : "WEBSITE INQUIRY");
+    if (contactId) {
+      try {
+        await fetch(`${GHL_BASE}/contacts/${contactId}/notes`, {
+          method: "POST", headers: headers(),
+          body: JSON.stringify({ body: `${heading}\n${detail || "(no extra detail)"}\n\n${consent}` }),
+        });
+      } catch (_) {}
     }
-  }
 
-  // 5) TEXT notifications (A2P approved). Best-effort; never blocks the booking.
-  let smsLead = null, smsTeam = null;
-  if (!isSpam && contactId && (apptType || isTrade)) {
-    const kind = isTrade ? "Trade Program application" : apptType === "Cleaning" ? "cleaning / repair request" : "design appointment request";
-    const rawSlot = (body.appt_slot || "").trim();
-    const timeTxt = (apptCustom && /after 5|sunday|other/i.test(rawSlot) ? apptCustom : rawSlot).replace(/[–—]/g, "-");
-    const whenTxt = [apptDate ? usDate(apptDate) : "", timeTxt ? `at ${timeTxt}` : ""].filter(Boolean).join(" ");
-    const via = confirmVia === "Call" ? "phone" : confirmVia ? confirmVia.toLowerCase() : "text, call or email";
-    if (smsT && toE164(phone)) {
-      const msg = `Pineville Rug Gallery: Thanks, ${firstName}! We got your ${kind}${whenTxt ? " for " + whenTxt : ""}. We'll confirm by ${via} shortly. Questions? Call (980) 288-2538. Reply STOP to opt out.`;
-      smsLead = await sendGhlSms(contactId, msg);
-    }
-    const teamMsg = [
-      `New website lead: ${name}`,
-      isTrade ? "Trade Program application" : `${apptType === "Cleaning" ? "Cleaning/repair" : "Design appt"}${whenTxt ? " " + whenTxt : ""}`,
-      confirmVia ? `Confirm by ${confirmVia}` : "",
-      phone || email,
-      "Details in GHL",
-    ].filter(Boolean).join(" | ");
-    smsTeam = [];
-    for (const num of NOTIFY_NUMBERS.split(",").map(toE164).filter(Boolean)) {
-      const t = await upsertContact({ locationId: LOCATION_ID, phone: num, tags: ["Internal Notifications"] });
-      smsTeam.push(t.id ? { to: num, ...(await sendGhlSms(t.id, teamMsg)) } : { to: num, ok: false, detail: "notify contact not created", status: t.status });
-    }
-  }
+    // 4) EMAIL notifications. Best-effort.
+    let emailLead = null, emailTeam = null;
+    if (!isSpam && contactId && (apptType || isTrade)) {
+      const what = isTrade ? "trade program application" : `${apptType === "Cleaning" ? "cleaning / repair" : "design"} appointment`;
+      const when = [apptDate ? `on <b>${esc(apptDate)}</b>` : "", apptSlot ? `at <b>${esc(apptSlot)}</b>` : ""].filter(Boolean).join(" ");
+      const leadHtml =
+        `<p>Hi ${esc(firstName) || "there"},</p>` +
+        `<p>Thank you for your ${what} request with <b>Pineville Rug Gallery</b>${when ? " " + when : ""}. ` +
+        `We've received it and will confirm your time by ${confirmVia === "Call" ? "phone" : confirmVia ? confirmVia.toLowerCase() : "text, call or email"} shortly.</p>` +
+        `<p>Questions in the meantime? Call us anytime at <b>(980) 288-2538</b>.</p>` +
+        `<p>Warmly,<br>Pineville Rug Gallery<br>310 Main Street · Historic Downtown Pineville, NC</p>`;
+      emailLead = await sendGhlEmail(contactId, "We've received your request — Pineville Rug Gallery", leadHtml);
 
-  if (body.debug) return json({ ok: true, spam: spamReasons, emailLead, emailTeam, smsLead, smsTeam });
+      // One alert per team inbox. No name is sent, so an existing contact (e.g. Renée) keeps her name.
+      const teamHtml = `<p><b>${esc(heading)}</b></p><p>${esc(detail).replace(/\n/g, "<br>")}</p>`;
+      const teamSubject = `New ${esc(apptType || (isTrade ? "trade" : "website"))} lead: ${esc(name)}`;
+      emailTeam = await Promise.all(NOTIFY_EMAILS.map(async (addr) => {
+        const notify = await upsertContact({ locationId: LOCATION_ID, email: addr, tags: ["Internal Notifications"] });
+        return notify.id
+          ? { to: addr, ...(await sendGhlEmail(notify.id, teamSubject, teamHtml)) }
+          : { to: addr, ok: false, detail: "notify contact not created", status: notify.status };
+      }));
+    }
+
+    // 5) TEXT notifications (A2P approved). Best-effort; never blocks the booking.
+    let smsLead = null, smsTeam = null;
+    if (!isSpam && contactId && (apptType || isTrade)) {
+      const kind = isTrade ? "Trade Program application" : apptType === "Cleaning" ? "cleaning / repair request" : "design appointment request";
+      const rawSlot = (body.appt_slot || "").trim();
+      const timeTxt = (apptCustom && /after 5|sunday|other/i.test(rawSlot) ? apptCustom : rawSlot).replace(/[–—]/g, "-");
+      const whenTxt = [apptDate ? usDate(apptDate) : "", timeTxt ? `at ${timeTxt}` : ""].filter(Boolean).join(" ");
+      const via = confirmVia === "Call" ? "phone" : confirmVia ? confirmVia.toLowerCase() : "text, call or email";
+      if (smsT && toE164(phone)) {
+        const msg = `Pineville Rug Gallery: Thanks, ${firstName}! We got your ${kind}${whenTxt ? " for " + whenTxt : ""}. We'll confirm by ${via} shortly. Questions? Call (980) 288-2538. Reply STOP to opt out.`;
+        smsLead = await sendGhlSms(contactId, msg);
+      }
+      const teamMsg = [
+        `New website lead: ${name}`,
+        isTrade ? "Trade Program application" : `${apptType === "Cleaning" ? "Cleaning/repair" : "Design appt"}${whenTxt ? " " + whenTxt : ""}`,
+        confirmVia ? `Confirm by ${confirmVia}` : "",
+        phone || email,
+        "Details in GHL",
+      ].filter(Boolean).join(" | ");
+      smsTeam = await Promise.all(NOTIFY_NUMBERS.split(",").map(toE164).filter(Boolean).map(async (num) => {
+        const t = await upsertContact({ locationId: LOCATION_ID, phone: num, tags: ["Internal Notifications"] });
+        return t.id ? { to: num, ...(await sendGhlSms(t.id, teamMsg)) } : { to: num, ok: false, detail: "notify contact not created", status: t.status };
+      }));
+    }
+
+    return { emailLead, emailTeam, smsLead, smsTeam };
+  };
+
+  if (body.debug) return json({ ok: true, spam: spamReasons, ...(await followUps()) });
+  if (context && typeof context.waitUntil === "function") {
+    context.waitUntil(followUps().catch((e) => console.error("pineville-lead follow-ups failed", e)));
+  } else {
+    await followUps().catch((e) => console.error("pineville-lead follow-ups failed", e));
+  }
   return json({ ok: true });
 };
 

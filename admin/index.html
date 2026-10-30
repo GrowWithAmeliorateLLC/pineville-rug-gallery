@@ -111,6 +111,25 @@
   .tabs button.on{background:var(--dark);color:var(--white)}
   .tabs .badge{display:inline-block;min-width:20px;padding:1px 6px;margin-left:6px;border-radius:999px;background:var(--lime);color:var(--dark);font-size:.72rem}
 
+  /* messages */
+  .mrow{display:grid;grid-template-columns:14px 1fr auto;gap:12px;align-items:start;background:var(--white);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;cursor:pointer;text-align:left;width:100%;font:inherit;color:inherit}
+  .mrow:hover{border-color:var(--navy)}
+  .mrow .dot{width:10px;height:10px;border-radius:50%;margin-top:7px;background:transparent}
+  .mrow.unread .dot{background:var(--navy)}
+  .mrow .who{font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.02rem}
+  .mrow.unread .who{color:var(--navy)}
+  .mrow .snip{color:var(--muted);font-size:.92rem;margin-top:2px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-word}
+  .mrow.unread .snip{color:var(--dark);font-weight:500}
+  .mrow .t{font-size:.78rem;color:var(--muted);white-space:nowrap}
+  .thread{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:10px;min-height:200px;max-height:58vh;overflow-y:auto}
+  .bub{max-width:82%;padding:10px 14px;border-radius:18px;white-space:pre-wrap;word-break:break-word;font-size:.97rem}
+  .bub.customer{align-self:flex-start;background:var(--lavender);border-bottom-left-radius:6px}
+  .bub.gallery{align-self:flex-end;background:var(--navy);color:var(--white);border-bottom-right-radius:6px}
+  .bub small{display:block;font-size:.72rem;opacity:.7;margin-top:4px}
+  .reply{display:flex;gap:10px;align-items:flex-end;margin-top:14px}
+  .reply textarea{min-height:56px;max-height:180px;resize:vertical}
+  .reply .btn{flex-shrink:0}
+
   /* appointments */
   .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
   .chip{border:1.5px solid var(--line);background:var(--white);border-radius:999px;padding:7px 14px;font-weight:700;font-size:.85rem;cursor:pointer}
@@ -189,8 +208,41 @@
 
   <nav class="tabs" id="tabs" hidden>
     <button type="button" data-tab="v-appts">Appointments<span class="badge" id="new-badge" hidden></span></button>
+    <button type="button" data-tab="v-msgs">Messages<span class="badge" id="msg-badge" hidden></span></button>
     <button type="button" data-tab="v-list">Rugs</button>
   </nav>
+
+  <!-- MESSAGES (customer texts + website chat; replies go out as texts from the gallery number) -->
+  <section id="v-msgs" hidden>
+    <div id="m-inbox">
+      <div class="head">
+        <div>
+          <h1>Messages</h1>
+          <p id="m-count">Loading…</p>
+        </div>
+        <div class="acts"><button class="btn ghost" id="m-refresh">↻ Refresh</button></div>
+      </div>
+      <input type="text" class="search" id="m-q" placeholder="Search by name, phone or message…" aria-label="Search messages">
+      <div id="m-list"></div>
+    </div>
+    <div id="m-thread" hidden>
+      <div class="head">
+        <div>
+          <button class="linkbtn" id="m-back" style="color:var(--navy)">← All messages</button>
+          <h1 id="t-name"></h1>
+          <p id="t-sub"></p>
+        </div>
+        <div class="acts"><a class="btn ghost" id="t-call" href="#">📞 Call</a></div>
+      </div>
+      <div class="thread" id="t-msgs"></div>
+      <form class="reply" id="t-form">
+        <textarea id="t-text" maxlength="640" placeholder="Type your reply…" aria-label="Your reply"></textarea>
+        <button class="btn primary" type="submit" id="t-send">Send</button>
+      </form>
+      <p class="tip">Your reply goes out as a text from the gallery number, (980) 577-2764.</p>
+      <div class="msg" id="t-msg" role="status"></div>
+    </div>
+  </section>
 
   <!-- APPOINTMENTS -->
   <section id="v-appts" hidden>
@@ -312,11 +364,11 @@
   }
 
   function show(view){
-    ['v-login','v-list','v-edit','v-appts'].forEach(function(v){ $(v).hidden = (v !== view); });
+    ['v-login','v-list','v-edit','v-appts','v-msgs'].forEach(function(v){ $(v).hidden = (v !== view); });
     $('signout').hidden = (view === 'v-login');
     $('tabs').hidden = (view === 'v-login' || view === 'v-edit');
     document.querySelectorAll('#tabs button').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-tab') === view); });
-    if(view === 'v-appts' || view === 'v-list'){ try{ localStorage.setItem('prg_admin_tab', view); }catch(e){} }
+    if(view === 'v-appts' || view === 'v-list' || view === 'v-msgs'){ try{ localStorage.setItem('prg_admin_tab', view); }catch(e){} }
     window.scrollTo(0,0);
   }
 
@@ -815,6 +867,7 @@
   document.querySelectorAll('#tabs button').forEach(function(b){
     b.addEventListener('click', function(){
       var v = b.getAttribute('data-tab'); show(v);
+      if(v === 'v-msgs'){ closeThread(true); loadMsgs().catch(function(){}); return; }
       (v === 'v-appts' ? loadAppts() : loadList().then(function(){ scrollToRug(lastRug()); })).catch(function(){});
     });
   });
@@ -824,12 +877,122 @@
     try{ tab = localStorage.getItem('prg_admin_tab') || 'v-appts'; }catch(e){}
     if(location.hash === '#rugs') tab = 'v-list';
     if(location.hash === '#appointments') tab = 'v-appts';
+    if(location.hash === '#messages') tab = 'v-msgs';
     show(tab);
+    if(tab === 'v-msgs'){
+      try{ await loadMsgs(); }catch(e){ if(e.message !== 'unauthorized') $('m-count').textContent = 'Could not load messages. Please refresh to try again.'; return; }
+      loadList().catch(function(){}); loadAppts().catch(function(){});
+      return;
+    }
+    loadMsgs().catch(function(){});
     var other = tab === 'v-appts' ? loadList : loadAppts;
     try{ await (tab === 'v-appts' ? loadAppts() : loadList().then(function(){ scrollToRug(lastRug()); })); }
     catch(e){ if(e.message !== 'unauthorized'){ if(tab === 'v-appts') $('a-count').textContent = 'Could not load appointments. Please refresh to try again.'; else $('count').textContent = 'Could not load your rugs. Please refresh to try again.'; } return; }
     other().catch(function(){});
   }
+
+  // ---------- messages ----------
+  var convs = [], openConv = null;
+  function ago(t){
+    if(!t) return '';
+    var d = new Date(t), now = new Date(), diff = (now - d) / 60000;
+    if(diff < 1) return 'just now';
+    if(diff < 60) return Math.round(diff) + ' min ago';
+    var hm = d.toLocaleTimeString('en-US', {hour:'numeric', minute:'2-digit'});
+    if(d.toDateString() === now.toDateString()) return hm;
+    var y = new Date(now); y.setDate(now.getDate() - 1);
+    if(d.toDateString() === y.toDateString()) return 'Yesterday ' + hm;
+    return (d.getMonth()+1) + '/' + d.getDate() + (d.getFullYear() !== now.getFullYear() ? '/' + d.getFullYear() : '') + ' ' + hm;
+  }
+  function fmtPhone(p){ var d = String(p||'').replace(/\D/g,'').slice(-10); return d.length === 10 ? '(' + d.slice(0,3) + ') ' + d.slice(3,6) + '-' + d.slice(6) : (p || ''); }
+  function setBadge(n){ var b = $('msg-badge'); b.hidden = !n; b.textContent = n || ''; }
+
+  async function loadMsgs(){
+    $('m-count').textContent = 'Loading…';
+    var j = await api('/api/messages');
+    convs = j.conversations || [];
+    setBadge(j.unread || 0);
+    renderMsgs();
+  }
+  function renderMsgs(){
+    var q = $('m-q').value.trim().toLowerCase();
+    var shown = convs.filter(function(c){ return !q || [c.name, c.phone, fmtPhone(c.phone), c.last].join(' ').toLowerCase().indexOf(q) >= 0; });
+    var un = convs.filter(function(c){ return c.unread; }).length;
+    $('m-count').textContent = convs.length ? (convs.length + ' conversation' + (convs.length === 1 ? '' : 's') + (un ? ' · ' + un + ' unread' : '')) : '';
+    var list = $('m-list');
+    if(!shown.length){ list.innerHTML = '<div class="empty">' + (q ? 'No messages match that search.' : 'No customer texts yet. When someone texts the gallery or uses the website chat, it shows up here.') + '</div>'; return; }
+    list.innerHTML = shown.map(function(c){
+      return '<button type="button" class="mrow' + (c.unread ? ' unread' : '') + '" data-id="' + esc(c.id) + '">' +
+        '<span class="dot"></span>' +
+        '<span><span class="who">' + esc(c.name || fmtPhone(c.phone)) + '</span>' + (c.name ? ' <span class="t">' + esc(fmtPhone(c.phone)) + '</span>' : '') +
+        '<br><span class="pill">' + esc(c.channel) + '</span>' +
+        '<span class="snip">' + (c.lastFrom === 'gallery' ? 'You: ' : '') + esc(c.last) + '</span></span>' +
+        '<span class="t">' + esc(ago(c.lastAt)) + '</span></button>';
+    }).join('');
+  }
+  $('m-list').addEventListener('click', function(e){
+    var b = e.target.closest('.mrow'); if(!b) return;
+    openThread(b.getAttribute('data-id'));
+  });
+  $('m-q').addEventListener('input', renderMsgs);
+  $('m-refresh').addEventListener('click', function(){ loadMsgs().catch(function(){}); });
+
+  function renderThread(t){
+    var c = t.conversation;
+    $('t-name').textContent = c.name || fmtPhone(c.phone);
+    $('t-sub').textContent = c.name ? fmtPhone(c.phone) : '';
+    $('t-call').href = 'tel:' + String(c.phone||'').replace(/[^\d+]/g,'');
+    var box = $('t-msgs');
+    box.innerHTML = t.messages.length ? t.messages.map(function(m){
+      return '<div class="bub ' + m.from + '">' + esc(m.body) + '<small>' + esc(ago(m.at)) + (m.channel === 'Website chat' ? ' · website chat' : '') + (m.status === 'failed' || m.status === 'undelivered' ? ' · not delivered' : '') + '</small></div>';
+    }).join('') : '<div class="empty">No texts in this conversation yet.</div>';
+    box.scrollTop = box.scrollHeight;
+  }
+  async function openThread(id){
+    openConv = id;
+    $('m-inbox').hidden = true; $('m-thread').hidden = false;
+    $('t-name').textContent = 'Loading…'; $('t-sub').textContent = ''; $('t-msgs').innerHTML = ''; $('t-msg').textContent = ''; $('t-text').value = '';
+    try{ if(!(history.state && history.state.prgMsg)) history.pushState({prgMsg:true}, ''); }catch(e){}
+    window.scrollTo(0,0);
+    try{
+      var t = await api('/api/messages?id=' + encodeURIComponent(id));
+      if(openConv !== id) return;
+      renderThread(t);
+      var c = convs.find(function(x){ return x.id === id; });
+      if(c && c.unread){ c.unread = 0; setBadge(convs.filter(function(x){ return x.unread; }).length); renderMsgs(); }
+    }catch(e){ if(e.message !== 'unauthorized'){ $('t-name').textContent = 'Could not open this conversation'; $('t-msg').className = 'msg err'; $('t-msg').textContent = e.message; } }
+  }
+  function closeThread(silent){
+    openConv = null;
+    $('m-thread').hidden = true; $('m-inbox').hidden = false;
+    if(!silent && history.state && history.state.prgMsg){ try{ history.back(); }catch(e){} }
+  }
+  $('m-back').addEventListener('click', function(){ closeThread(false); loadMsgs().catch(function(){}); });
+  window.addEventListener('popstate', function(){
+    if(!$('m-thread').hidden){ closeThread(true); loadMsgs().catch(function(){}); }
+  });
+  $('t-form').addEventListener('submit', async function(e){
+    e.preventDefault();
+    var text = $('t-text').value.trim(), id = openConv, m = $('t-msg');
+    if(!text || !id) return;
+    $('t-send').disabled = true; m.className = 'msg'; m.textContent = 'Sending…';
+    try{
+      var j = await api('/api/messages', {method:'POST', body:JSON.stringify({action:'reply', id:id, message:text})});
+      $('t-text').value = '';
+      m.className = 'msg ok'; m.textContent = '✓ Sent';
+      var box = $('t-msgs'); var em = box.querySelector('.empty'); if(em) em.remove();
+      box.insertAdjacentHTML('beforeend', '<div class="bub gallery">' + esc(j.message.body) + '<small>just now</small></div>');
+      box.scrollTop = box.scrollHeight;
+      var c = convs.find(function(x){ return x.id === id; }); if(c){ c.last = j.message.body; c.lastFrom = 'gallery'; c.lastAt = Date.now(); }
+    }catch(err){ if(err.message !== 'unauthorized'){ m.className = 'msg err'; m.textContent = err.message; } }
+    $('t-send').disabled = false;
+  });
+  // Refresh the inbox every minute while it's open (and the badge in the background).
+  setInterval(function(){
+    if(!key || document.hidden) return;
+    if(!$('v-msgs').hidden && !$('m-thread').hidden) return;
+    loadMsgs().catch(function(){});
+  }, 60000);
 
   // ---------- boot ----------
   key = readKey();

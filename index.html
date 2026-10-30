@@ -489,7 +489,7 @@
 
     <div class="toggle">
       <button type="button" id="tab-sales" class="active">Design Appointment</button>
-      <button type="button" id="tab-clean">Free Cleaning &amp; Repair Quote</button>
+      <button type="button" id="tab-clean">Cleaning &amp; Repair</button>
     </div>
 
     <!-- SALES / DESIGN APPOINTMENT -->
@@ -553,7 +553,7 @@
 
     <!-- CLEANING / REPAIR -->
     <form id="clean-form" class="hidden" novalidate>
-      <p class="full form-intro"><b>Your cleaning quote is free, with no obligation.</b> Tell us about your rug and we'll reach out to talk it through and give you a quote, at your home or at the gallery.</p>
+      <p class="full form-intro"><b>Tell us about your rug and we'll send you a quote.</b> No obligation. We'll reach out to talk it through, at your home or at the gallery.</p>
       <div><label class="fld" for="c-name">Name</label><input id="c-name" name="name" autocomplete="name" required></div>
       <div><label class="fld" for="c-phone">Phone</label><input id="c-phone" name="phone" type="tel" autocomplete="tel" required></div>
       <div><label class="fld" for="c-email">Email</label><input id="c-email" name="email" type="email" autocomplete="email" required></div>
@@ -616,7 +616,7 @@
       <input type="hidden" name="form" value="cleaning">
       <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
       <div class="submit-row">
-        <button type="submit" class="btn solid">Get My Free Quote</button>
+        <button type="submit" class="btn solid">Request My Quote</button>
         <span class="msg" id="c-msg" role="status" aria-live="polite"></span>
       </div>
       <p class="fineprint">By submitting, you agree to be contacted about your inquiry and to our <a href="/privacy.html">Privacy Policy</a> and <a href="/terms.html">Terms</a>. Consent to texts is not a condition of purchase. We never sell or share your information.</p>
@@ -824,7 +824,7 @@
         var ab=f.querySelector('.addr-block'); if(ab) ab.hidden=true;
         var cw=document.getElementById('s-custom-wrap'); if(cw&&formId==='book-form') cw.hidden=true;
         window.dataLayer=window.dataLayer||[]; window.dataLayer.push({event:'generate_lead',form_type:(formId==='book-form'?'design':'cleaning')});
-        msg.className='msg ok'; msg.textContent=(formId==='clean-form'?'Thank you! We’ll reach out about your free cleaning quote by ':'Thank you! We’ll confirm your appointment by ')+({Text:'text',Call:'phone',Email:'email'}[data.confirm_via]||'text, call or email')+' shortly.';
+        msg.className='msg ok'; msg.textContent=(formId==='clean-form'?'Thank you! We’ll reach out about your quote by ':'Thank you! We’ll confirm your appointment by ')+({Text:'text',Call:'phone',Email:'email'}[data.confirm_via]||'text, call or email')+' shortly.';
       }catch(_){ msg.className='msg err'; msg.textContent='Something went wrong — please call us at (980) 288-2538.'; }
       btn.disabled=false;
     });

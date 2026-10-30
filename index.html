@@ -190,6 +190,7 @@
   .book .svc-opts label:hover{border-color:var(--clay)}
   .book .svc-opts input{width:auto;margin:0;flex:none}
   .book .svc-opts label:has(input:checked){border-color:var(--pine);background:var(--sand);color:var(--pine)}
+  .book .form-intro{grid-column:1 / -1;margin:0 0 4px;padding:14px 18px;background:var(--cream,#f6efe4);border-left:3px solid var(--clay,#a5623c);font-size:.95rem;line-height:1.55;color:var(--pine)}
   .book .perk{grid-column:1 / -1;display:flex;gap:11px;align-items:flex-start;font-size:.9rem;color:var(--pine);line-height:1.5;cursor:pointer;background:var(--sand);border:1px solid var(--clay-soft);padding:14px 16px}
   .book .perk input{width:auto;margin-top:3px;flex:none}
   .book .perk b{font-weight:500}
@@ -301,7 +302,7 @@
 </head>
 <body>
 
-<div class="announce"><span class="d"><span class="ai long"><b>New</b> &nbsp;·&nbsp; A <b>FREE</b> consultation with our in-house interior designer, just for <b>You</b>, at your appointment</span><span class="sep"> &nbsp;·&nbsp; </span><span class="ai"><a href="#book-design" style="color:var(--clay-soft);border-bottom:1px solid var(--clay-soft)">Book now</a></span><br><span class="ai"><b>Rug Cleaning, Repair &amp; Appraisal</b></span><span class="sep"> &nbsp;·&nbsp; </span><span class="ai">Complimentary local pickup &amp; delivery</span><span class="sep"> &nbsp;·&nbsp; </span><span class="ai"><a href="#book-cleaning" style="color:var(--clay-soft);border-bottom:1px solid var(--clay-soft)">Book a cleaning</a></span></span><span class="m"><b>New</b> &middot; A <b>free</b> designer consult <a class="nw" href="#book-design" style="color:var(--clay-soft);border-bottom:1px solid var(--clay-soft)">Book now</a></span><span class="m m2"><b>Rug cleaning</b> &middot; free pickup <a class="nw" href="#book-cleaning" style="color:var(--clay-soft);border-bottom:1px solid var(--clay-soft)">Book a cleaning</a></span></div>
+<div class="announce"><span class="d"><span class="ai long"><b>New</b> &nbsp;·&nbsp; A <b>FREE</b> consultation with our in-house interior designer, just for <b>You</b>, at your appointment</span><span class="sep"> &nbsp;·&nbsp; </span><span class="ai"><a href="#book-design" style="color:var(--clay-soft);border-bottom:1px solid var(--clay-soft)">Book now</a></span><br><span class="ai"><b>Rug Cleaning, Repair &amp; Appraisal</b></span><span class="sep"> &nbsp;·&nbsp; </span><span class="ai">Complimentary local pickup &amp; delivery</span><span class="sep"> &nbsp;·&nbsp; </span><span class="ai"><a href="#book-cleaning" style="color:var(--clay-soft);border-bottom:1px solid var(--clay-soft)">Get a free quote</a></span></span><span class="m"><b>New</b> &middot; A <b>free</b> designer consult <a class="nw" href="#book-design" style="color:var(--clay-soft);border-bottom:1px solid var(--clay-soft)">Book now</a></span><span class="m m2"><b>Rug cleaning</b> &middot; free pickup <a class="nw" href="#book-cleaning" style="color:var(--clay-soft);border-bottom:1px solid var(--clay-soft)">Get a free quote</a></span></div>
 
 <header>
   <div class="nav">
@@ -321,7 +322,7 @@
     <div class="nav-cta">
       <span class="nav-phone">(980) 288-2538</span>
       <a href="#book-design" class="btn solid hdr-btn">Book a Design Appointment</a>
-      <a href="#book-cleaning" class="btn hdr-btn">Book a Cleaning</a>
+      <a href="#book-cleaning" class="btn hdr-btn">Free Cleaning Quote</a>
       <a href="#book" class="btn solid hdr-mobile">Book</a>
       <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
@@ -337,7 +338,7 @@
     <p>A family-owned gallery curating the Carolinas' finest hand-knotted rugs since 1986 — sourced, cleaned, and restored with the care of four decades.</p>
     <div class="hero-actions">
       <a href="#book-design" class="btn light">Book a Design Appointment</a>
-      <a href="#book-cleaning" class="btn light">Book a Cleaning</a>
+      <a href="#book-cleaning" class="btn light">Get a Free Cleaning Quote</a>
     </div>
     <div class="hero-call"><span class="nw">Call the gallery <a href="tel:9802882538">(980) 288-2538</a></span><span class="sep"> &nbsp;·&nbsp; </span><span class="nw">Store <a href="tel:7048892454">(704) 889-2454</a></span></div>
     <div class="hero-rev"><span class="stars">★★★★★</span> 4.9 · 56 Google reviews</div>
@@ -414,7 +415,7 @@
           <span class="num">01</span>
           <h3>Rug Cleaning</h3>
           <p>Hand-washed the way fine rugs demand — vacuumed, dust drawn from front and back, gently hand-washed, then dried in open air. Never harsh-machined, so delicate wool and silk keep their color and luster.</p>
-          <a href="#book-cleaning">Book a Cleaning →</a>
+          <a href="#book-cleaning">Get a Free Cleaning Quote →</a>
         </div>
       </div>
       <div class="svc">
@@ -488,7 +489,7 @@
 
     <div class="toggle">
       <button type="button" id="tab-sales" class="active">Design Appointment</button>
-      <button type="button" id="tab-clean">Cleaning, Repair &amp; Appraisal</button>
+      <button type="button" id="tab-clean">Free Cleaning &amp; Repair Quote</button>
     </div>
 
     <!-- SALES / DESIGN APPOINTMENT -->
@@ -552,6 +553,7 @@
 
     <!-- CLEANING / REPAIR -->
     <form id="clean-form" class="hidden" novalidate>
+      <p class="full form-intro"><b>Your cleaning quote is free, with no obligation.</b> Tell us about your rug and we'll reach out to talk it through and give you a quote, at your home or at the gallery.</p>
       <div><label class="fld" for="c-name">Name</label><input id="c-name" name="name" autocomplete="name" required></div>
       <div><label class="fld" for="c-phone">Phone</label><input id="c-phone" name="phone" type="tel" autocomplete="tel" required></div>
       <div><label class="fld" for="c-email">Email</label><input id="c-email" name="email" type="email" autocomplete="email" required></div>
@@ -574,8 +576,7 @@
           <label><input type="checkbox" name="services" value="Appraisal"><span>Appraisal</span></label>
         </div>
       </div>
-      <label class="perk"><input type="checkbox" name="services" value="FREE Cleaning &amp; Repair Consultation"><span><b>Yes — I'd like a FREE cleaning &amp; repair consultation</b>, at my home or at the gallery.</span></label>
-      <div class="full svc-select">
+            <div class="full svc-select">
         <span class="fld">Pickup or drop-off?</span>
         <div class="svc-opts">
           <label><input type="radio" name="fulfillment" value="Pickup"><span>Complimentary pickup &amp; delivery</span></label>
@@ -615,7 +616,7 @@
       <input type="hidden" name="form" value="cleaning">
       <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
       <div class="submit-row">
-        <button type="submit" class="btn solid">Request This Service</button>
+        <button type="submit" class="btn solid">Get My Free Quote</button>
         <span class="msg" id="c-msg" role="status" aria-live="polite"></span>
       </div>
       <p class="fineprint">By submitting, you agree to be contacted about your inquiry and to our <a href="/privacy.html">Privacy Policy</a> and <a href="/terms.html">Terms</a>. Consent to texts is not a condition of purchase. We never sell or share your information.</p>
@@ -639,7 +640,7 @@
       </div>
       <div class="hero-actions">
         <a href="#book-design" class="btn light">Book a Design Appointment</a>
-        <a href="#book-cleaning" class="btn light">Book a Cleaning</a>
+        <a href="#book-cleaning" class="btn light">Get a Free Cleaning Quote</a>
       </div>
     </div>
     <div class="visit-media">
@@ -808,7 +809,7 @@
       var data=Object.fromEntries(new FormData(f).entries());
       var st=f.querySelector('input[name="sms_transactional"]'); if(st) data.sms_transactional=st.checked;
       var sm=f.querySelector('input[name="sms_marketing"]'); if(sm) data.sms_marketing=sm.checked;
-      var svc=f.querySelectorAll('input[name="services"]:checked'); data.services=Array.prototype.map.call(svc,function(c){return c.value;});
+      var svc=f.querySelectorAll('input[name="services"]:checked'); data.services=Array.prototype.map.call(svc,function(c){return c.value;}); if(formId==='clean-form') data.services.push('FREE Cleaning & Repair Consultation');
       data.page=location.href; data._g='prg1'; data._t=Date.now()-PRG_T0;
       if(!data.name||!data.phone||!data.email){ msg.className='msg err'; msg.textContent='Please add your name, phone, and email.'; btn.disabled=false; return; }
       if(!data.appt_date||!data.appt_slot){ msg.className='msg err'; msg.textContent='Please choose a date and a time.'; btn.disabled=false; return; }
@@ -823,7 +824,7 @@
         var ab=f.querySelector('.addr-block'); if(ab) ab.hidden=true;
         var cw=document.getElementById('s-custom-wrap'); if(cw&&formId==='book-form') cw.hidden=true;
         window.dataLayer=window.dataLayer||[]; window.dataLayer.push({event:'generate_lead',form_type:(formId==='book-form'?'design':'cleaning')});
-        msg.className='msg ok'; msg.textContent='Thank you! We’ll confirm your appointment by '+({Text:'text',Call:'phone',Email:'email'}[data.confirm_via]||'text, call or email')+' shortly.';
+        msg.className='msg ok'; msg.textContent=(formId==='clean-form'?'Thank you! We’ll reach out about your free cleaning quote by ':'Thank you! We’ll confirm your appointment by ')+({Text:'text',Call:'phone',Email:'email'}[data.confirm_via]||'text, call or email')+' shortly.';
       }catch(_){ msg.className='msg err'; msg.textContent='Something went wrong — please call us at (980) 288-2538.'; }
       btn.disabled=false;
     });

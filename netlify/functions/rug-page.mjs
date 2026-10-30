@@ -58,7 +58,7 @@ function shell(title, desc, body) {
   <div class="nav-cta">
     <a class="back" href="/gallery.html">← The Rug Collection</a>
     <a href="/index.html#book-design" class="btn solid hdr-btn">Book a Design Appointment</a>
-    <a href="/index.html#book-cleaning" class="btn hdr-btn">Book a Cleaning</a>
+    <a href="/index.html#book-cleaning" class="btn hdr-btn">Free Cleaning Quote</a>
     <a href="/index.html#book" class="btn solid hdr-mobile">Book</a>
   </div>
 </div></header>

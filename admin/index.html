@@ -926,7 +926,8 @@
         '<span class="dot"></span>' +
         '<span><span class="who">' + esc(c.name || fmtPhone(c.phone)) + '</span>' + (c.name ? ' <span class="t">' + esc(fmtPhone(c.phone)) + '</span>' : '') +
         '<br><span class="pill">' + esc(c.channel) + '</span>' +
-        '<span class="snip">' + (c.lastFrom === 'gallery' ? 'You: ' : '') + esc(c.last) + '</span></span>' +
+        (c.replied ? ' <span class="pill s-Confirmed">✓ Replied</span>' : '') +
+        '<span class="snip">' + esc(c.last) + '</span></span>' +
         '<span class="t">' + esc(ago(c.lastAt)) + '</span></button>';
     }).join('');
   }
@@ -983,7 +984,7 @@
       var box = $('t-msgs'); var em = box.querySelector('.empty'); if(em) em.remove();
       box.insertAdjacentHTML('beforeend', '<div class="bub gallery">' + esc(j.message.body) + '<small>just now</small></div>');
       box.scrollTop = box.scrollHeight;
-      var c = convs.find(function(x){ return x.id === id; }); if(c){ c.last = j.message.body; c.lastFrom = 'gallery'; c.lastAt = Date.now(); }
+      var c = convs.find(function(x){ return x.id === id; }); if(c){ c.replied = true; }
     }catch(err){ if(err.message !== 'unauthorized'){ m.className = 'msg err'; m.textContent = err.message; } }
     $('t-send').disabled = false;
   });

@@ -19,6 +19,8 @@ const store = () => getStore({ name: "prg-messages", consistency: "strong" });
 const last10 = (p) => String(p || "").replace(/\D/g, "").slice(-10);
 const ts = (v) => (typeof v === "number" ? v : Date.parse(v || "") || 0);
 const TEXTY = /SMS|WEBCHAT|LIVE_CHAT/i;
+// A "name" that is just the phone number (any formatting) is not a name.
+const realName = (n, phone) => { n = String(n || "").trim(); return !n || (last10(n).length === 10 && last10(n) === last10(phone)) ? "" : n; };
 
 function channel(t) {
   t = String(t || "").toUpperCase();
@@ -54,7 +56,7 @@ async function listConversations() {
     out.push({
       id: c.id,
       contactId: c.contactId,
-      name: (c.fullName || c.contactName || "").trim() && (c.fullName || c.contactName) !== c.phone ? (c.fullName || c.contactName).trim() : "",
+      name: realName(c.fullName || c.contactName, c.phone),
       phone: c.phone,
       last: String(c.lastMessageBody || "").slice(0, 200),
       lastAt: ts(c.lastMessageDate),
@@ -95,7 +97,7 @@ async function thread(id) {
     name = name || [k.firstName, k.lastName].filter(Boolean).join(" ");
     phone = phone || k.phone || "";
   }
-  return { conversation: { id, contactId: c.contactId, name: name !== phone ? name : "", phone }, messages };
+  return { conversation: { id, contactId: c.contactId, name: realName(name, phone), phone }, messages };
 }
 
 export default async (req) => {

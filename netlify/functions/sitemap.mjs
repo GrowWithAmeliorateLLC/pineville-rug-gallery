@@ -2,7 +2,7 @@
 import { loadRugs, isPublic } from "../lib/rugstore.mjs";
 
 const BASE = "https://pinevilleruggallery.com";
-const PAGES = ["/", "/gallery", "/trade", "/photos", "/privacy", "/terms", "/cleaning/", "/repair/", "/appraisal/", "/how-to-layer-rugs-guide/"];
+const PAGES = ["/", "/gallery", "/trade", "/photos", "/privacy", "/terms", "/cleaning/", "/repair/", "/appraisal/", "/how-to-layer-rugs-guide/", "/how-to-clean-a-persian-rug/"];
 
 export default async () => {
   let rugs = [];

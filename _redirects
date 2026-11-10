@@ -21,6 +21,8 @@
 /home                                        /                 301
 /about-us                                    /#story           301
 /contact-us                                  /#visit           301
+/about                                       /#story           301
+/contact                                     /#visit           301
 
 # Shop -> The Rug Collection
 /shop                                        /gallery.html     301

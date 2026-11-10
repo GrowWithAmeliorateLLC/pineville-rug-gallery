@@ -41,7 +41,7 @@ footer{background:var(--pine-deep);color:rgba(245,239,228,.7);padding:40px 20px;
 .nav-cta .hdr-mobile{display:none} @media(max-width:620px){.nav-cta .hdr-mobile{display:inline-block}}
 `;
 
-function shell(title, desc, body) {
+function shell(title, desc, body, canonical) {
   return `<!DOCTYPE html>
 <html lang="en"><head>
 <!-- Google Tag Manager (live domain only) + phone-tap tracking -->
@@ -50,6 +50,8 @@ function shell(title, desc, body) {
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
+${canonical ? `<link rel="canonical" href="${esc(canonical)}">` : ""}
+<link rel="icon" href="/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>${CSS}</style></head><body>
@@ -121,7 +123,7 @@ export default async (req, context) => {
       <p class="note">This one is ready to meet your room. Complimentary local pickup &amp; delivery: we can bring it home so you can see it in your space.</p>
     </div>
   </div>
-</div>`);
+ </div>`, `https://pinevilleruggallery.com/rug/${encodeURIComponent(r.id)}`);
   return new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" } });
 };
 

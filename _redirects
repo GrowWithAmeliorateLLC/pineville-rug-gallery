@@ -2,12 +2,9 @@
 # Built from the old site's sitemaps: 28 pages, 3 blog posts, 145 shop products.
 
 # Services
-/cleaning                                    /#services        301
-/oriental-rug-cleaning-service-pineville     /#services        301
-/repair                                      /#services        301
-/oriental-rug-repair-service-pineville       /#services        301
-/appraisal                                   /#services        301
-/oriental-rug-appraisal-service-pineville    /#services        301
+/oriental-rug-cleaning-service-pineville     /cleaning/        301
+/oriental-rug-repair-service-pineville       /repair/          301
+/oriental-rug-appraisal-service-pineville    /appraisal/       301
 
 # Booking pages
 /schedule-cleaning                           /#book-cleaning   301
@@ -46,7 +43,6 @@
 # Blog (no blog on the new site yet)
 /blog                                        /                 301
 /blog/*                                      /                 301
-/how-to-layer-rugs-guide                     /                 301
 /the-timeless-charm-and-practicality-of-oriental-rugs  /       301
 /category/*                                  /                 301
 /feed                                        /                 301

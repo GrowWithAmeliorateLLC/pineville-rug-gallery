@@ -51,11 +51,12 @@ async function textsFor(id, sentIds) {
   const m = await ghl(`/conversations/${encodeURIComponent(id)}/messages?limit=100`);
   const raw = (m.j.messages && m.j.messages.messages) || m.j.messages || [];
   const all = (Array.isArray(raw) ? raw : [])
-    .filter((x) => TEXTY.test(x.messageType || "") && String(x.body || "").trim())
+    .filter((x) => TEXTY.test(x.messageType || "") && (String(x.body || "").trim() || (Array.isArray(x.attachments) && x.attachments.length)))
     .map((x) => ({
       id: x.id,
       from: String(x.direction || "").toLowerCase() === "inbound" ? "customer" : "gallery",
-      body: String(x.body),
+      body: String(x.body || ""),
+      photos: (Array.isArray(x.attachments) ? x.attachments : []).map((a) => (typeof a === "string" ? a : a && a.url) || "").filter((u) => /^https:\/\//.test(u)),
       at: ts(x.dateAdded),
       channel: channel(x.messageType),
       status: x.status || "",
@@ -107,7 +108,7 @@ async function listConversations() {
       contactId: c.contactId,
       name: realName(c.fullName || c.contactName, c.phone),
       phone: c.phone,
-      last: lastIn.body.slice(0, 200),
+      last: (lastIn.body || (lastIn.photos && lastIn.photos.length ? "📷 Sent a photo" : "")).slice(0, 200),
       lastAt: lastIn.at,
       replied: lastAny.from === "gallery",
       channel: lastIn.channel || "Text",

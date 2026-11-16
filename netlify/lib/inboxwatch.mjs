@@ -88,7 +88,8 @@ export async function runWatch() {
       const name = c.fullName || c.contactName || "";
       const who = name && name !== c.phone ? `${name}${c.phone ? " (" + c.phone + ")" : ""}` : (c.phone || "a customer");
       const body = String(c.lastMessageBody || "").replace(/\s+/g, " ").slice(0, 160);
-      const msg = `New ${channel(c)} from ${who}: "${body}" - Reply: pinevilleruggallery.com/admin#messages`;
+      const shown = body ? `"${body}"` : "(sent a photo)";
+      const msg = `New ${channel(c)} from ${who}: ${shown} - See it and reply: pinevilleruggallery.com/admin#messages`;
       for (const id of ids) if (await sendSms(id, msg)) sent++;
       seen[c.id] = ts(c.lastMessageDate);
       // One auto-reply to customers who TEXT in (website chat already shows its own on-screen reply).

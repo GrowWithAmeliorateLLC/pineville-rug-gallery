@@ -945,7 +945,7 @@
     $('t-call').href = 'tel:' + String(c.phone||'').replace(/[^\d+]/g,'');
     var box = $('t-msgs');
     box.innerHTML = t.messages.length ? t.messages.map(function(m){
-      return '<div class="bub ' + m.from + '">' + esc(m.body) + '<small>' + esc(ago(m.at)) + (m.channel === 'Website chat' ? ' · website chat' : '') + (m.status === 'failed' || m.status === 'undelivered' ? ' · not delivered' : '') + '</small></div>';
+      return '<div class="bub ' + m.from + '">' + (m.photos||[]).map(function(u){ return '<a href="' + esc(u) + '" target="_blank" rel="noopener"><img src="' + esc(u) + '" alt="Photo from customer" style="display:block;max-width:220px;width:100%;border-radius:10px;margin-bottom:6px"></a>'; }).join('') + esc(m.body) + '<small>' + esc(ago(m.at)) + (m.channel === 'Website chat' ? ' · website chat' : '') + (m.status === 'failed' || m.status === 'undelivered' ? ' · not delivered' : '') + '</small></div>';
     }).join('') : '<div class="empty">No texts in this conversation yet.</div>';
     box.scrollTop = box.scrollHeight;
   }

@@ -374,7 +374,7 @@
     <div class="sec-head">
       <span class="eyebrow">30% Off Cleaning · Ends Nov 30</span>
       <h2>Schedule your free pickup.</h2>
-      <p>Leave your name and number and we'll text you to set a pickup time. Rather talk it through? Call us anytime at <a href="tel:9802882538" style="color:var(--clay);border-bottom:1px solid var(--clay)">(980) 288-2538</a>.</p>
+      <p>Tell us where to pick up your rug and we'll text you to set a time. Rather talk it through? Call us anytime at <a href="tel:9802882538" style="color:var(--clay);border-bottom:1px solid var(--clay)">(980) 288-2538</a>.</p>
     </div>
 
     <div class="toggle">
@@ -443,7 +443,7 @@
 
     <!-- CLEANING / REPAIR -->
     <form id="clean-form" novalidate>
-      <p class="full form-intro"><b>30% off cleaning through Nov 30.</b> Leave your name and number and we'll text you to set up pickup. No obligation.</p>
+      <p class="full form-intro"><b>30% off cleaning through Nov 30.</b> Tell us where to pick it up and we'll text you to set a time. No obligation.</p>
       <div><label class="fld" for="c-name">Name</label><input id="c-name" name="name" autocomplete="name" required></div>
       <div><label class="fld" for="c-phone">Phone</label><input id="c-phone" name="phone" type="tel" autocomplete="tel" required></div>
       <div><label class="fld" for="c-email">Email <em>(optional)</em></label><input id="c-email" name="email" type="email" autocomplete="email"></div>
@@ -469,11 +469,11 @@
             <div class="full svc-select">
         <span class="fld">Pickup or drop-off?</span>
         <div class="svc-opts">
-          <label><input type="radio" name="fulfillment" value="Pickup"><span>Complimentary pickup &amp; delivery</span></label>
+          <label><input type="radio" name="fulfillment" value="Pickup" checked><span>Free pickup &amp; delivery</span></label>
           <label><input type="radio" name="fulfillment" value="Drop-off"><span>I'll drop it off at the gallery</span></label>
         </div>
       </div>
-      <div><label class="fld" for="c-zip">ZIP code</label><input id="c-zip" name="zip" autocomplete="postal-code" inputmode="numeric"></div>
+      <div class="full" id="c-addr"><label class="fld" for="c-address">Pickup address</label><input id="c-address" name="address" autocomplete="street-address" placeholder="Street, city and ZIP"></div>
       
       <div class="full"><label class="fld" for="c-project">Anything about the rug? <em>(optional)</em></label><textarea id="c-project" name="project" placeholder="e.g. 8x10 wool Heriz, fringe damage on one end; and a 5x7 silk that needs cleaning."></textarea></div>
       <div class="full svc-select">
@@ -703,7 +703,7 @@
   // Live availability: grey out fully-booked slots when a date is chosen.
   function prgWireAvailability(formId, formKey){
     var f=document.getElementById(formId); if(!f) return;
-    var dateEl=f.querySelector('input[name="appt_date"]');
+    var dateEl=f.querySelector('input[name="appt_date"]'); if(!dateEl) return;
     var slots=f.querySelectorAll('input[name="appt_slot"]');
     async function refresh(){
       var d=dateEl.value; if(!d) return;
@@ -743,6 +743,7 @@
       if(!data.name||!data.phone){ msg.className='msg err'; msg.textContent='Please add your name and phone number.'; btn.disabled=false; return; }
       if(formId==='book-form'&&(!data.appt_date||!data.appt_slot)){ msg.className='msg err'; msg.textContent='Please choose a date and a time.'; btn.disabled=false; return; }
       if(/after 5|sunday/i.test(data.appt_slot) && !(data.appt_custom_time||'').trim()){ msg.className='msg err'; msg.textContent='Please tell us what time works best.'; var ct=document.getElementById('s-custom'); if(ct) ct.focus(); btn.disabled=false; return; }
+      if(formId==='clean-form'&&data.fulfillment==='Pickup'&&!(data.address||'').trim()){ msg.className='msg err'; msg.textContent='Please add your pickup address.'; var ca=document.getElementById('c-address'); if(ca) ca.focus(); btn.disabled=false; return; }
       if(formId==='book-form'&&!data.confirm_via){ msg.className='msg err'; msg.textContent='Please choose how we should confirm: text, call or email.'; btn.disabled=false; return; }
       try{
         var r=await fetch('/api/pineville-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
@@ -753,7 +754,7 @@
         var ab=f.querySelector('.addr-block'); if(ab) ab.hidden=true;
         var cw=document.getElementById('s-custom-wrap'); if(cw&&formId==='book-form') cw.hidden=true;
         window.dataLayer=window.dataLayer||[]; window.dataLayer.push({event:'generate_lead',form_type:(formId==='book-form'?'design':'cleaning')});
-        msg.className='msg ok'; msg.textContent=(formId==='clean-form'?'Thank you! We’ll reach out about your quote by ':'Thank you! We’ll confirm your appointment by ')+({Text:'text',Call:'phone',Email:'email'}[data.confirm_via]||'text, call or email')+' shortly.';
+        msg.className='msg ok'; msg.textContent=(formId==='clean-form'?'Thank you! We’ll reach out to set up your pickup by ':'Thank you! We’ll confirm your appointment by ')+({Text:'text',Call:'phone',Email:'email'}[data.confirm_via]||'text, call or email')+' shortly.';
       }catch(_){ msg.className='msg err'; msg.textContent='Something went wrong — please call us at (980) 288-2538.'; }
       btn.disabled=false;
     });

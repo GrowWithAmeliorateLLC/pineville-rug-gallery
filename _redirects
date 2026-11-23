@@ -1,3 +1,12 @@
+# Old .html addresses -> clean URLs (11/23/2026). Forced (!) because the .html files exist.
+# Stops Google from seeing two copies of each page ("Alternate page with proper canonical tag").
+/index.html                                  /                 301!
+/gallery.html                                /gallery          301!
+/photos.html                                 /photos           301!
+/trade.html                                  /trade            301!
+/privacy.html                                /privacy          301!
+/terms.html                                  /terms            301!
+
 # Old WordPress site (pinevilleruggallery.com before 10/2026) -> new pages. All permanent (301).
 # Built from the old site's sitemaps: 28 pages, 3 blog posts, 145 shop products.
 
@@ -22,23 +31,23 @@
 /contact                                     /#visit           301
 
 # Shop -> The Rug Collection
-/shop                                        /gallery.html     301
-/shop/*                                      /gallery.html     301
-/product/*                                   /gallery.html     301
-/product-category/*                          /gallery.html     301
-/product-tag/*                               /gallery.html     301
-/pads                                        /gallery.html     301
-/cart                                        /gallery.html     301
-/checkout                                    /gallery.html     301
-/checkout/*                                  /gallery.html     301
-/wishlist                                    /gallery.html     301
-/order-tracking                              /gallery.html     301
-/my-account                                  /gallery.html     301
-/my-account/*                                /gallery.html     301
+/shop                                        /gallery         301
+/shop/*                                      /gallery         301
+/product/*                                   /gallery         301
+/product-category/*                          /gallery         301
+/product-tag/*                               /gallery         301
+/pads                                        /gallery         301
+/cart                                        /gallery         301
+/checkout                                    /gallery         301
+/checkout/*                                  /gallery         301
+/wishlist                                    /gallery         301
+/order-tracking                              /gallery         301
+/my-account                                  /gallery         301
+/my-account/*                                /gallery         301
 
 # Policies
-/privacy-policy                              /privacy.html     301
-/refund-returns                              /terms.html       301
+/privacy-policy                              /privacy          301
+/refund-returns                              /terms            301
 
 # Blog (no blog on the new site yet)
 /blog                                        /                 301
@@ -58,8 +67,8 @@
 /product-sitemap.xml                         /sitemap.xml      301
 
 # Older Shopify-era addresses Google still crawls (found in Search Console 404 report, 10/12/2026)
-/products/*                                  /gallery.html     301
-/collections/*                               /gallery.html     301
+/products/*                                  /gallery         301
+/collections/*                               /gallery         301
 /pages/about                                 /#story           301
 /pages/contact                               /#visit           301
 /pages/home                                  /                 301

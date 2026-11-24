@@ -232,7 +232,7 @@
           <h1 id="t-name"></h1>
           <p id="t-sub"></p>
         </div>
-        <div class="acts"><a class="btn ghost" id="t-call" href="#">📞 Call</a></div>
+        <div class="acts"><button type="button" class="btn ghost" id="t-done" title="Already handled in person or by phone">✓ Done</button><a class="btn ghost" id="t-call" href="#">📞 Call</a></div>
       </div>
       <div class="thread" id="t-msgs"></div>
       <form class="reply" id="t-form">
@@ -991,6 +991,18 @@
       var c = convs.find(function(x){ return x.id === id; }); if(c){ c.replied = true; }
     }catch(err){ if(err.message !== 'unauthorized'){ m.className = 'msg err'; m.textContent = err.message; } }
     $('t-send').disabled = false;
+  });
+  // "Done": handled in person or by phone. Hides it until the customer writes again.
+  $('t-done').addEventListener('click', async function(){
+    var id = openConv, m = $('t-msg'); if(!id) return;
+    $('t-done').disabled = true; m.className = 'msg'; m.textContent = 'Saving…';
+    try{
+      await api('/api/messages', {method:'POST', body:JSON.stringify({action:'done', id:id})});
+      convs = convs.filter(function(x){ return x.id !== id; });
+      setBadge(convs.filter(function(x){ return x.unread; }).length);
+      closeThread(false); renderMsgs();
+    }catch(err){ if(err.message !== 'unauthorized'){ m.className = 'msg err'; m.textContent = err.message; } }
+    $('t-done').disabled = false;
   });
   // Refresh the inbox every minute while it's open (and the badge in the background).
   setInterval(function(){

@@ -7,6 +7,7 @@
 //
 // GET  /api/messages              -> { conversations: [...], unread }
 // GET  /api/messages?id=CONV_ID   -> { conversation, messages: [...] }   (also marks it read)
+// POST /api/messages {action:"done", id} -> hides a conversation handled in person/by phone until the customer writes again
 // POST /api/messages {action:"reply", id, message} -> replies the way the customer last wrote in:
 //      by email if their latest message was an email (or they have no phone), otherwise by text.
 import { getStore } from "@netlify/blobs";
@@ -124,6 +125,7 @@ async function listConversations() {
   const s = store();
   const known = await readJSON("has-inbound");
   const sentMap = await readJSON("sent");
+  const done = await readJSON("done");
   const watch = (await getStore({ name: "prg-inbox-watch", consistency: "strong" }).get("state-v2", { type: "json" }).catch(() => null)) || {};
   const watched = { ...(watch.seen || {}), ...(watch.acked || {}) };
 
@@ -156,6 +158,8 @@ async function listConversations() {
     if (!fromCustomer.length || t.optedOut) continue;
     if (!known[c.id]) { known[c.id] = Date.now(); changed = true; }
     const lastIn = fromCustomer[fromCustomer.length - 1];
+    // Marked "Done" (handled in person or by phone) and nothing new from the customer since.
+    if (done[c.id] && done[c.id] >= lastIn.at) continue;
     const lastAny = t.messages[t.messages.length - 1];
     out.push({
       id: c.id,
@@ -227,6 +231,16 @@ export default async (req) => {
   if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
   let body;
   try { body = await req.json(); } catch { return json({ error: "bad_request" }, 400); }
+  if (body.action === "done") {
+    // Handled outside this tab (in person, by phone): hide it until the customer writes again.
+    const convId = String(body.id || "");
+    if (!convId) return json({ error: "bad_request" }, 400);
+    const done = await readJSON("done");
+    done[convId] = Date.now();
+    const trimmed = Object.fromEntries(Object.entries(done).sort((a, b) => b[1] - a[1]).slice(0, 500));
+    await store().setJSON("done", trimmed);
+    return json({ ok: true });
+  }
   if (body.action !== "reply") return json({ error: "unknown_action" }, 400);
   const message = String(body.message || "").trim();
   if (!message) return json({ error: "Type a message first." }, 400);

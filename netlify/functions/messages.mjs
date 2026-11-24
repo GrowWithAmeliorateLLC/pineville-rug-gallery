@@ -247,7 +247,7 @@ export default async (req) => {
     if (!email) return json({ error: "We don't have an email address for this customer. Please call them instead." }, 400);
     if (message.length > 5000) return json({ error: "That's a bit long. Please keep it under 5,000 characters." }, 400);
     const lastEmail = [...t.messages].reverse().find((x) => x.from === "customer" && x.channel === "Email");
-    const subj = (lastEmail && lastEmail.subject) || "Pineville Rug Gallery";
+    const subj = ((lastEmail && lastEmail.subject) || "Pineville Rug Gallery").replace(/^New Email\s+/i, "");
     const payload = {
       type: "Email",
       contactId: c.contactId,

@@ -239,7 +239,7 @@
         <textarea id="t-text" maxlength="640" placeholder="Type your reply…" aria-label="Your reply"></textarea>
         <button class="btn primary" type="submit" id="t-send">Send</button>
       </form>
-      <p class="tip">Your reply goes out as a text from the gallery number, (980) 577-2764.</p>
+      <p class="tip" id="t-tip">Your reply goes out as a text from the gallery number, (980) 577-2764.</p>
       <div class="msg" id="t-msg" role="status"></div>
     </div>
   </section>
@@ -916,15 +916,15 @@
   }
   function renderMsgs(){
     var q = $('m-q').value.trim().toLowerCase();
-    var shown = convs.filter(function(c){ return !q || [c.name, c.phone, fmtPhone(c.phone), c.last].join(' ').toLowerCase().indexOf(q) >= 0; });
+    var shown = convs.filter(function(c){ return !q || [c.name, c.phone, fmtPhone(c.phone), c.email, c.last].join(' ').toLowerCase().indexOf(q) >= 0; });
     var un = convs.filter(function(c){ return c.unread; }).length;
     $('m-count').textContent = convs.length ? (convs.length + ' conversation' + (convs.length === 1 ? '' : 's') + (un ? ' · ' + un + ' unread' : '')) : '';
     var list = $('m-list');
-    if(!shown.length){ list.innerHTML = '<div class="empty">' + (q ? 'No messages match that search.' : 'No customer texts yet. When someone texts the gallery or uses the website chat, it shows up here.') + '</div>'; return; }
+    if(!shown.length){ list.innerHTML = '<div class="empty">' + (q ? 'No messages match that search.' : 'No customer messages yet. When someone texts the gallery, uses the website chat or replies to an email, it shows up here.') + '</div>'; return; }
     list.innerHTML = shown.map(function(c){
       return '<button type="button" class="mrow' + (c.unread ? ' unread' : '') + '" data-id="' + esc(c.id) + '">' +
         '<span class="dot"></span>' +
-        '<span><span class="who">' + esc(c.name || fmtPhone(c.phone)) + '</span>' + (c.name ? ' <span class="t">' + esc(fmtPhone(c.phone)) + '</span>' : '') +
+        '<span><span class="who">' + esc(c.name || fmtPhone(c.phone) || c.email) + '</span>' + (c.name && (c.phone || c.email) ? ' <span class="t">' + esc(fmtPhone(c.phone) || c.email) + '</span>' : '') +
         '<br><span class="pill">' + esc(c.channel) + '</span>' +
         (c.replied ? ' <span class="pill s-Confirmed">✓ Replied</span>' : '') +
         '<span class="snip">' + esc(c.last) + '</span></span>' +
@@ -940,13 +940,17 @@
 
   function renderThread(t){
     var c = t.conversation;
-    $('t-name').textContent = c.name || fmtPhone(c.phone);
-    $('t-sub').textContent = c.name ? fmtPhone(c.phone) : '';
+    $('t-name').textContent = c.name || fmtPhone(c.phone) || c.email || '';
+    $('t-sub').textContent = [c.name ? fmtPhone(c.phone) : '', (c.name || c.phone) ? (c.email || '') : ''].filter(Boolean).join(' · ');
     $('t-call').href = 'tel:' + String(c.phone||'').replace(/[^\d+]/g,'');
+    $('t-call').hidden = !c.phone;
+    var byEmail = c.replyBy === 'email';
+    $('t-tip').textContent = byEmail ? 'Your reply goes out as an email to ' + (c.email || 'this customer') + ', from Pineville Rug Gallery.' : 'Your reply goes out as a text from the gallery number, (980) 577-2764.';
+    $('t-text').maxLength = byEmail ? 5000 : 640;
     var box = $('t-msgs');
     box.innerHTML = t.messages.length ? t.messages.map(function(m){
-      return '<div class="bub ' + m.from + '">' + (m.photos||[]).map(function(u){ return '<a href="' + esc(u) + '" target="_blank" rel="noopener"><img src="' + esc(u) + '" alt="Photo from customer" style="display:block;max-width:220px;width:100%;border-radius:10px;margin-bottom:6px"></a>'; }).join('') + esc(m.body) + '<small>' + esc(ago(m.at)) + (m.channel === 'Website chat' ? ' · website chat' : '') + (m.status === 'failed' || m.status === 'undelivered' ? ' · not delivered' : '') + '</small></div>';
-    }).join('') : '<div class="empty">No texts in this conversation yet.</div>';
+      return '<div class="bub ' + m.from + '">' + (m.photos||[]).map(function(u){ return '<a href="' + esc(u) + '" target="_blank" rel="noopener"><img src="' + esc(u) + '" alt="Photo from customer" style="display:block;max-width:220px;width:100%;border-radius:10px;margin-bottom:6px"></a>'; }).join('') + esc(m.body) + '<small>' + esc(ago(m.at)) + (m.channel === 'Website chat' ? ' · website chat' : m.channel === 'Email' ? ' · email' : '') + (m.status === 'failed' || m.status === 'undelivered' ? ' · not delivered' : '') + '</small></div>';
+    }).join('') : '<div class="empty">No messages in this conversation yet.</div>';
     box.scrollTop = box.scrollHeight;
   }
   async function openThread(id){

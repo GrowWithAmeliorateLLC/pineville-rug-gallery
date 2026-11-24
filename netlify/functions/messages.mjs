@@ -126,17 +126,21 @@ async function listConversations() {
   const watch = (await getStore({ name: "prg-inbox-watch", consistency: "strong" }).get("state-v2", { type: "json" }).catch(() => null)) || {};
   const watched = { ...(watch.seen || {}), ...(watch.acked || {}) };
 
+  // Two lookups: the 100 most recent conversations, plus the 100 most recent where the customer wrote last.
+  // (Email blasts touch thousands of conversations at once and would otherwise push older replies out.)
   const q = `/conversations/search?locationId=${LOCATION_ID}&sortBy=last_message_date&sort=desc&limit=100`;
-  const { ok, status, j } = await ghl(q);
-  if (!ok) throw new Error(`Could not reach the inbox (${status}).`);
+  const [recent, inboundOnly] = await Promise.all([ghl(q), ghl(`${q}&lastMessageDirection=inbound`)]);
+  if (!recent.ok) throw new Error(`Could not reach the inbox (${recent.status}).`);
+  const byId = new Map();
+  for (const c of [...(recent.j.conversations || []), ...((inboundOnly.ok && inboundOnly.j.conversations) || [])]) if (c && c.id && !byId.has(c.id)) byId.set(c.id, c);
 
-  const candidates = (j.conversations || []).filter((c) => {
+  const candidates = [...byId.values()].filter((c) => {
     if (!c.phone && !c.email) return false;
     if (c.phone && hiddenPhone(c.phone)) return false;
     if ((c.tags || []).some((t) => /internal notifications/i.test(t))) return false;
     const inbound = String(c.lastMessageDirection || "").toLowerCase() === "inbound";
     return known[c.id] || watched[c.id] || (inbound && SHOWN.test(c.lastMessageType || ""));
-  }).slice(0, 40);
+  }).sort((a, b) => ts(b.lastMessageDate) - ts(a.lastMessageDate)).slice(0, 40);
 
   const checked = await Promise.all(candidates.map(async (c) => {
     try { return { c, t: await textsFor(c.id, sentMap[c.id]) }; } catch (_) { return null; }

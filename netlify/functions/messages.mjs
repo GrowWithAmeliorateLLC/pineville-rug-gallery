@@ -86,7 +86,8 @@ async function textsFor(id, sentIds) {
   const sent = new Set(sentIds || []);
   const rows = (Array.isArray(raw) ? raw : []).filter((x) => SHOWN.test(x.messageType || ""));
   const all = (await Promise.all(rows.map(async (x) => {
-    const inbound = String(x.direction || "").toLowerCase() === "inbound";
+    // Texts carry direction on the message; emails carry it in meta.email.direction.
+    const inbound = String(x.direction || (x.meta && x.meta.email && x.meta.email.direction) || "").toLowerCase() === "inbound";
     const isEmail = EMAILY.test(x.messageType || "");
     // Only fetch email bodies we will actually show (customer emails, or our replies from this tab).
     if (isEmail && !inbound && !sent.has(x.id)) return null;
@@ -211,21 +212,6 @@ export default async (req) => {
 
   if (req.method === "GET") {
     const id = new URL(req.url).searchParams.get("id");
-    const dbg = new URL(req.url).searchParams.get("debugname");
-    if (dbg) {
-      const r = await ghl(`/conversations/search?locationId=${LOCATION_ID}&query=${encodeURIComponent(dbg)}&limit=5`);
-      const convs = (r.j.conversations || []).map((c) => ({ id: c.id, phone: c.phone, email: c.email, dir: c.lastMessageDirection, type: c.lastMessageType, date: c.lastMessageDate, tags: c.tags }));
-      const first = convs[0];
-      let msgs = null;
-      if (first) {
-        const m = await ghl(`/conversations/${encodeURIComponent(first.id)}/messages?limit=20`);
-        const raw = (m.j.messages && m.j.messages.messages) || m.j.messages || [];
-        msgs = (Array.isArray(raw) ? raw : []).map((x) => ({ id: x.id, type: x.messageType, dir: x.direction, bodyLen: String(x.body || "").length, meta: x.meta }));
-        const t = await textsFor(first.id, []);
-        msgs = { raw: msgs, cleaned: t.messages.map((x) => ({ from: x.from, ch: x.channel, body: x.body.slice(0, 120) })), optedOut: t.optedOut };
-      }
-      return json({ status: r.status, convs, msgs });
-    }
     try {
       if (id) {
         const t = await thread(id);

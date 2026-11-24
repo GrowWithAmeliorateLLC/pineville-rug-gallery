@@ -211,6 +211,21 @@ export default async (req) => {
 
   if (req.method === "GET") {
     const id = new URL(req.url).searchParams.get("id");
+    const dbg = new URL(req.url).searchParams.get("debugname");
+    if (dbg) {
+      const r = await ghl(`/conversations/search?locationId=${LOCATION_ID}&query=${encodeURIComponent(dbg)}&limit=5`);
+      const convs = (r.j.conversations || []).map((c) => ({ id: c.id, phone: c.phone, email: c.email, dir: c.lastMessageDirection, type: c.lastMessageType, date: c.lastMessageDate, tags: c.tags }));
+      const first = convs[0];
+      let msgs = null;
+      if (first) {
+        const m = await ghl(`/conversations/${encodeURIComponent(first.id)}/messages?limit=20`);
+        const raw = (m.j.messages && m.j.messages.messages) || m.j.messages || [];
+        msgs = (Array.isArray(raw) ? raw : []).map((x) => ({ id: x.id, type: x.messageType, dir: x.direction, bodyLen: String(x.body || "").length, meta: x.meta }));
+        const t = await textsFor(first.id, []);
+        msgs = { raw: msgs, cleaned: t.messages.map((x) => ({ from: x.from, ch: x.channel, body: x.body.slice(0, 120) })), optedOut: t.optedOut };
+      }
+      return json({ status: r.status, convs, msgs });
+    }
     try {
       if (id) {
         const t = await thread(id);
